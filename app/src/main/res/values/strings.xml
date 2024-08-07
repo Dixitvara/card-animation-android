@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Animations</string>
+    <string name="blink">Blink</string>
+    <string name="slide">Slide</string>
+    <string name="rotate">Rotate</string>
+    <string name="zoom">Zoom</string>
+    <string name="submit">Submit</string>
+    <string name="animation_demo">animation demo</string>
+    <string name="next_page">Next Page</string>
+    <string name="start_animation">Start Animation</string>
+    <string name="reset">Reset</string>
+    <string name="card">Card</string>
+    <string name="profile">profile</string>
+    <string name="start">Start</string>
+</resources>
