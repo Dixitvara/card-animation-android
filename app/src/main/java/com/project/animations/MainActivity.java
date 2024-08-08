@@ -2,23 +2,28 @@ package com.project.animations;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button nextBtn;
+    CardView randomAnimationCv, stackedCardAnimationCv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nextBtn = findViewById(R.id.nextBtn);
+        randomAnimationCv = findViewById(R.id.randomCardAnimationCV);
+        stackedCardAnimationCv = findViewById(R.id.stackedCardAnimationCV);
 
-        nextBtn.setOnClickListener(v -> {
+        stackedCardAnimationCv.setOnClickListener(v -> {
             startActivity(new Intent(this, AnimationActivity.class));
+        });
+
+        randomAnimationCv.setOnClickListener(v -> {
+            startActivity(new Intent(this, FireworksActivity.class));
         });
     }
 }

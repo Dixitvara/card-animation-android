@@ -14,29 +14,6 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/cardDeck"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_above="@+id/startAnimationBtn"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/card"
-        android:src="@drawable/blue_back"
-
-        />
-
-    <Button
-        android:id="@+id/startAnimationBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/resetBtn"
-        android:layout_marginHorizontal="100dp"
-        android:layout_marginVertical="20dp"
-        android:gravity="center"
-        android:text="@string/start_animation"
-
-        />
-
     <Button
         android:id="@+id/resetBtn"
         android:layout_width="match_parent"

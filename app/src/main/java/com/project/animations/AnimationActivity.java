@@ -1,32 +1,46 @@
 package com.project.animations;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class AnimationActivity extends AppCompatActivity {
 
-    Button button, resetBtn;
+    Button resetBtn;
     RelativeLayout container;
     ImageView image;
-    float x = 0f;
+    float x = 10f;
     float y = 0f;
-    int i = 0;
+    ArrayList<ImageView> cards;
+    Handler handler;
+    int height, width;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
 
-        button = findViewById(R.id.startAnimationBtn);
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
 
+        cards = new ArrayList<>();
+        handler = new Handler();
+        mediaPlayer = MediaPlayer.create(this, R.raw.card_shuffle);
+
+        // reset button
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
             finish();
@@ -38,31 +52,58 @@ public class AnimationActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         // set those in variables
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
 
-        button.setOnClickListener(v -> {
+        Random random = new Random();
 
+        Class<R.drawable> drawableClass = R.drawable.class;
+        Field[] fields = drawableClass.getFields();
+
+        for (int i = 0; i < 30; i++) {
+            int randomInt = random.nextInt(fields.length);
             image = new ImageView(this);
             RelativeLayout.LayoutParams imgParam = new RelativeLayout.LayoutParams(100, 150);
 
-            if (x >= width) {
-                y += 30;
-                x = 0;
-            }
-            image.setImageResource(R.drawable.h10);
-            image.setX(x);
-            image.setY(y);
-            image.setLayoutParams(imgParam);
-            container.addView(image);
+//                try {
+//                    image.setImageResource(fields[randomInt].getInt(drawableClass));
+            image.setImageResource(R.drawable.as);
+//                } catch (IllegalAccessException e) {
+//                    throw new RuntimeException(e);
+//                }
 
-            image.animate()
-                    .translationX(x)
-                    .translationY(0f)
-                    .setDuration(200)
-                    .setInterpolator(new DecelerateInterpolator())
-                    .start();
-            x += 200;
-        });
+            image.setX((float) width / 2);
+            image.setY(height);
+            image.setLayoutParams(imgParam);
+
+            cards.add(image);
+            container.addView(image);
+        }
+        animateCard();
+    }
+
+    public void animateCard() {
+        for (int i = 0; i < cards.size(); i++) {
+            int finalI = i;
+            handler.postDelayed(() ->
+                            animate(cards.get(finalI))
+                    , 200L * i);
+        }
+    }
+
+    public void animate(ImageView image) {
+        mediaPlayer.start();
+
+        if (x >= width) {
+            y += 30;
+            x = 10;
+        }
+        image.animate()
+                .translationX(x)
+                .translationY(y)
+                .setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .start();
+        x += 200;
     }
 }
