@@ -1,6 +1,5 @@
 package com.project.animations;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class AnimationActivity extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class AnimationActivity extends AppCompatActivity {
     ImageView image;
     float x = 10f;
     float y = 0f;
-    ArrayList<ImageView> cards;
+    LinkedList<ImageView> cards;
     Handler handler;
     int height, width;
     MediaPlayer mediaPlayer;
@@ -36,7 +37,7 @@ public class AnimationActivity extends AppCompatActivity {
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
 
-        cards = new ArrayList<>();
+        cards = new LinkedList<>();
         handler = new Handler();
         mediaPlayer = MediaPlayer.create(this, R.raw.card_shuffle);
 
@@ -60,23 +61,26 @@ public class AnimationActivity extends AppCompatActivity {
         Class<R.drawable> drawableClass = R.drawable.class;
         Field[] fields = drawableClass.getFields();
 
+        System.out.println("==> " + Arrays.toString(fields));
+        System.out.println("==> " + fields.length);
+
         for (int i = 0; i < 30; i++) {
             int randomInt = random.nextInt(fields.length);
             image = new ImageView(this);
             RelativeLayout.LayoutParams imgParam = new RelativeLayout.LayoutParams(100, 150);
 
-//                try {
-//                    image.setImageResource(fields[randomInt].getInt(drawableClass));
-            image.setImageResource(R.drawable.as);
-//                } catch (IllegalAccessException e) {
-//                    throw new RuntimeException(e);
-//                }
+            try {
+                image.setImageResource(fields[randomInt].getInt(drawableClass));
+//            image.setImageResource(R.drawable.kh);
+            cards.add(image);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
 
             image.setX((float) width / 2);
             image.setY(height);
             image.setLayoutParams(imgParam);
 
-            cards.add(image);
             container.addView(image);
         }
         animateCard();
@@ -87,13 +91,12 @@ public class AnimationActivity extends AppCompatActivity {
             int finalI = i;
             handler.postDelayed(() ->
                             animate(cards.get(finalI))
-                    , 200L * i);
+                    , 100L * i);
         }
     }
 
     public void animate(ImageView image) {
         mediaPlayer.start();
-
         if (x >= width) {
             y += 30;
             x = 10;

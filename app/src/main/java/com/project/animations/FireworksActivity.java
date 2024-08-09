@@ -1,10 +1,8 @@
 package com.project.animations;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,18 +10,16 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.LinkedList;
-import java.util.Random;
 
 public class FireworksActivity extends AppCompatActivity {
 
     Button resetBtn;
     DisplayMetrics displayMetrics;
     RelativeLayout container;
-    int randomWidth, randomHeight;
     int width, height;
-    Handler handler;
-    Random random;
     LinkedList<ImageView> cardList;
+
+    int x = 300, y = 250, z = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +29,8 @@ public class FireworksActivity extends AppCompatActivity {
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
 
-        handler = new Handler();
-        random = new Random();
         cardList = new LinkedList<>();
+
         displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -48,42 +43,35 @@ public class FireworksActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        for (int i = 0; i < 25; i++) {
-
+        for (int i = 0; i < 12; i++) {
             ImageView image = new ImageView(this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 150);
 
-            image.setImageResource(R.drawable.d4);
+            image.setImageResource(R.drawable.as);
             image.setLayoutParams(params);
-            image.setX((float) width / 2);
-            image.setY(height);
-            image.setRotation(0f);
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(z);
 
             cardList.add(image);
             container.addView(image);
-        }
-        animateCards();
-    }
 
-    private void animateCards() {
-        for (int i = 0; i < cardList.size(); i++) {
-            int finalI = i;
-            handler.postDelayed(() -> {
-                animate(cardList.get(finalI));
-            }, 120L * i);
+            x += 30;
+            y += 15;
+            z += 10;
+
         }
     }
 
-    private void animate(ImageView image) {
-        randomWidth = random.nextInt(width);
-        randomHeight = random.nextInt(height);
-
+    private void animation(ImageView image) {
         image.animate()
-                .translationX((float) randomWidth)
-                .translationY((float) randomHeight)
+                .translationX(0)
+                .translationY(0)
                 .setDuration(500)
-                .rotation(random.nextInt(361))
+//                .rotation(x)
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .start();
+        x += 5;
     }
+
 }

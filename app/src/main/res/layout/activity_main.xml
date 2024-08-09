@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -14,34 +15,44 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/randomCardAnimationCV"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_140sdp"
             android:layout_marginEnd="@dimen/_40sdp"
+            app:cardCornerRadius="10dp"
+            app:strokeColor="@color/black"
 
-            >
+            app:strokeWidth="2dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/random_card_animation"
-                android:src="@drawable/random_card_animation" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/random_card_animation"
 
-        </androidx.cardview.widget.CardView>
+                />
 
-        <androidx.cardview.widget.CardView
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/stackedCardAnimationCV"
             android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_140sdp">
+            android:layout_height="@dimen/_140sdp"
+            app:cardCornerRadius="10dp"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/stacked_card_animation"
+                android:scaleType="centerCrop"
                 android:src="@drawable/stacked_card_animation" />
 
-        </androidx.cardview.widget.CardView>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
