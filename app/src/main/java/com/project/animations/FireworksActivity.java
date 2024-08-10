@@ -47,7 +47,7 @@ public class FireworksActivity extends AppCompatActivity {
             ImageView image = new ImageView(this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 150);
 
-            image.setImageResource(R.drawable.as);
+//            image.setImageResource(R.drawable.as);
             image.setLayoutParams(params);
             image.setX(x);
             image.setY(y);

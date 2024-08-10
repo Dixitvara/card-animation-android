@@ -30,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/random_card_animation"
                 android:scaleType="centerCrop"
-                android:src="@drawable/random_card_animation"
 
                 />
 
@@ -48,8 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/stacked_card_animation"
-                android:scaleType="centerCrop"
-                android:src="@drawable/stacked_card_animation" />
+                android:scaleType="centerCrop" />
 
 
         </com.google.android.material.card.MaterialCardView>

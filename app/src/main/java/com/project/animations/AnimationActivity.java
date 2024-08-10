@@ -1,8 +1,6 @@
 package com.project.animations;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -11,23 +9,17 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
 
 public class AnimationActivity extends AppCompatActivity {
 
     Button resetBtn;
     RelativeLayout container;
-    ImageView image;
+    //    ImageView image;
     float x = 10f;
     float y = 0f;
-    LinkedList<ImageView> cards;
-    Handler handler;
     int height, width;
-    MediaPlayer mediaPlayer;
+    ArrayList<Integer> diamondCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +28,6 @@ public class AnimationActivity extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
-
-        cards = new LinkedList<>();
-        handler = new Handler();
-        mediaPlayer = MediaPlayer.create(this, R.raw.card_shuffle);
 
         // reset button
         resetBtn.setOnClickListener(v -> {
@@ -56,57 +44,54 @@ public class AnimationActivity extends AppCompatActivity {
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
 
-        Random random = new Random();
+        diamondCards = new ArrayList<>();
+        int resourceId;
 
-        Class<R.drawable> drawableClass = R.drawable.class;
-        Field[] fields = drawableClass.getFields();
+        for (int i = 1; i <= 26; i++) {
+            if (i <= 13) {
+                resourceId = this.getResources().getIdentifier("h" + i, "drawable", this.getPackageName());
+            }
+            else {
+                resourceId = this.getResources().getIdentifier("s" + (i - 13), "drawable", this.getPackageName());
+                System.out.println("s" + (i - 13));
+            }
+            diamondCards.add(resourceId);
 
-        System.out.println("==> " + Arrays.toString(fields));
-        System.out.println("==> " + fields.length);
-
-        for (int i = 0; i < 30; i++) {
-            int randomInt = random.nextInt(fields.length);
-            image = new ImageView(this);
+            ImageView image = new ImageView(this);
             RelativeLayout.LayoutParams imgParam = new RelativeLayout.LayoutParams(100, 150);
 
-            try {
-                image.setImageResource(fields[randomInt].getInt(drawableClass));
-//            image.setImageResource(R.drawable.kh);
-            cards.add(image);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-
+            image.setId(i);
+            image.setImageResource(resourceId);
             image.setX((float) width / 2);
             image.setY(height);
             image.setLayoutParams(imgParam);
 
             container.addView(image);
         }
+
+//        System.out.println("==> " + diamondCards);
+//        System.out.println("==> " + diamondCards.size());
+
         animateCard();
     }
 
     public void animateCard() {
-        for (int i = 0; i < cards.size(); i++) {
-            int finalI = i;
-            handler.postDelayed(() ->
-                            animate(cards.get(finalI))
-                    , 100L * i);
-        }
-    }
+        for (int i = 0; i < diamondCards.size(); i++) {
+            if (x >= width) {
+                y += 30;
+                x = 10;
+            }
 
-    public void animate(ImageView image) {
-        mediaPlayer.start();
-        if (x >= width) {
-            y += 30;
-            x = 10;
+            ImageView image = findViewById(i + 1);
+
+            image.animate()
+                    .translationX(x)
+                    .translationY(y)
+                    .setStartDelay(100L * i)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+            x += 150;
         }
-        image.animate()
-                .translationX(x)
-                .translationY(y)
-                .setDuration(300)
-                .setInterpolator(new AccelerateDecelerateInterpolator())
-                .start();
-        x += 200;
     }
 }
