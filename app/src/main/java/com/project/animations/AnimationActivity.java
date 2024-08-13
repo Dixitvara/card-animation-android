@@ -1,5 +1,8 @@
 package com.project.animations;
 
+import static values.values.CARD_HEIGHT;
+import static values.values.CARD_WIDTH;
+
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -36,7 +39,7 @@ public class AnimationActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        // getting device height and width
+        // getting device screenHeight and width
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -49,16 +52,14 @@ public class AnimationActivity extends AppCompatActivity {
 
         for (int i = 1; i <= 26; i++) {
             if (i <= 13) {
-                resourceId = this.getResources().getIdentifier("h" + i, "drawable", this.getPackageName());
-            }
-            else {
+                resourceId = this.getResources().getIdentifier("s" + i, "drawable", this.getPackageName());
+            } else {
                 resourceId = this.getResources().getIdentifier("s" + (i - 13), "drawable", this.getPackageName());
-                System.out.println("s" + (i - 13));
             }
             diamondCards.add(resourceId);
 
             ImageView image = new ImageView(this);
-            RelativeLayout.LayoutParams imgParam = new RelativeLayout.LayoutParams(100, 150);
+            RelativeLayout.LayoutParams imgParam = new RelativeLayout.LayoutParams(CARD_WIDTH, CARD_HEIGHT);
 
             image.setId(i);
             image.setImageResource(resourceId);
@@ -68,10 +69,6 @@ public class AnimationActivity extends AppCompatActivity {
 
             container.addView(image);
         }
-
-//        System.out.println("==> " + diamondCards);
-//        System.out.println("==> " + diamondCards.size());
-
         animateCard();
     }
 

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         randomAnimationCv.setOnClickListener(v -> {
-            startActivity(new Intent(this, FireworksActivity.class));
+            startActivity(new Intent(this, CircleAnimation.class));
         });
     }
 }
