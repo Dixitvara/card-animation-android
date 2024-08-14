@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView;
 public class MainActivity extends AppCompatActivity {
 
     CardView randomAnimationCv, stackedCardAnimationCv;
+    CardView triangleAnimation, bouncingAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
         randomAnimationCv = findViewById(R.id.randomCardAnimationCV);
         stackedCardAnimationCv = findViewById(R.id.stackedCardAnimationCV);
+        triangleAnimation = findViewById(R.id.triangleAnimation);
+        bouncingAnimation = findViewById(R.id.bouncingAnimation);
 
         stackedCardAnimationCv.setOnClickListener(v -> {
             startActivity(new Intent(this, AnimationActivity.class));
@@ -24,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
 
         randomAnimationCv.setOnClickListener(v -> {
             startActivity(new Intent(this, CircleAnimation.class));
+        });
+
+        triangleAnimation.setOnClickListener(v -> {
+            startActivity(new Intent(this, TriangleAnimation.class));
+        });
+
+        bouncingAnimation.setOnClickListener(v -> {
+            startActivity(new Intent(this, BouncingAnimation.class));
         });
     }
 }

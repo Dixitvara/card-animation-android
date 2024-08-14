@@ -45,6 +45,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:src="@drawable/card_stack"
                 android:contentDescription="@string/stacked_card_animation"
                 android:scaleType="centerCrop" />
 
@@ -77,7 +78,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/heartAnimation"
+            android:id="@+id/bouncingAnimation"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_140sdp"
             app:cardCornerRadius="10dp"

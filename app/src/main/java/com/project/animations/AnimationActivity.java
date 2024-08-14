@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,6 @@ public class AnimationActivity extends AppCompatActivity {
 
     Button resetBtn;
     RelativeLayout container;
-    //    ImageView image;
     float x = 10f;
     float y = 0f;
     int height, width;
@@ -58,11 +58,11 @@ public class AnimationActivity extends AppCompatActivity {
             }
             diamondCards.add(resourceId);
 
-            ImageView image = new ImageView(this);
+            CardView image = new CardView(this);
             RelativeLayout.LayoutParams imgParam = new RelativeLayout.LayoutParams(CARD_WIDTH, CARD_HEIGHT);
 
             image.setId(i);
-            image.setImageResource(resourceId);
+            image.setBackgroundResource(resourceId);
             image.setX((float) width / 2);
             image.setY(height);
             image.setLayoutParams(imgParam);
@@ -79,7 +79,7 @@ public class AnimationActivity extends AppCompatActivity {
                 x = 10;
             }
 
-            ImageView image = findViewById(i + 1);
+            CardView image = findViewById(i + 1);
 
             image.animate()
                     .translationX(x)
