@@ -106,9 +106,6 @@ public class BouncingAnimation extends AppCompatActivity {
         int id = spadesCards.pop();
         ImageView image = findViewById(id);
         container.removeView(image);
-        System.out.println("==> removed : " + id);
-        System.out.println("==> image : " + image);
-        System.out.println("==> size : " + spadesCards.size());
     }
 
     private void popHeartCard() {

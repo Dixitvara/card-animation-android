@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         bouncingAnimation = findViewById(R.id.bouncingAnimation);
 
         stackedCardAnimationCv.setOnClickListener(v -> {
-            startActivity(new Intent(this, AnimationActivity.class));
+            startActivity(new Intent(this, HeartAnimation.class));
         });
 
         randomAnimationCv.setOnClickListener(v -> {

@@ -1,8 +1,8 @@
 package com.project.animations;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.DecelerateInterpolator;
@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.animations.utils.CardDimension;
@@ -118,8 +117,8 @@ public class CircleAnimation extends AppCompatActivity {
             image.animate()
                     .translationX(x)
                     .translationY(y)
-                    .setStartDelay(100L * i)
-                    .setDuration(200)
+                    .setStartDelay(50L * i)
+                    .setDuration(300)
                     .setInterpolator(new DecelerateInterpolator())
                     .withEndAction(new Runnable() {
                         @Override
@@ -136,53 +135,22 @@ public class CircleAnimation extends AppCompatActivity {
         for (int i = 0; i < cardList.size(); i++) {
             ImageView image = findViewById(i);
 
-            ObjectAnimator scaleXUp = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
                     .setDuration(400);
-            ObjectAnimator scaleYUp = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
-                    .setDuration(400);
-            ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(image, "scaleX", 1.3f, 1f)
-                    .setDuration(400);
-            ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(image, "scaleY", 1.3f, 1f)
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
                     .setDuration(400);
 
-            AnimatorSet scaleUpSet = new AnimatorSet();
-            scaleUpSet.playTogether(scaleXUp, scaleYUp);
+            scaleX.setRepeatMode(ValueAnimator.REVERSE);
+            scaleY.setRepeatMode(ValueAnimator.REVERSE);
 
-            AnimatorSet scaleDownSet = new AnimatorSet();
-            scaleDownSet.playTogether(scaleXDown, scaleYDown);
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
 
             AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.playSequentially(scaleUpSet, scaleDownSet);
+            animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(30L * i);
 
-            animatorSet.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(@NonNull Animator animation) {}
-
-                @Override
-                public void onAnimationEnd(@NonNull Animator animation) {
-                    rotationAnimation();
-                }
-
-                @Override
-                public void onAnimationCancel(@NonNull Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(@NonNull Animator animation) {}
-            });
             animatorSet.start();
         }
-    }
-
-    private void rotationAnimation() {
-        ObjectAnimator rotation = ObjectAnimator.ofFloat(container, "rotation", 0, 2000)
-                .setDuration(2000);
-        ObjectAnimator translation = ObjectAnimator.ofFloat(container, "translationX", 0, screenWidth)
-                .setDuration(1000);
-
-        rotation.start();
-        translation.setStartDelay(1000);
-        translation.start();
     }
 }

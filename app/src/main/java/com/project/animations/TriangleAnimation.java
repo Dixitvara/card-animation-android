@@ -1,8 +1,12 @@
 package com.project.animations;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,22 +25,17 @@ public class TriangleAnimation extends AppCompatActivity {
     ArrayList<Integer> cardList;
     RelativeLayout container;
     int cardWidth, cardHeight;
+    int cardGap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
 
-        cardList = new ArrayList<>();
-
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
 
-        resetBtn.setOnClickListener(v -> {
-            startActivity(getIntent());
-            finish();
-            overridePendingTransition(0, 0);
-        });
+        cardList = new ArrayList<>();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -44,9 +43,17 @@ public class TriangleAnimation extends AppCompatActivity {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
+        cardGap = (int) (screenWidth * 0.032);
+
         int[] cardParams = CardDimension.getCardParams(displayMetrics);
         cardWidth = cardParams[0];
         cardHeight = cardParams[1];
+
+        resetBtn.setOnClickListener(v -> {
+            startActivity(getIntent());
+            finish();
+            overridePendingTransition(0, 0);
+        });
 
         // generating cards
         generateCards();
@@ -55,7 +62,6 @@ public class TriangleAnimation extends AppCompatActivity {
 
     private void generateCards() {
         int resourceId;
-        float cardXCenter = (float) cardWidth / 2;
 
         for (int i = 1; i <= TOTAL_CARDS; i++) {
             if (i <= 13)
@@ -74,111 +80,151 @@ public class TriangleAnimation extends AppCompatActivity {
             image.setId(i);
             image.setImageResource(resourceId);
             image.setLayoutParams(params);
-            image.setX((float) screenWidth / 2 - cardXCenter);
+            image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
             image.setY(screenHeight);
 
-            if (i != 10 && i != 20 && i != 30 && i != 40) {
-                container.addView(image);
-            }
+            container.addView(image);
         }
-        animateCards();
+//        setPosition();
+        animate();
     }
 
-    private void animateCards() {
-        int x = 0, y = 0;
-        int position = (int) (screenWidth * 0.035);
-
-        for (int i = 1; i <= TOTAL_CARDS; i++) {
+    // set card position
+    private void setPosition() {
+        int x = screenWidth / 2 - cardWidth / 2;
+        int y = screenHeight / 4;
+        for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i);
 
-            if (i == 10 || i == 20 || i == 30 || i == 40) {
-                continue;
+            if (i == 11) {
+                x += cardGap;
+                y += cardGap;
+            }
+            if (i == 21) {
+                x -= cardGap;
+                y += cardGap;
+            }
+            if (i == 31) {
+                x -= cardGap;
+                y -= cardGap;
             }
 
-            float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
+            if (i <= 10) {
+                image.setX(x += cardGap);
+                image.setY(y += cardGap);
+                image.setRotation(-45);
+            }
+//            x += 25;
+            if (i >= 11 && i <= 20) {
+                image.setRotation(45);
+                image.setX(x -= cardGap);
+                image.setY(y += cardGap);
+            }
+            if (i >= 21 && i <= 30) {
+                image.setRotation(-45);
+                image.setX(x -= cardGap);
+                image.setY(y -= cardGap);
+            }
+            if (i >= 31) {
+                image.setRotation(45);
+                image.setX(x += cardGap);
+                image.setY(y -= cardGap);
+            }
+        }
+    }
 
-/*
-            ObjectAnimator animator;
-            ObjectAnimator animator2;
+    private void animate() {
+        int x = screenWidth / 2 - cardWidth / 2;
+        int y = screenHeight / 4;
+
+        long duration = 500;
+        long delay = 30;
+
+        for (int i = 1; i <= cardList.size(); i++) {
+
+            ImageView image = findViewById(i);
+
+            if (i == 11) {
+                x += cardGap;
+                y += cardGap;
+            }
+            if (i == 21) {
+                x -= cardGap;
+                y += cardGap;
+            }
+            if (i == 31) {
+                x -= cardGap;
+                y -= cardGap;
+            }
+
+            if (i <= 10) {
+                image.animate()
+                        .translationX(x += cardGap)
+                        .translationY(y += cardGap)
+                        .rotation(-45)
+                        .setDuration(duration)
+                        .setStartDelay(delay * i)
+                        .setInterpolator(new AccelerateInterpolator())
+                        .start();
+            }
+            if (i >= 11 && i <= 20) {
+                image.animate()
+                        .translationX(x -= cardGap)
+                        .translationY(y += cardGap)
+                        .rotation(45)
+                        .setDuration(duration)
+                        .setStartDelay(delay * i)
+                        .setInterpolator(new AccelerateInterpolator())
+                        .start();
+            }
+
+            if (i >= 21 && i <= 30) {
+                image.animate()
+                        .translationX(x -= cardGap)
+                        .translationY(y -= cardGap)
+                        .rotation(-45)
+                        .setInterpolator(new AccelerateInterpolator())
+                        .setDuration(duration)
+                        .setStartDelay(delay * i)
+                        .start();
+            }
+
+            if (i >= 31 && i <= 40) {
+                image.animate()
+                        .translationX(x += cardGap)
+                        .translationY(y -= cardGap)
+                        .rotation(45)
+                        .setDuration(duration)
+                        .setStartDelay(delay * i)
+                        .setInterpolator(new AccelerateInterpolator())
+                        .start();
+            }
+        }
+
+        new Handler().postDelayed(this::scaleUpAnimation, 1800);
+    }
+
+    private void scaleUpAnimation() {
+        for (int i = 1; i <= cardList.size(); i++) {
+            ImageView image = findViewById(i);
+
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f);
+
+            scaleX.setDuration(200L);
+            scaleY.setDuration(200L);
+
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
+
+            scaleX.setRepeatMode(ValueAnimator.REVERSE);
+            scaleY.setRepeatMode(ValueAnimator.REVERSE);
 
             AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(30L * i);
 
-            animator = ObjectAnimator.ofFloat(image, "translationX", centerX, 0f);
-            animator2 = ObjectAnimator.ofFloat(image, "translationY", screenHeight, 0f);
-
-            animator.setInterpolator(new AccelerateDecelerateInterpolator());
-            animator2.setInterpolator(new AccelerateDecelerateInterpolator());
-
-            animator.setStartDelay(80 * i);
-
-            animator.setDuration(300);
-            animator2.setDuration(300);
-
-            animatorSet.playTogether(animator, animator2);
-            animatorSet.setDuration(100);
-
-            if (x != 0 && y != 0) {
-                if (i >= 11 && i <= 20) {
-                    image.setRotation(45);
-
-                    animator.setFloatValues(x -= position);
-                    animator2.setFloatValues(y += position);
-
-                    animatorSet.start();
-
-                } else if (i >= 21 && i <= 30) {
-                    image.setRotation(-45);
-
-                    animator.setFloatValues(x -= position);
-                    animator2.setFloatValues(y -= position);
-
-                    animatorSet.start();
-
-                } else if (i >= 31) {
-                    image.setRotation(45);
-
-                    animator.setFloatValues(x += position);
-                    animator2.setFloatValues(y -= position);
-
-                    animatorSet.start();
-                } else {
-                    image.setRotation(-45f);
-
-                    animator.setFloatValues(x += position);
-                    animator2.setFloatValues(y += position);
-
-                    animatorSet.start();
-                }
-            } else {
-                image.setRotation(-45f);
-
-                animator.setFloatValues((float) screenWidth / 2);
-                animator2.setFloatValues((float) screenHeight / 4);
-
-                animatorSet.start();
-
-                x = screenWidth / 2;
-                y = screenHeight / 4;
-            }
-*/
-            if (x != 0 && y != 0) {
-
-            } else {
-                image.animate()
-                        .rotation(-45f)
-                        .translationX((float) screenWidth / 2)
-                        .translationY((float) screenHeight / 4)
-                        .start();
-                x = screenWidth / 2;
-                y = screenHeight / 4;
-            }
-            image.animate()
-                    .translationX(x)
-                    .translationY(y)
-                    .setStartDelay(50L * i)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
+            animatorSet.start();
         }
     }
 }
