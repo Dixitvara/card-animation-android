@@ -16,7 +16,8 @@ public class HeartAnimation extends AppCompatActivity {
 
     int screenWidth, screenHeight;
     int cardWidth, cardHeight;
-    int TOTAL_CARDS = 5;
+    int TOTAL_CARDS = 6;
+    int Radius = 200;
 
     // views
     Button resetBtn;
@@ -69,19 +70,18 @@ public class HeartAnimation extends AppCompatActivity {
 
     private void setPositions() {
         int cardGap = (int) (screenWidth * 0.035);
-        int rotation = (int) 115f;
-        int centerX = (int) ((float) screenWidth / 2) - cardWidth / 2;
-        int centerY = (int) ((float) screenHeight / 4);
 
-        int x = 0, y = 0;
+        int x = screenWidth / 2 - cardWidth / 2;
+        int y = screenHeight / 4;
+
+        float r = -40f;
 
         for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i);
 
-            image.setX(centerX -= x);
-//            image.setY();
-//            image.setRotation(rotation += cardGap);
-
+            image.setX(x += 30);
+            image.setY(y -= 5);
+            image.setRotation(r += 10);
         }
     }
 }
