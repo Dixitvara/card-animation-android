@@ -16,8 +16,8 @@ public class HeartAnimation extends AppCompatActivity {
 
     int screenWidth, screenHeight;
     int cardWidth, cardHeight;
-    int TOTAL_CARDS = 6;
-    int Radius = 200;
+    int TOTAL_CARDS = 10;
+    int Radius = 35;
 
     // views
     Button resetBtn;
@@ -51,12 +51,16 @@ public class HeartAnimation extends AppCompatActivity {
     }
 
     private void generateCard() {
-        for (int i = 1; i <= TOTAL_CARDS; i++) {
+        for (int i = 1; i <= 19; i++) {
             ImageView image = new ImageView(this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
             int resourceId;
-            resourceId = this.getResources().getIdentifier("hearts_" + i, "drawable", this.getPackageName());
+            if (i <= 13)
+                resourceId = this.getResources().getIdentifier("hearts_" + i, "drawable", this.getPackageName());
+            else {
+                resourceId = this.getResources().getIdentifier("hearts_" + (i - 13), "drawable", this.getPackageName());
+            }
 
             image.setId(i);
             image.setImageResource(resourceId);
@@ -69,19 +73,39 @@ public class HeartAnimation extends AppCompatActivity {
     }
 
     private void setPositions() {
-        int cardGap = (int) (screenWidth * 0.035);
+        int rotation = -35;
 
-        int x = screenWidth / 2 - cardWidth / 2;
-        int y = screenHeight / 4;
-
-        float r = -40f;
+        ImageView prevImg = null;
 
         for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i);
+            int angle = 180 / TOTAL_CARDS * i;
+            double radians = Math.toRadians(angle);
+            int angle2 = 80 / TOTAL_CARDS * i;
+            double radians2 = Math.toRadians(angle2);
 
-            image.setX(x += 30);
-            image.setY(y -= 5);
-            image.setRotation(r += 10);
+            if (prevImg == null) {
+                image.setX((float) screenWidth / 2);
+                image.setY((float) screenHeight / 4);
+                image.setRotation(rotation);
+            } else {
+                image.setX((float) (prevImg.getX() + Radius * Math.sin(radians)));
+                image.setY((float) (prevImg.getY() - Radius * Math.cos(radians)));
+                image.setRotation(prevImg.getRotation() + 10);
+                if (i > 5 && i < 10) {
+                    image.setRotation(prevImg.getRotation() + 20);
+                }
+
+                if (i > 10) {
+                    image.setX((float) (prevImg.getX() + Radius * Math.cos(radians2)));
+                    image.setY((float) (prevImg.getY() + Radius * Math.sin(radians2)));
+                    image.setRotation(prevImg.getRotation() + 5);
+                }
+            }
+
+            System.out.println("--} sin : " + Math.sin(radians));
+            System.out.println("--} cos : " + Math.cos(radians));
+            prevImg = image;
         }
     }
 }

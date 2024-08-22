@@ -23,13 +23,13 @@
             android:name=".CircleAnimation"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".HeartAnimation"
             android:exported="false" />
         <activity
             android:name=".BouncingAnimation"
             android:exported="false" />
         <activity
-            android:name=".HeartAnimation"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

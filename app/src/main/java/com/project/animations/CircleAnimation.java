@@ -25,7 +25,7 @@ public class CircleAnimation extends AppCompatActivity {
     int centerX, centerY;
     int cardHeight, cardWidth;
 
-    final int TOTAL_NUMBER_OF_CARDS = 23;
+    final int TOTAL_NUMBER_OF_CARDS = 24;
     int RADIUS;
 
     @Override
@@ -54,7 +54,7 @@ public class CircleAnimation extends AppCompatActivity {
         cardWidth = cardParams[0];
         cardHeight = cardParams[1];
 
-        RADIUS = (int) (screenWidth * 0.45);
+        RADIUS = (int) (screenWidth * 0.40);
 
         centerX = (screenWidth / 2) - (cardWidth / 2);
         centerY = (screenHeight / 2) - (cardHeight / 2);
@@ -62,21 +62,25 @@ public class CircleAnimation extends AppCompatActivity {
         // generating cards
         generateCards();
 
-        // setting position
-        positionCardsInCircle();
+        // setting cards to bottom
+        setCards();
 
     }
 
     private void generateCards() {
-        for (int i = 1; i < TOTAL_NUMBER_OF_CARDS; i++) {
+        for (int i = 1; i <= TOTAL_NUMBER_OF_CARDS; i++) {
             ImageView image = new ImageView(this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
             int resourceId;
             if (i <= 13)
                 resourceId = getResources().getIdentifier("hearts_" + (i), "drawable", this.getPackageName());
-            else {
+            else if (i <= 26) {
                 resourceId = getResources().getIdentifier("hearts_" + (i - 13), "drawable", this.getPackageName());
+            } else if (i <= 39) {
+                resourceId = getResources().getIdentifier("hearts_" + (i - 26), "drawable", this.getPackageName());
+            } else {
+                resourceId = getResources().getIdentifier("hearts_" + (i - 39), "drawable", this.getPackageName());
             }
             image.setId(i - 1);
             image.setBackgroundResource(resourceId);
@@ -86,32 +90,48 @@ public class CircleAnimation extends AppCompatActivity {
         }
     }
 
-    private void positionCardsInCircle() {
-        double angleStep = 360.0 / TOTAL_NUMBER_OF_CARDS;
+    private void setCards() {
+        int angleStep = 360 / TOTAL_NUMBER_OF_CARDS;
+        int rotation = 0;
+        int adjustedRadius = RADIUS - cardHeight / 2;
 
         for (int i = 0; i < cardList.size(); i++) {
-            double angle = i * angleStep;
 
             cardList.get(i).setX((float) screenWidth / 2 - (float) cardWidth / 2);
             cardList.get(i).setY((float) screenHeight);
-            cardList.get(i).setRotation((float) angle);
+            cardList.get(i).setRotation(rotation);
+            rotation += angleStep;
 
             container.addView(cardList.get(i));
+
+/*
+            double angle = i * angleStep;
+            double radians = Math.toRadians(angle);
+            int x = (int) (centerX + adjustedRadius * Math.cos(radians));
+            int y = (int) (centerY + adjustedRadius * Math.sin(radians));
+
+            cardList.get(i).setX(x);
+            cardList.get(i).setY(y);
+*/
         }
         animateCard();
     }
 
     public void animateCard() {
-        int adjustedRadius = RADIUS - Math.max(cardWidth, cardHeight) / 2;
+        int adjustedRadius = RADIUS - cardHeight / 2;
 
         for (int i = 0; i < cardList.size(); i++) {
             ImageView image = findViewById(i);
 
-            double angle = 360.0 / TOTAL_NUMBER_OF_CARDS * i;
+            int angle = 360 / TOTAL_NUMBER_OF_CARDS * i;
+            System.out.println("--} angle : " + angle);
             double radians = Math.toRadians(angle);
 
             int x = (int) (centerX + adjustedRadius * Math.cos(radians));
             int y = (int) (centerY + adjustedRadius * Math.sin(radians));
+
+            System.out.println("--} x : " + x);
+            System.out.println("--} y : " + y);
 
             int finalI = i;
             image.animate()
@@ -120,12 +140,9 @@ public class CircleAnimation extends AppCompatActivity {
                     .setStartDelay(50L * i)
                     .setDuration(300)
                     .setInterpolator(new DecelerateInterpolator())
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (finalI == cardList.size() - 1)
-                                scaleAnimation();
-                        }
+                    .withEndAction(() -> {
+                        if (finalI == cardList.size() - 1)
+                            scaleAnimation();
                     })
                     .start();
         }
