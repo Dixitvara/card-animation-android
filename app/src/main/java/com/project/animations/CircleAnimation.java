@@ -124,11 +124,13 @@ public class CircleAnimation extends AppCompatActivity {
             ImageView image = findViewById(i);
 
             int angle = 360 / TOTAL_NUMBER_OF_CARDS * i;
-            System.out.println("--} angle : " + angle);
             double radians = Math.toRadians(angle);
 
-            int x = (int) (centerX + adjustedRadius * Math.cos(radians));
-            int y = (int) (centerY + adjustedRadius * Math.sin(radians));
+//            int x = (int) (centerX + adjustedRadius * Math.cos(radians));
+//            int y = (int) (centerY + adjustedRadius * Math.sin(radians));
+
+            int x = (int) (centerX + adjustedRadius * Math.sin(radians));
+            int y = (int) (centerY - adjustedRadius * Math.cos(radians));
 
             System.out.println("--} x : " + x);
             System.out.println("--} y : " + y);

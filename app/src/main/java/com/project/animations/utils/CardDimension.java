@@ -9,7 +9,7 @@ public class CardDimension {
     public static int[] getCardParams(DisplayMetrics displayMetrics) {
         int screenWidth = displayMetrics.widthPixels;
 
-        int cardWidth = (int) (screenWidth * 0.12);
+        int cardWidth = (int) (screenWidth * 0.11);
         int cardHeight = (int) (cardWidth / aspectRatio);
 
         return new int[]{cardWidth, cardHeight};
