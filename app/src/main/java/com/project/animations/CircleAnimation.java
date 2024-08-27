@@ -132,9 +132,6 @@ public class CircleAnimation extends AppCompatActivity {
             int x = (int) (centerX + adjustedRadius * Math.sin(radians));
             int y = (int) (centerY - adjustedRadius * Math.cos(radians));
 
-            System.out.println("--} x : " + x);
-            System.out.println("--} y : " + y);
-
             int finalI = i;
             image.animate()
                     .translationX(x)

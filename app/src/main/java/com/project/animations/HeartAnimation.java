@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -94,14 +95,12 @@ public class HeartAnimation extends AppCompatActivity {
 
     private void animation() {
         int radius = (int) (screenWidth * 0.075);
-        int rotation = -90;
+        float rotation;
 
         ImageView prevImg = null;
-        ImageView returnedImg = null;
 
         int x, y;
-        int duration = 500;
-        int rotate = 0;
+        int duration = 0;
 
         for (int i = 1; i <= 19; i++) {
             ImageView image = findViewById(i);
@@ -112,49 +111,36 @@ public class HeartAnimation extends AppCompatActivity {
             int angle2 = 80 / TOTAL_CARDS * i;
             double radians2 = Math.toRadians(angle2);
 
-            int startDelay = 100 * i;
+            long startDelay = 0L;
 
             if (i == 1) {
                 x = (int) (centerX - (float) cardWidth / 2 + 5);
                 y = centerY + 5;
-                rotate = -140;
-
-                returnedImg = setImageXY(image, x, y, rotate);
-                animateHeart(image, x, y, duration, startDelay, rotate, i);
-            }
-
-            if (i != 1) {
+                rotation = -140;
+            } else {
+                rotation = i == 2 ? -90f : prevImg.getRotation();
                 if (i <= 10) {
                     x = (int) (prevImg.getX() + Radius * Math.sin(radians));
                     y = (int) (prevImg.getY() - Radius * Math.cos(radians));
-                    rotation += 20;
-
-                    returnedImg = setImageXY(image, x, y, rotation);
-                    animateHeart(image, x, y, duration, startDelay, rotate, i);
-                }
-                if (i > 10 && i < 14) {
+                    rotation += 20f;
+                } else if (i < 14) {
                     x = (int) ((float) (prevImg.getX() + radius * Math.cos(radians2)) - 5);
                     y = (int) (prevImg.getY() + radius * Math.sin(radians2));
-                    rotation += 6;
-
-                    returnedImg = setImageXY(image, x, y, rotation);
-                    animateHeart(image, x, y, duration, startDelay, rotate, i);
-                }
-                if (i > 13) {
+                    rotation += 6f;
+                } else {
                     x = (int) (prevImg.getX() + radius * Math.cos(radians2));
                     y = (int) (prevImg.getY() + radius * Math.sin(radians2));
-                    rotation = (int) (prevImg.getRotation() + 11);
-
-                    returnedImg = setImageXY(image, x, y, rotation);
-                    animateHeart(image, x, y, duration, startDelay, rotate, i);
+                    rotation = (int) (prevImg.getRotation() + 11f);
                 }
+                System.out.println("-} rotation : " + rotation);
             }
-            prevImg = returnedImg;
+            image.setVisibility(View.INVISIBLE);
+            prevImg = animateHeart(image, x, y, duration, startDelay, i, rotation);
         }
 
-
-//        prevImg = null;
-//        int rotation2 = 90;
+        prevImg = null;
+        int rotation2 = 90;
+        int x1, y1;
 
 /*        for (int i = 20; i <= 38; i++) {
             ImageView image = findViewById(i);
@@ -166,64 +152,78 @@ public class HeartAnimation extends AppCompatActivity {
             int angle2 = 80 / TOTAL_CARDS * index;
             double radians2 = Math.toRadians(angle2);
 
+            int startDelay = (int) (50L * i);
+
             if (prevImg == null) {
-                image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
-                image.setY((float) screenHeight / 4);
-                image.setRotation(rotation2);
+                x1 = (int) ((float) screenWidth / 2 - (float) cardWidth / 2);
+                y1 = (int) ((float) screenHeight / 4);
+
+                setImageXY(image, x1, y1, rotation2);
+                animateHeart(image, x1, y1, duration, startDelay);
             } else {
-                image.setX((float) (prevImg.getX() - Radius * Math.sin(radians)));
-                image.setY((float) (prevImg.getY() - Radius * Math.cos(radians)));
-                image.setRotation(prevImg.getRotation() - 20);
+                x1 = (int) (prevImg.getX() - Radius * Math.sin(radians));
+                y1 = (int) (prevImg.getY() - Radius * Math.cos(radians));
+                rotation2 = (int) (prevImg.getRotation() - 20);
+
+                setImageXY(image, x1, y1, rotation2);
+                animateHeart(image, x1, y1, duration, startDelay);
 
                 if (index > 10 && index < 14) {
-                    image.setX((float) (prevImg.getX() - radius * Math.cos(radians2)) + 5);
-                    image.setY((float) (prevImg.getY() + radius * Math.sin(radians2)));
-                    image.setRotation(prevImg.getRotation() - 6);
+                    x1 = (int) (prevImg.getX() - radius * Math.cos(radians2)) + 5;
+                    y1 = (int) (prevImg.getY() + radius * Math.sin(radians2));
+                    rotation2 = (int) (prevImg.getRotation() - 6);
+
+                    setImageXY(image, x1, y1, rotation2);
+                    animateHeart(image, x1, y1, duration, startDelay);
                 }
                 if (index > 13) {
-                    image.setX((float) (prevImg.getX() - radius * Math.cos(radians2)));
-                    image.setY((float) (prevImg.getY() + radius * Math.sin(radians2)));
-                    image.setRotation(prevImg.getRotation() - 11);
+                    x1 = (int) (prevImg.getX() - radius * Math.cos(radians2));
+                    y1 = (int) (prevImg.getY() + radius * Math.sin(radians2));
+                    rotation2 = (int) (prevImg.getRotation() - 11);
+
+                    setImageXY(image, x1, y1, rotation2);
+                    animateHeart(image, x1, y1, duration, startDelay);
                 }
             }
             prevImg = image;
         }*/
     }
 
-    private ImageView setImageXY(ImageView image, int x, int y, int rotate) {
-        image.setX(x);
-        image.setY(y);
-        image.setRotation(rotate);
-        return image;
-    }
+    private ImageView animateHeart(ImageView image, float x, float y, int duration, long startDelay, int i, float rotation) {
+        image.setVisibility(View.VISIBLE);
 
-    private ImageView animateHeart(ImageView image, float x, float y, int duration, int startDelay, float rotation, int i) {
-//        image.animate()
-//                .translationX(x)
-//                .translationY(y)
-//                .setStartDelay(startDelay)
-//                .setDuration(duration)
-//                .rotation(rotation)
-//                .start();
+/*
+        image.animate()
+                .translationX(x)
+                .translationY(y)
+                .setDuration(duration)
+                .setStartDelay(startDelay * i)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
+
+        return image;
+*/
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(image, "translationX", (float) screenWidth / 2, x)
-                .setDuration(300L);
+                .setDuration(duration);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(image, "translationY", screenHeight, y)
-                .setDuration(300L);
+                .setDuration(duration);
+        ObjectAnimator rotationObj = ObjectAnimator.ofFloat(image, "rotation", 0, rotation);
 
         animatorX.setInterpolator(new DecelerateInterpolator());
         animatorY.setInterpolator(new DecelerateInterpolator());
 
-        animatorX.setStartDelay(50L * i);
-        animatorY.setStartDelay(50L * i);
+        animatorX.setStartDelay(startDelay * i);
+        animatorY.setStartDelay(startDelay * i);
+        rotationObj.setStartDelay(startDelay * i);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(animatorX, animatorY);
+        animatorSet.playTogether(animatorX, animatorY, rotationObj);
         animatorSet.start();
 
-//        image.setX(x);
-//        image.setY(y);
-//        image.setRotation(rotation);
+        System.out.println("-} x : " + image.getX());
+        System.out.println("-} y : " + image.getY());
+        System.out.println("-} rotation : " + rotation);
 
         return image;
     }

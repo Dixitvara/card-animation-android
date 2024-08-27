@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         triangleAnimation.setOnClickListener(v -> {
-            startActivity(new Intent(this, TriangleAnimation.class));
+            startActivity(new Intent(this, DiamondAnimation.class));
         });
 
         bouncingAnimation.setOnClickListener(v -> {

@@ -17,7 +17,7 @@ import com.project.animations.utils.CardDimension;
 
 import java.util.ArrayList;
 
-public class TriangleAnimation extends AppCompatActivity {
+public class DiamondAnimation extends AppCompatActivity {
 
     int screenWidth, screenHeight;
     final int TOTAL_CARDS = 40;
@@ -158,50 +158,45 @@ public class TriangleAnimation extends AppCompatActivity {
             }
 
             if (i <= 10) {
-                image.animate()
-                        .translationX(x += cardGap)
-                        .translationY(y += cardGap)
-                        .rotation(-45)
-                        .setDuration(duration)
-                        .setStartDelay(delay * i)
-                        .setInterpolator(new AccelerateInterpolator())
-                        .start();
+                x += cardGap;
+                y += cardGap;
+                int rotation = -45;
+                setXYPosition(image, x, y, rotation, duration, delay, i);
             }
             if (i >= 11 && i <= 20) {
-                image.animate()
-                        .translationX(x -= cardGap)
-                        .translationY(y += cardGap)
-                        .rotation(45)
-                        .setDuration(duration)
-                        .setStartDelay(delay * i)
-                        .setInterpolator(new AccelerateInterpolator())
-                        .start();
+                x -= cardGap;
+                y += cardGap;
+                int rotation = 45;
+                setXYPosition(image, x, y, rotation, duration, delay, i);
             }
 
             if (i >= 21 && i <= 30) {
-                image.animate()
-                        .translationX(x -= cardGap)
-                        .translationY(y -= cardGap)
-                        .rotation(-45)
-                        .setInterpolator(new AccelerateInterpolator())
-                        .setDuration(duration)
-                        .setStartDelay(delay * i)
-                        .start();
+                x -= cardGap;
+                y -= cardGap;
+                int rotation = -45;
+                setXYPosition(image, x, y, rotation, duration, delay, i);
             }
 
             if (i >= 31 && i <= 40) {
-                image.animate()
-                        .translationX(x += cardGap)
-                        .translationY(y -= cardGap)
-                        .rotation(45)
-                        .setDuration(duration)
-                        .setStartDelay(delay * i)
-                        .setInterpolator(new AccelerateInterpolator())
-                        .start();
+                x += cardGap;
+                y -= cardGap;
+                int rotation = 45;
+                setXYPosition(image, x, y, rotation, duration, delay, i);
             }
         }
 
         new Handler().postDelayed(this::scaleUpAnimation, 1800);
+    }
+
+    private void setXYPosition(ImageView image, int x, int y, int rotation, long duration, long delay, int i) {
+        image.animate()
+                .translationX(x)
+                .translationY(y)
+                .rotation(rotation)
+                .setDuration(duration)
+                .setStartDelay(delay * i)
+                .setInterpolator(new AccelerateInterpolator())
+                .start();
     }
 
     private void scaleUpAnimation() {
