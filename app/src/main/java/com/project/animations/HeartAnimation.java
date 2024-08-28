@@ -87,8 +87,10 @@ public class HeartAnimation extends AppCompatActivity {
         int duration = 300;
         long startDelay = 50L;
 
-        for (int i = 1; i <= 19; i++) {
+        for (int i = 1; i <= 38; i++) {
             ImageView image = findViewById(i);
+
+            int index = i - 19;
 
             int angle = 180 / 10 * i;
             double radians = Math.toRadians(angle);
@@ -96,63 +98,47 @@ public class HeartAnimation extends AppCompatActivity {
             int angle2 = 80 / 10 * i;
             double radians2 = Math.toRadians(angle2);
 
-            if (i == 1) {
-                x = (int) (centerX - (float) cardWidth / 2 + 5);
-                y = centerY + 5;
-                rotation = -140;
-            } else {
-                rotation = i == 2 ? -90f : prevImg.getRotation();
-                if (i <= 10) {
-                    x = (float) (prevImg.getX() + Radius * Math.sin(radians));
-                    y = (float) (prevImg.getY() - Radius * Math.cos(radians));
-                    rotation += 20f;
-                } else if (i < 14) {
-                    x = ((float) (prevImg.getX() + radius * Math.cos(radians2)) - 5);
-                    y = (float) (prevImg.getY() + radius * Math.sin(radians2));
-                    rotation += 6f;
+            if (i < 20) {
+                // right part of heart
+                if (i == 1) {
+                    x = (int) (centerX - (float) cardWidth / 2 + 5);
+                    y = centerY + 5;
+                    rotation = -140;
                 } else {
-                    x = (float) (prevImg.getX() + radius * Math.cos(radians2));
-                    y = (float) (prevImg.getY() + radius * Math.sin(radians2));
-                    rotation = (int) (prevImg.getRotation() + 11f);
+                    rotation = i == 2 ? -90f : prevImg.getRotation();
+                    if (i <= 10) {
+                        x = (float) (prevImg.getX() + Radius * Math.sin(radians));
+                        y = (float) (prevImg.getY() - Radius * Math.cos(radians));
+                        rotation += 20f;
+                    } else if (i < 14) {
+                        x = ((float) (prevImg.getX() + radius * Math.cos(radians2)) - 5);
+                        y = (float) (prevImg.getY() + radius * Math.sin(radians2));
+                        rotation += 6f;
+                    } else {
+                        x = (float) (prevImg.getX() + radius * Math.cos(radians2));
+                        y = (float) (prevImg.getY() + radius * Math.sin(radians2));
+                        rotation = (int) (prevImg.getRotation() + 11f);
+                    }
                 }
-            }
-
-            image.setX(x);
-            image.setY(y);
-            image.setRotation(rotation);
-
-            prevImg = image;
-        }
-
-        prevImg = null;
-
-        for (int i = 20; i <= 38; i++) {
-            ImageView image = findViewById(i);
-
-            int index = i - 19;
-            int angle = 180 / 10 * index;
-            double radians = Math.toRadians(angle);
-
-            int angle2 = 80 / 10 * index;
-            double radians2 = Math.toRadians(angle2);
-
-            if (index == 1) {
-                x = (float) screenWidth / 2 - (float) cardWidth / 2;
-                y = (float) screenHeight / 4;
-                rotation = 90f;
             } else {
-                if (index <= 10) {
-                    x = (float) (prevImg.getX() - Radius * Math.sin(radians));
-                    y = (float) (prevImg.getY() - Radius * Math.cos(radians));
-                    rotation = (int) (prevImg.getRotation() - 20);
-                } else if (index < 14) {
-                    x = (int) (prevImg.getX() - radius * Math.cos(radians2)) + 5;
-                    y = (int) (prevImg.getY() + radius * Math.sin(radians2));
-                    rotation = (int) (prevImg.getRotation() - 6);
+                if (index == 1) {
+                    x = (float) screenWidth / 2 - (float) cardWidth / 2;
+                    y = (float) screenHeight / 4;
+                    rotation = 90f;
                 } else {
-                    x = (int) (prevImg.getX() - radius * Math.cos(radians2));
-                    y = (int) (prevImg.getY() + radius * Math.sin(radians2));
-                    rotation = (int) (prevImg.getRotation() - 11);
+                    if (index <= 10) {
+                        x = (float) (prevImg.getX() - Radius * Math.sin(radians));
+                        y = (float) (prevImg.getY() - Radius * Math.cos(radians));
+                        rotation = (int) (prevImg.getRotation() - 20);
+                    } else if (index < 14) {
+                        x = (int) (prevImg.getX() - radius * Math.cos(radians2)) + 5;
+                        y = (int) (prevImg.getY() + radius * Math.sin(radians2));
+                        rotation = (int) (prevImg.getRotation() - 6);
+                    } else {
+                        x = (int) (prevImg.getX() - radius * Math.cos(radians2));
+                        y = (int) (prevImg.getY() + radius * Math.sin(radians2));
+                        rotation = (int) (prevImg.getRotation() - 11);
+                    }
                 }
             }
             image.setX(x);
