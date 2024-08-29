@@ -1,40 +1,24 @@
 package com.project.animations;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
-    CardView randomAnimationCv, stackedCardAnimationCv;
-    CardView triangleAnimation, bouncingAnimation;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        randomAnimationCv = findViewById(R.id.randomCardAnimationCV);
-        stackedCardAnimationCv = findViewById(R.id.stackedCardAnimationCV);
-        triangleAnimation = findViewById(R.id.triangleAnimation);
-        bouncingAnimation = findViewById(R.id.bouncingAnimation);
+        recyclerView = findViewById(R.id.animationRecyclerView);
 
-        stackedCardAnimationCv.setOnClickListener(v -> {
-            startActivity(new Intent(this, HeartAnimation.class));
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new AnimationListAdapter(new String[]{"text", "text2", "text3", "text4"}));
 
-        randomAnimationCv.setOnClickListener(v -> {
-            startActivity(new Intent(this, CircleAnimation.class));
-        });
-
-        triangleAnimation.setOnClickListener(v -> {
-            startActivity(new Intent(this, DiamondAnimation.class));
-        });
-
-        bouncingAnimation.setOnClickListener(v -> {
-            startActivity(new Intent(this, BouncingAnimation.class));
-        });
     }
 }

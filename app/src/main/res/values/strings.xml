@@ -15,4 +15,5 @@
     <string name="next">Next Activity</string>
     <string name="random_card_animation">random card animation</string>
     <string name="stacked_card_animation">stacked card animation</string>
+    <string name="animation_name">Animation name</string>
 </resources>

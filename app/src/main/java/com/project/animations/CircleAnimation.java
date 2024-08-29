@@ -25,7 +25,7 @@ public class CircleAnimation extends AppCompatActivity {
     int centerX, centerY;
     int cardHeight, cardWidth;
 
-    final int TOTAL_NUMBER_OF_CARDS = 24;
+    final int TOTAL_NUMBER_OF_CARDS = 20;
     int RADIUS;
 
     @Override
@@ -147,7 +147,7 @@ public class CircleAnimation extends AppCompatActivity {
         }
     }
 
-    private void scaleAnimation() {
+    public void scaleAnimation() {
         for (int i = 0; i < cardList.size(); i++) {
             ImageView image = findViewById(i);
 

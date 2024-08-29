@@ -9,89 +9,10 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/animationRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/randomCardAnimationCV"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_140sdp"
-            android:layout_marginEnd="@dimen/_40sdp"
-            app:cardCornerRadius="10dp"
-            app:strokeColor="@color/black"
-            app:strokeWidth="2dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/random_card_animation"
-                android:scaleType="centerCrop"
-                android:src="@drawable/circle_animation_png" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/stackedCardAnimationCV"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_140sdp"
-            app:cardCornerRadius="10dp"
-            app:strokeColor="@color/black"
-            app:strokeWidth="2dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/card_stack"
-                android:contentDescription="@string/stacked_card_animation"
-                android:scaleType="centerCrop" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/triangleAnimation"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_140sdp"
-            android:layout_marginEnd="@dimen/_40sdp"
-            app:cardCornerRadius="10dp"
-            app:strokeColor="@color/black"
-            app:strokeWidth="2dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/diamond_animation"
-
-                />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/bouncingAnimation"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_140sdp"
-            app:cardCornerRadius="10dp"
-            app:strokeColor="@color/black"
-            app:strokeWidth="2dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
 </LinearLayout>

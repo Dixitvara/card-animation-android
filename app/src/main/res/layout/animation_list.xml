@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/animationCallBtn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_20sdp"
+    android:text="@string/animation_name"
+    android:textSize="@dimen/_12ssp"
+    android:ellipsize="end"
+    android:maxLines="2"
+    >
+
+</Button>
