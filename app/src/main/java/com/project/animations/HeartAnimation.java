@@ -30,8 +30,8 @@ public class HeartAnimation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
-
         resetBtn = findViewById(R.id.resetBtn);
+
         container = findViewById(R.id.container);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -55,30 +55,6 @@ public class HeartAnimation extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        generateCard();
-
-    }
-
-    public void generateCard() {
-        for (int i = 1; i <= 38; i++) {
-            ImageView image = new ImageView(this);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
-
-            int resourceId;
-            if (i <= 13)
-                resourceId = this.getResources().getIdentifier("hearts_" + i, "drawable", this.getPackageName());
-            else if (i <= 26) {
-                resourceId = this.getResources().getIdentifier("hearts_" + (i - 13), "drawable", this.getPackageName());
-            } else {
-                resourceId = this.getResources().getIdentifier("hearts_" + (i - 26), "drawable", this.getPackageName());
-            }
-
-            image.setId(i);
-            image.setImageResource(resourceId);
-            image.setLayoutParams(params);
-            container.addView(image);
-        }
-        animation();
     }
 
     private void animation() {
@@ -94,10 +70,10 @@ public class HeartAnimation extends AppCompatActivity {
         for (int i = 1; i <= 19; i++) {
             ImageView image = findViewById(i);
 
-            float angle = (float) 180 / 10 * i;
+            float angle = (float) 180 / 10 * i - 1;
             double radians = Math.toRadians(angle);
 
-            float angle2 = (float) 80 / 10 * i;
+            float angle2 = (float) 80 / 10 * i - 1;
             double radians2 = Math.toRadians(angle2);
 
             // right part of heart

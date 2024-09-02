@@ -1,8 +1,13 @@
 package com.project.animations;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -15,12 +20,16 @@ public class SpadesAnimation extends AppCompatActivity {
 
     int screenWidth, screenHeight, cardWidth, cardHeight;
     RelativeLayout container;
-    int cards = 10;
+    int cards = 39;
+    Button resetBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
+
+        resetBtn = findViewById(R.id.resetBtn);
+        container = findViewById(R.id.container);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -28,38 +37,46 @@ public class SpadesAnimation extends AppCompatActivity {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
-        container = findViewById(R.id.container);
-
         int[] cardParam = CardDimension.getCardParams(displayMetrics);
         cardWidth = cardParam[0];
         cardHeight = cardParam[1];
 
-        for (int i = 1; i <= cards; i++) {
-            ImageView image = new ImageView(this);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+        resetBtn.setOnClickListener(v -> {
+            startActivity(getIntent());
+            finish();
+            overridePendingTransition(0, 0);
+        });
 
-            int resourceId;
-            if (i <= 13)
-                resourceId = this.getResources().getIdentifier("spades_" + i, "drawable", this.getPackageName());
-            else if (i <= 26) {
-                resourceId = this.getResources().getIdentifier("spades_" + (i - 13), "drawable", this.getPackageName());
-            } else {
-                resourceId = this.getResources().getIdentifier("spades_" + (i - 26), "drawable", this.getPackageName());
-            }
-            image.setId(i);
-            image.setLayoutParams(params);
-            image.setImageResource(resourceId);
-
-            container.addView(image);
-        }
         animation();
+    }
+
+    private ImageView generate(int i) {
+        ImageView image = new ImageView(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+
+        int resourceId;
+        if (i <= 13)
+            resourceId = this.getResources().getIdentifier("spades_" + i, "drawable", this.getPackageName());
+        else if (i <= 26) {
+            resourceId = this.getResources().getIdentifier("spades_" + (i - 13), "drawable", this.getPackageName());
+        } else if (i <= 39) {
+            resourceId = this.getResources().getIdentifier("spades_" + (i - 26), "drawable", this.getPackageName());
+        } else {
+            resourceId = this.getResources().getIdentifier("spades_" + (i - 39), "drawable", this.getPackageName());
+        }
+        image.setId(i);
+        image.setLayoutParams(params);
+        image.setImageResource(resourceId);
+
+        return image;
     }
 
     private void animation() {
         float Radius = (float) (screenWidth * 0.060);
         float radius = (int) (screenWidth * 0.075);
-        float rotation, rotate2 = 90;
-        float staticAngle = (float) 180 / 10;
+        float rotation;
+        float firstCardPositionX = (float) screenWidth / 2 - (float) cardWidth / 2;
+        float firstCardPositionY = (float) ((float) screenHeight * 0.5);
 
         ImageView prevImg = null;
 
@@ -67,8 +84,11 @@ public class SpadesAnimation extends AppCompatActivity {
         int duration = 300;
         long startDelay = 50L;
 
-        for (int i = 1; i <= cards; i++) {
-            ImageView image = findViewById(i);
+        // left half
+        for (int i = 1; i <= 19; i++) {
+            ImageView image = generate(i);
+            image.setId(i);
+            container.addView(image);
 
             float angle = (float) (180 / 10) * i - 1;
             double radians = Math.toRadians(angle);
@@ -76,26 +96,21 @@ public class SpadesAnimation extends AppCompatActivity {
             float angle2 = (float) (80 / 10) * i - 1;
             double radians2 = Math.toRadians(angle2);
 
-            // right part of heart
             if (i == 1) {
-                x = (float) screenWidth / 2 - (float) cardWidth / 2;
-                y = (float) ((float) screenHeight * 0.6);
+                x = firstCardPositionX;
+                y = firstCardPositionY;
                 rotation = -45;
+                image.setVisibility(View.INVISIBLE);
             } else {
                 rotation = i == 2 ? -45 : prevImg.getRotation();
-                if (i <= 10) {
+                if (i < 10) {
                     x = (float) (prevImg.getX() - Radius * Math.sin(radians));
                     y = (float) (prevImg.getY() + Radius * Math.cos(radians));
                     rotation += 15;
-                    image.setRotation(prevImg.getRotation() + staticAngle);
-                } else if (i < 14) {
-                    x = ((float) (prevImg.getX() - radius * Math.cos(radians2)) - 3);
-                    y = (float) (prevImg.getY() - radius * Math.sin(radians2));
-                    rotation += 6;
                 } else {
                     x = (float) (prevImg.getX() - radius * Math.cos(radians2));
                     y = (float) (prevImg.getY() - radius * Math.sin(radians2));
-                    rotation = (prevImg.getRotation() + 11);
+                    rotation = (prevImg.getRotation() + 8);
                 }
             }
             image.setX(x);
@@ -103,54 +118,51 @@ public class SpadesAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImg = image;
         }
-/*        for (int i = 20; i <= 38; i++) {
-            ImageView image = findViewById(i);
 
-            int index = i - 19;
+        // right half
+        for (int i = 1; i <= 19; i++) {
+            ImageView image = generate(i);
+            image.setId(39 - i);
 
-            float angle = (float) 180 / 10 * index;
+            container.addView(image);
+            float angle = (float) (180 / 10) * i - 1;
             double radians = Math.toRadians(angle);
 
-            float angle2 = (float) 50 / 10 * index;
+            float angle2 = (float) (80 / 10) * i - 1;
             double radians2 = Math.toRadians(angle2);
 
-            // right part of heart
-            if (index == 1) {
-                x = (float) screenWidth / 2 - (float) cardWidth / 2;
-                y = (float) ((float) screenHeight * 0.6);
+            if (i == 1) {
+                x = firstCardPositionX;
+                y = firstCardPositionY;
                 rotation = 45;
+                image.setVisibility(View.INVISIBLE);
             } else {
-                rotation = index == 2 ? 45f : prevImg.getRotation();
-                if (index <= 10) {
+                rotation = i == 2 ? 45 : prevImg.getRotation();
+                if (i < 10) {
                     x = (float) (prevImg.getX() + Radius * Math.sin(radians));
                     y = (float) (prevImg.getY() + Radius * Math.cos(radians));
                     rotation -= 15;
-                } else if (index < 14) {
-                    x = ((float) (prevImg.getX() + radius * Math.cos(radians2)) + 3);
-                    y = (float) (prevImg.getY() - radius * Math.sin(radians2));
-                    rotation -= 6;
                 } else {
                     x = (float) (prevImg.getX() + radius * Math.cos(radians2));
                     y = (float) (prevImg.getY() - radius * Math.sin(radians2));
-                    rotation = (prevImg.getRotation() - 11);
+                    rotation = prevImg.getRotation() - 8;
                 }
             }
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
             prevImg = image;
-        }*/
+        }
 
-/*        for (int i = 1; i <= 19; i++) {
+        for (int i = 1; i <= 38; i++) {
             ImageView image = findViewById(i);
             float imageX = image.getX();
             float imageY = image.getY();
 
             image.setX((float) screenWidth / 2);
             image.setY(screenHeight);
-
             animateHeart(image, imageX, imageY, duration, startDelay, i - 1);
-        }*/
+        }
     }
 
     private void animateHeart(ImageView image, float imageX, float imageY, int duration, long startDelay, int i) {
@@ -165,5 +177,28 @@ public class SpadesAnimation extends AppCompatActivity {
                     image.setY(imageY);
                 })
                 .start();
+    }
+
+    private void scaleAnimation() {
+        for (int i = 1; i <= cards; i++) {
+            ImageView image = findViewById(i);
+
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
+                    .setDuration(400);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
+                    .setDuration(400);
+
+            scaleX.setRepeatMode(ValueAnimator.REVERSE);
+            scaleY.setRepeatMode(ValueAnimator.REVERSE);
+
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(30L * i);
+
+            animatorSet.start();
+        }
     }
 }
