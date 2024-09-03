@@ -20,8 +20,8 @@ public class SpadesAnimation extends AppCompatActivity {
 
     int screenWidth, screenHeight, cardWidth, cardHeight;
     RelativeLayout container;
-    int cards = 39;
     Button resetBtn;
+    SpadesAnimation generateCards;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,8 @@ public class SpadesAnimation extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
+
+        generateCards = new SpadesAnimation();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -50,20 +52,19 @@ public class SpadesAnimation extends AppCompatActivity {
         animation();
     }
 
-    private ImageView generate(int i) {
+    public ImageView generate(int i) {
         ImageView image = new ImageView(this);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         int resourceId;
         if (i <= 13)
-            resourceId = this.getResources().getIdentifier("spades_" + i, "drawable", this.getPackageName());
-        else if (i <= 26) {
-            resourceId = this.getResources().getIdentifier("spades_" + (i - 13), "drawable", this.getPackageName());
-        } else if (i <= 39) {
-            resourceId = this.getResources().getIdentifier("spades_" + (i - 26), "drawable", this.getPackageName());
-        } else {
-            resourceId = this.getResources().getIdentifier("spades_" + (i - 39), "drawable", this.getPackageName());
-        }
+            resourceId = this.getResources().getIdentifier("spades" + i, "drawable", this.getPackageName());
+        else if (i <= 26)
+            resourceId = this.getResources().getIdentifier("spades" + (i - 13), "drawable", this.getPackageName());
+        else if (i <= 39)
+            resourceId = this.getResources().getIdentifier("spades" + (i - 26), "drawable", this.getPackageName());
+        else
+            resourceId = this.getResources().getIdentifier("spades" + (i - 39), "drawable", this.getPackageName());
         image.setId(i);
         image.setLayoutParams(params);
         image.setImageResource(resourceId);
@@ -85,9 +86,8 @@ public class SpadesAnimation extends AppCompatActivity {
         long startDelay = 50L;
 
         // left half
-        for (int i = 1; i <= 19; i++) {
+        for (int i = 1; i <= 20; i++) {
             ImageView image = generate(i);
-            image.setId(i);
             container.addView(image);
 
             float angle = (float) (180 / 10) * i - 1;
@@ -110,7 +110,7 @@ public class SpadesAnimation extends AppCompatActivity {
                 } else {
                     x = (float) (prevImg.getX() - radius * Math.cos(radians2));
                     y = (float) (prevImg.getY() - radius * Math.sin(radians2));
-                    rotation = (prevImg.getRotation() + 8);
+                    rotation = i == 20 ? 0 : (prevImg.getRotation() + 8);
                 }
             }
             image.setX(x);
@@ -122,9 +122,9 @@ public class SpadesAnimation extends AppCompatActivity {
         // right half
         for (int i = 1; i <= 19; i++) {
             ImageView image = generate(i);
-            image.setId(39 - i);
-
+            image.setId(40 - i);
             container.addView(image);
+
             float angle = (float) (180 / 10) * i - 1;
             double radians = Math.toRadians(angle);
 
@@ -154,7 +154,39 @@ public class SpadesAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 1; i <= 38; i++) {
+        for (int i = 1; i <= 5; i++) {
+            ImageView image = generate(i);
+            image.setId(45 - i);
+            container.addView(image);
+
+            if (i == 1) {
+                x = firstCardPositionX;
+                y = (float) (firstCardPositionY + screenHeight * 0.085);
+                rotation = 0;
+            } else if (i == 2) {
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.1);
+                y = (float) (prevImg.getY() + prevImg.getY() * 0.1);
+                rotation = 45f;
+            } else if (i == 3) {
+                x = (float) (prevImg.getX() + prevImg.getX() * 0.25);
+                y = prevImg.getY();
+                rotation = -45f;
+            } else if (i == 4) {
+                x = (float) (prevImg.getX() + prevImg.getX() * 0.025);
+                y = (float) (prevImg.getY() + prevImg.getY() * 0.05);
+                rotation = 90f;
+            } else {
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.25);
+                y = prevImg.getY();
+                rotation = 90f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImg = image;
+        }
+
+        for (int i = 1; i <= 44; i++) {
             ImageView image = findViewById(i);
             float imageX = image.getX();
             float imageY = image.getY();
@@ -165,7 +197,8 @@ public class SpadesAnimation extends AppCompatActivity {
         }
     }
 
-    private void animateHeart(ImageView image, float imageX, float imageY, int duration, long startDelay, int i) {
+    private void animateHeart(ImageView image, float imageX, float imageY, int duration,
+                              long startDelay, int i) {
         image.animate()
                 .translationX(imageX)
                 .translationY(imageY)
@@ -180,7 +213,7 @@ public class SpadesAnimation extends AppCompatActivity {
     }
 
     private void scaleAnimation() {
-        for (int i = 1; i <= cards; i++) {
+        for (int i = 1; i <= 39; i++) {
             ImageView image = findViewById(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)

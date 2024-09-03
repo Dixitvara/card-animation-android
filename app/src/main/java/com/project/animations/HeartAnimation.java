@@ -4,7 +4,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -30,8 +29,8 @@ public class HeartAnimation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
-        resetBtn = findViewById(R.id.resetBtn);
 
+        resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -54,7 +53,28 @@ public class HeartAnimation extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         });
+        animation();
+    }
 
+    // method that generates the cards
+    public ImageView generate(int i) {
+        ImageView image = new ImageView(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+
+        int resourceId;
+        if (i <= 13)
+            resourceId = this.getResources().getIdentifier("hearts" + i, "drawable", this.getPackageName());
+        else if (i <= 26)
+            resourceId = this.getResources().getIdentifier("hearts" + (i - 13), "drawable", this.getPackageName());
+        else if (i <= 39)
+            resourceId = this.getResources().getIdentifier("hearts" + (i - 26), "drawable", this.getPackageName());
+        else
+            resourceId = this.getResources().getIdentifier("hearts" + (i - 39), "drawable", this.getPackageName());
+        image.setId(i);
+        image.setLayoutParams(params);
+        image.setImageResource(resourceId);
+
+        return image;
     }
 
     private void animation() {
@@ -68,33 +88,33 @@ public class HeartAnimation extends AppCompatActivity {
         long startDelay = 50L;
 
         for (int i = 1; i <= 19; i++) {
-            ImageView image = findViewById(i);
-
             float angle = (float) 180 / 10 * i - 1;
             double radians = Math.toRadians(angle);
 
-            float angle2 = (float) 80 / 10 * i - 1;
+            float angle2 = (float) 85 / 10 * i - 1;
             double radians2 = Math.toRadians(angle2);
 
-            // right part of heart
+            ImageView image = generate(i);
+            container.addView(image);
+
             if (i == 1) {
-                x = centerX - (float) cardWidth / 2 + 5;
-                y = centerY + 5;
+                x = centerX - (float) cardWidth / 2;
+                y = centerY;
                 rotation = -140;
             } else {
                 rotation = i == 2 ? -90f : prevImg.getRotation();
-                if (i <= 10) {
+                if (i < 10) {
                     x = (float) (prevImg.getX() + Radius * Math.sin(radians));
                     y = (float) (prevImg.getY() - Radius * Math.cos(radians));
-                    rotation += 20;
+                    rotation += 22;
                 } else if (i < 14) {
-                    x = ((float) (prevImg.getX() + radius * Math.cos(radians2)) - 5);
+                    x = ((float) (prevImg.getX() + radius * Math.cos(radians2)));
                     y = (float) (prevImg.getY() + radius * Math.sin(radians2));
                     rotation += 6;
                 } else {
                     x = (float) (prevImg.getX() + radius * Math.cos(radians2));
                     y = (float) (prevImg.getY() + radius * Math.sin(radians2));
-                    rotation = (prevImg.getRotation() + 11);
+                    rotation = i == 19 ? 0f : (prevImg.getRotation() + 11);
                 }
             }
             image.setX(x);
@@ -103,29 +123,29 @@ public class HeartAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 20; i <= 38; i++) {
-            ImageView image = findViewById(i);
-
-            int index = i - 19;
-
-            float angle = (float) 180 / 10 * index;
+        for (int i = 1; i <= 18; i++) {
+            float angle = (float) 180 / 10 * i;
             double radians = Math.toRadians(angle);
 
-            float angle2 = (float) 80 / 10 * index;
+            float angle2 = (float) 85 / 10 * i;
             double radians2 = Math.toRadians(angle2);
 
-            if (index == 1) {
+            ImageView image = generate(i);
+            image.setId(38 - i);
+            container.addView(image);
+
+            if (i == 1) {
                 x = (float) screenWidth / 2 - (float) cardWidth / 2;
                 y = (float) screenHeight / 4;
                 rotation = 90f;
             } else {
-                rotation = index == 2 ? 90f : prevImg.getRotation();
-                if (index <= 10) {
+                rotation = i == 2 ? 90f : prevImg.getRotation();
+                if (i < 10) {
                     x = (float) (prevImg.getX() - Radius * Math.sin(radians));
                     y = (float) (prevImg.getY() - Radius * Math.cos(radians));
-                    rotation -= 20;
-                } else if (index < 14) {
-                    x = (float) (prevImg.getX() - radius * Math.cos(radians2)) + 5;
+                    rotation -= 22;
+                } else if (i < 14) {
+                    x = (float) (prevImg.getX() - radius * Math.cos(radians2));
                     y = (float) (prevImg.getY() + radius * Math.sin(radians2));
                     rotation -= 6;
                 } else {
@@ -140,7 +160,7 @@ public class HeartAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 1; i <= 19; i++) {
+        for (int i = 1; i <= 37; i++) {
             ImageView image = findViewById(i);
             float imageX = image.getX();
             float imageY = image.getY();
@@ -149,16 +169,6 @@ public class HeartAnimation extends AppCompatActivity {
             image.setY((float) screenHeight);
 
             animateHeart(image, imageX, imageY, duration, startDelay, i - 1);
-        }
-        for (int i = 20; i <= 38; i++) {
-            ImageView image = findViewById(i);
-            float imageX = image.getX();
-            float imageY = image.getY();
-
-            image.setX((float) screenWidth / 2);
-            image.setY((float) screenHeight);
-
-            animateHeart(image, imageX, imageY, duration, startDelay, i - 19);
         }
     }
 
@@ -172,14 +182,14 @@ public class HeartAnimation extends AppCompatActivity {
                 .withEndAction(() -> {
                     image.setX(x);
                     image.setY(y);
-                    if(i == 18){
+                    if (i == 36) {
                         scaleAnimation();
                     }
                 }).start();
     }
 
     public void scaleAnimation() {
-        for (int i = 1; i < 39; i++) {
+        for (int i = 1; i <= 37; i++) {
             ImageView image = findViewById(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)

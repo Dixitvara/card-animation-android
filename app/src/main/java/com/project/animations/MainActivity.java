@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         btn1.setOnClickListener(v -> startActivity(new Intent(this, SpadesAnimation.class)));
         btn2.setOnClickListener(v -> startActivity(new Intent(this, HeartAnimation.class)));
         btn3.setOnClickListener(v -> startActivity(new Intent(this, DiamondAnimation.class)));
-//        btn4.setOnClickListener(v -> startActivity(new Intent(this, ClubAnimation.class)));
+        btn4.setOnClickListener(v -> startActivity(new Intent(this, ClubAnimation.class)));
         btn5.setOnClickListener(v -> startActivity(new Intent(this, CircleAnimation.class)));
     }
 }

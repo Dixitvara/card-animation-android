@@ -15,14 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.animations.utils.CardDimension;
 
-import java.util.ArrayList;
-
 public class DiamondAnimation extends AppCompatActivity {
 
     int screenWidth, screenHeight;
     final int TOTAL_CARDS = 40;
     Button resetBtn;
-    ArrayList<Integer> cardList;
     RelativeLayout container;
     int cardWidth, cardHeight;
     int cardGap;
@@ -34,8 +31,6 @@ public class DiamondAnimation extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
-
-        cardList = new ArrayList<>();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -54,57 +49,46 @@ public class DiamondAnimation extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         });
-
-        // generating cards
-        generateCards();
-
-    }
-
-    private void generateCards() {
-        int resourceId;
-
-        for (int i = 1; i <= TOTAL_CARDS; i++) {
-            if (i <= 13)
-                resourceId = this.getResources().getIdentifier("spades_" + i, "drawable", this.getPackageName());
-            else if (i <= 26)
-                resourceId = this.getResources().getIdentifier("spades_" + (i - 13), "drawable", this.getPackageName());
-            else if (i <= 39)
-                resourceId = this.getResources().getIdentifier("spades_" + (i - 26), "drawable", this.getPackageName());
-            else
-                resourceId = this.getResources().getIdentifier("spades_" + (i - 39), "drawable", this.getPackageName());
-
-            ImageView image = new ImageView(this);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
-
-            cardList.add(resourceId);
-            image.setId(i);
-            image.setImageResource(resourceId);
-            image.setLayoutParams(params);
-            image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
-            image.setY(screenHeight);
-
-            container.addView(image);
-        }
 //        setPosition();
         animate();
+    }
+
+    private ImageView generateCard(int i) {
+        ImageView image = new ImageView(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+
+        int resourceId;
+        if (i <= 13)
+            resourceId = this.getResources().getIdentifier("diamonds" + i, "drawable", this.getPackageName());
+        else if (i <= 26)
+            resourceId = this.getResources().getIdentifier("diamonds" + (i - 13), "drawable", this.getPackageName());
+        else if (i <= 39)
+            resourceId = this.getResources().getIdentifier("diamonds" + (i - 26), "drawable", this.getPackageName());
+        else
+            resourceId = this.getResources().getIdentifier("diamonds" + (i - 39), "drawable", this.getPackageName());
+
+        image.setId(i);
+        image.setImageResource(resourceId);
+        image.setLayoutParams(params);
+
+        return image;
     }
 
     // set card position
     private void setPosition() {
         int x = screenWidth / 2 - cardWidth / 2;
         int y = screenHeight / 4;
-        for (int i = 1; i <= cardList.size(); i++) {
-            ImageView image = findViewById(i);
+
+        for (int i = 1; i <= TOTAL_CARDS; i++) {
+            ImageView image = generateCard(i);
 
             if (i == 11) {
                 x += cardGap;
                 y += cardGap;
-            }
-            if (i == 21) {
+            } else if (i == 21) {
                 x -= cardGap;
                 y += cardGap;
-            }
-            if (i == 31) {
+            } else if (i == 31) {
                 x -= cardGap;
                 y -= cardGap;
             }
@@ -113,19 +97,15 @@ public class DiamondAnimation extends AppCompatActivity {
                 image.setX(x += cardGap);
                 image.setY(y += cardGap);
                 image.setRotation(-45);
-            }
-//            x += 25;
-            if (i >= 11 && i <= 20) {
+            } else if (i <= 20) {
                 image.setRotation(45);
                 image.setX(x -= cardGap);
                 image.setY(y += cardGap);
-            }
-            if (i >= 21 && i <= 30) {
+            } else if (i <= 30) {
                 image.setRotation(-45);
                 image.setX(x -= cardGap);
                 image.setY(y -= cardGap);
-            }
-            if (i >= 31) {
+            } else {
                 image.setRotation(45);
                 image.setX(x += cardGap);
                 image.setY(y -= cardGap);
@@ -140,9 +120,9 @@ public class DiamondAnimation extends AppCompatActivity {
         long duration = 500;
         long delay = 30;
 
-        for (int i = 1; i <= cardList.size(); i++) {
+        for (int i = 1; i <= TOTAL_CARDS; i++) {
 
-            ImageView image = findViewById(i);
+            ImageView image = generateCard(i);
 
             if (i == 11) {
                 x += cardGap;
@@ -162,22 +142,19 @@ public class DiamondAnimation extends AppCompatActivity {
                 y += cardGap;
                 int rotation = -45;
                 setXYPosition(image, x, y, rotation, duration, delay, i);
-            }
-            if (i >= 11 && i <= 20) {
+            } else if (i <= 20) {
                 x -= cardGap;
                 y += cardGap;
                 int rotation = 45;
                 setXYPosition(image, x, y, rotation, duration, delay, i);
-            }
-
-            if (i >= 21 && i <= 30) {
+            } else if (i <= 30) {
                 x -= cardGap;
                 y -= cardGap;
                 int rotation = -45;
                 setXYPosition(image, x, y, rotation, duration, delay, i);
             }
 
-            if (i >= 31 && i <= 40) {
+            if (i >= 31) {
                 x += cardGap;
                 y -= cardGap;
                 int rotation = 45;
@@ -200,7 +177,7 @@ public class DiamondAnimation extends AppCompatActivity {
     }
 
     private void scaleUpAnimation() {
-        for (int i = 1; i <= cardList.size(); i++) {
+        for (int i = 1; i <= TOTAL_CARDS; i++) {
             ImageView image = findViewById(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f);

@@ -12,20 +12,21 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
+import com.project.animations.utils.CardMethods;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class CircleAnimation extends AppCompatActivity {
 
     Button resetBtn;
     RelativeLayout container;
     int screenWidth, screenHeight;
-    LinkedList<ImageView> cardList;
     int centerX, centerY;
     int cardHeight, cardWidth;
 
-    final int TOTAL_NUMBER_OF_CARDS = 20;
+    final int TOTAL_NUMBER_OF_CARDS = 24;
     int RADIUS;
 
     @Override
@@ -35,8 +36,6 @@ public class CircleAnimation extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
-
-        cardList = new LinkedList<>();
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -59,78 +58,36 @@ public class CircleAnimation extends AppCompatActivity {
         centerX = (screenWidth / 2) - (cardWidth / 2);
         centerY = (screenHeight / 2) - (cardHeight / 2);
 
-        // generating cards
-        generateCards();
-
-        // setting cards to bottom
-        setCards();
-
-    }
-
-    private void generateCards() {
-        for (int i = 1; i <= TOTAL_NUMBER_OF_CARDS; i++) {
-            ImageView image = new ImageView(this);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
-
-            int resourceId;
-            if (i <= 13)
-                resourceId = getResources().getIdentifier("hearts_" + (i), "drawable", this.getPackageName());
-            else if (i <= 26) {
-                resourceId = getResources().getIdentifier("hearts_" + (i - 13), "drawable", this.getPackageName());
-            } else if (i <= 39) {
-                resourceId = getResources().getIdentifier("hearts_" + (i - 26), "drawable", this.getPackageName());
-            } else {
-                resourceId = getResources().getIdentifier("hearts_" + (i - 39), "drawable", this.getPackageName());
-            }
-            image.setId(i - 1);
-            image.setBackgroundResource(resourceId);
-            image.setLayoutParams(params);
-
-            cardList.add(image);
-        }
-    }
-
-    private void setCards() {
-        int angleStep = 360 / TOTAL_NUMBER_OF_CARDS;
-        int rotation = 0;
-        int adjustedRadius = RADIUS - cardHeight / 2;
-
-        for (int i = 0; i < cardList.size(); i++) {
-
-            cardList.get(i).setX((float) screenWidth / 2 - (float) cardWidth / 2);
-            cardList.get(i).setY((float) screenHeight);
-            cardList.get(i).setRotation(rotation);
-            rotation += angleStep;
-
-            container.addView(cardList.get(i));
-
-/*
-            double angle = i * angleStep;
-            double radians = Math.toRadians(angle);
-            int x = (int) (centerX + adjustedRadius * Math.cos(radians));
-            int y = (int) (centerY + adjustedRadius * Math.sin(radians));
-
-            cardList.get(i).setX(x);
-            cardList.get(i).setY(y);
-*/
-        }
         animateCard();
     }
 
     public void animateCard() {
         int adjustedRadius = RADIUS - cardHeight / 2;
+        ArrayList<CardModel> cardModel = CardMethods.generateCards(TOTAL_NUMBER_OF_CARDS, 1);
+        System.out.println("-} " + cardModel.size());
+        System.out.println("-} " + TOTAL_NUMBER_OF_CARDS);
 
-        for (int i = 0; i < cardList.size(); i++) {
-            ImageView image = findViewById(i);
-
+        for (int i = 1; i <= TOTAL_NUMBER_OF_CARDS; i++) {
             int angle = 360 / TOTAL_NUMBER_OF_CARDS * i;
             double radians = Math.toRadians(angle);
 
-//            int x = (int) (centerX + adjustedRadius * Math.cos(radians));
-//            int y = (int) (centerY + adjustedRadius * Math.sin(radians));
-
             int x = (int) (centerX + adjustedRadius * Math.sin(radians));
             int y = (int) (centerY - adjustedRadius * Math.cos(radians));
+
+            CardModel card = cardModel.get(i);
+
+            ImageView image = new ImageView(this);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResource(this));
+            image.setId(i);
+
+            container.addView(image);
+
+            image.setX((float) screenWidth / 2);
+            image.setY(screenHeight);
+            image.setRotation(angle);
 
             int finalI = i;
             image.animate()
@@ -140,7 +97,7 @@ public class CircleAnimation extends AppCompatActivity {
                     .setDuration(300)
                     .setInterpolator(new DecelerateInterpolator())
                     .withEndAction(() -> {
-                        if (finalI == cardList.size() - 1)
+                        if (finalI == TOTAL_NUMBER_OF_CARDS - 1)
                             scaleAnimation();
                     })
                     .start();
@@ -148,7 +105,7 @@ public class CircleAnimation extends AppCompatActivity {
     }
 
     public void scaleAnimation() {
-        for (int i = 0; i < cardList.size(); i++) {
+        for (int i = 1; i <= TOTAL_NUMBER_OF_CARDS; i++) {
             ImageView image = findViewById(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
