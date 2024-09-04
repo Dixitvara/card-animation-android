@@ -83,7 +83,7 @@ public class SpadesAnimation extends AppCompatActivity {
 
         float x, y;
         int duration = 300;
-        long startDelay = 50L;
+        long startDelay = 30L;
 
         // left half
         for (int i = 1; i <= 20; i++) {

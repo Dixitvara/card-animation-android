@@ -85,7 +85,7 @@ public class HeartAnimation extends AppCompatActivity {
 
         float x, y;
         int duration = 300;
-        long startDelay = 50L;
+        long startDelay = 30L;
 
         for (int i = 1; i <= 19; i++) {
             float angle = (float) 180 / 10 * i - 1;

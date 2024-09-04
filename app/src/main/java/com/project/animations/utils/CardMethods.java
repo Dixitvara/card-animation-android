@@ -20,7 +20,7 @@ public class CardMethods {
             for (int j = 1; j <= 13; j++) {
                 CardModel card = new CardModel(currentSuite, color, j);
                 cardList.add(card);
-                if (cardList.size() == cardSize) break;
+                if (cardList.size() == cardSize) return cardList;
             }
         }
         return cardList;
