@@ -26,7 +26,7 @@ public class CircleAnimation extends AppCompatActivity {
     int centerX, centerY;
     int cardHeight, cardWidth;
 
-    int TOTAL_NUMBER_OF_CARDS = 28;
+    int TOTAL_NUMBER_OF_CARDS = 24;
     int RADIUS;
 
     @Override
@@ -53,7 +53,7 @@ public class CircleAnimation extends AppCompatActivity {
         cardWidth = cardParams[0];
         cardHeight = cardParams[1];
 
-        RADIUS = (int) (screenWidth * 0.40);
+        RADIUS = (int) (screenWidth * 0.3);
 
         centerX = (screenWidth / 2) - (cardWidth / 2);
         centerY = (screenHeight / 2) - (cardHeight / 2);
@@ -62,19 +62,15 @@ public class CircleAnimation extends AppCompatActivity {
     }
 
     public void animateCard() {
-        RADIUS = RADIUS / 2;
-        int adjustedRadius = RADIUS - cardHeight / 2;
         ArrayList<CardModel> cardModel = CardMethods.generateCards(TOTAL_NUMBER_OF_CARDS, 1);
 
-        TOTAL_NUMBER_OF_CARDS = TOTAL_NUMBER_OF_CARDS / 2;
         for (int i = 0; i < TOTAL_NUMBER_OF_CARDS; i++) {
 
-            int angle = 180 / TOTAL_NUMBER_OF_CARDS * i;
-            angle -= 30;
+            int angle = 360 / TOTAL_NUMBER_OF_CARDS * i;
             double radians = Math.toRadians(angle);
 
-            int x = (int) (centerX + adjustedRadius * Math.sin(radians));
-            int y = (int) (centerY - adjustedRadius * Math.cos(radians));
+            int x = (int) (centerX + RADIUS * Math.sin(radians));
+            int y = (int) (centerY - RADIUS * Math.cos(radians));
 
             CardModel card = cardModel.get(i);
 
@@ -86,25 +82,23 @@ public class CircleAnimation extends AppCompatActivity {
             image.setId(i);
 
             container.addView(image);
-            image.setX(x);
-            image.setY(y);
 
-//            image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
-//            image.setY(screenHeight);
+            image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
+            image.setY(screenHeight);
             image.setRotation(angle);
 
-//            int finalI = i;
-//            image.animate()
-//                    .translationX(x)
-//                    .translationY(y)
-//                    .setStartDelay(30L * i)
-//                    .setDuration(300)
-//                    .setInterpolator(new DecelerateInterpolator())
-//                    .withEndAction(() -> {
-//                        if (finalI == TOTAL_NUMBER_OF_CARDS - 1)
-//                            scaleAnimation();
-//                    })
-//                    .start();
+            int finalI = i;
+            image.animate()
+                    .translationX(x)
+                    .translationY(y)
+                    .setStartDelay(30L * i)
+                    .setDuration(300)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .withEndAction(() -> {
+                        if (finalI == TOTAL_NUMBER_OF_CARDS - 1)
+                            scaleAnimation();
+                    })
+                    .start();
         }
     }
 

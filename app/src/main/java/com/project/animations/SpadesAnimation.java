@@ -154,9 +154,9 @@ public class SpadesAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 6; i++) {
             ImageView image = generate(i);
-            image.setId(45 - i);
+            image.setId(46 - i);
             container.addView(image);
 
             if (i == 1) {
@@ -165,7 +165,7 @@ public class SpadesAnimation extends AppCompatActivity {
                 rotation = 0;
             } else if (i == 2) {
                 x = (float) (prevImg.getX() - prevImg.getX() * 0.1);
-                y = (float) (prevImg.getY() + prevImg.getY() * 0.1);
+                y = (float) (prevImg.getY() + prevImg.getY() * 0.08);
                 rotation = 45f;
             } else if (i == 3) {
                 x = (float) (prevImg.getX() + prevImg.getX() * 0.25);
@@ -173,10 +173,14 @@ public class SpadesAnimation extends AppCompatActivity {
                 rotation = -45f;
             } else if (i == 4) {
                 x = (float) (prevImg.getX() + prevImg.getX() * 0.025);
-                y = (float) (prevImg.getY() + prevImg.getY() * 0.05);
+                y = (float) (prevImg.getY() + prevImg.getY() * 0.04);
+                rotation = 90f;
+            } else if (i == 5) {
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.15);
+                y = prevImg.getY();
                 rotation = 90f;
             } else {
-                x = (float) (prevImg.getX() - prevImg.getX() * 0.25);
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.12);
                 y = prevImg.getY();
                 rotation = 90f;
             }
@@ -186,7 +190,7 @@ public class SpadesAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 1; i <= 44; i++) {
+        for (int i = 1; i <= 45; i++) {
             ImageView image = findViewById(i);
             float imageX = image.getX();
             float imageY = image.getY();

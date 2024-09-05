@@ -21,7 +21,7 @@ public class ClubAnimation extends AppCompatActivity {
     RelativeLayout container;
     int screenWidth, screenHeight;
     int cardHeight, cardWidth;
-    int TotalCards = 26;
+    int TotalCards = 46;
 
     ArrayList<CardModel> cardList;
 
@@ -59,18 +59,19 @@ public class ClubAnimation extends AppCompatActivity {
 
     private void generateCards() {
         float x, y;
-        float rotation, firstCardRotation = 0f;
+        float rotation, firstCardRotation = -10f;
+        int halfCircleCardCount = 13;
 
         ImageView prevImg = null;
 
         long duration = 300L;
         long startDelay = 30L;
 
-        float radius = 60f;
+        float radius = (float) (screenWidth * 0.055);
+        float angle = (float) (210 / halfCircleCardCount);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
-        int halfCircleCardCount = 13;
 
         for (int i = 0; i < halfCircleCardCount; i++) {
             CardModel card = cardList.get(i);
@@ -78,11 +79,11 @@ public class ClubAnimation extends AppCompatActivity {
 
             image.setImageResource(card.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i);
+            image.setId(12 - i);
 
             container.addView(image);
 
-            float angle2 = (float) (210 / halfCircleCardCount) * i;
+            float angle2 = (float) (230 / halfCircleCardCount) * i;
             float radiance = (float) Math.toRadians(angle2);
 
             if (prevImg == null) {
@@ -92,7 +93,7 @@ public class ClubAnimation extends AppCompatActivity {
             } else {
                 x = (float) (prevImg.getX() - radius * Math.cos(radiance));
                 y = (float) (prevImg.getY() + radius * Math.sin(radiance));
-                rotation = firstCardRotation - angle2;
+                rotation = prevImg.getRotation() - angle;
             }
 
             image.setX(x);
@@ -100,11 +101,11 @@ public class ClubAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImg = image;
         }
+
         prevImg = null;
+        ImageView lastImg = findViewById(12);
 
-        ImageView firstImage = findViewById(0);
-
-        float angle = (float) (-210 / halfCircleCardCount);
+        rotation = -90f;
         for (int i = 13; i < 26; i++) {
             CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
@@ -117,27 +118,101 @@ public class ClubAnimation extends AppCompatActivity {
 
             int index = i - 13;
 
-            float angle2 = (float) (-210 / halfCircleCardCount) * index;
+            float angle2 = (float) (210 / halfCircleCardCount) * index;
+            angle2 -= 15;
             float radiance = (float) Math.toRadians(angle2);
 
             if (prevImg == null) {
-                x = firstImage.getX();
-                y = firstImage.getY();
-                rotation = -110f;
+                x = lastImg.getX();
+                y = lastImg.getY();
             } else {
-                x = (float) (prevImg.getX() - radius * Math.sin(radiance));
+                x = (float) (prevImg.getX() + radius * Math.sin(radiance));
                 y = (float) (prevImg.getY() - radius * Math.cos(radiance));
-                rotation = prevImg.getRotation() - angle;
+                rotation = prevImg.getRotation() + angle;
             }
-
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
             prevImg = image;
         }
 
-/*        for (int i = 0; i < TotalCards; i++) {
-            ImageView image = findViewById(12 - i);
+        for (int i = 26; i < 39; i++) {
+            int index = i - 26;
+
+            CardModel card = cardList.get(i);
+            ImageView image = new ImageView(this);
+
+            image.setImageResource(card.getResourceId(this));
+            image.setLayoutParams(params);
+            image.setId(i);
+
+            container.addView(image);
+
+            float angle2 = (float) (230 / halfCircleCardCount) * index;
+            float radiance = (float) Math.toRadians(angle2);
+
+            if (i == 26) {
+                x = prevImg.getX();
+                y = prevImg.getY();
+                rotation = 10;
+            } else {
+                x = (float) (prevImg.getX() + radius * Math.cos(radiance));
+                y = (float) (prevImg.getY() + radius * Math.sin(radiance));
+                rotation = prevImg.getRotation() + angle;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImg = image;
+        }
+
+        for (int i = 39; i < 46; i++) {
+            CardModel card = cardList.get(i);
+            ImageView image = new ImageView(this);
+
+            image.setImageResource(card.getResourceId(this));
+            image.setLayoutParams(params);
+            image.setId(i);
+
+            container.addView(image);
+
+            if (i == 39) {
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.14);
+                y = prevImg.getY();
+                rotation = 0;
+            } else if (i == 40) {
+                x = prevImg.getX();
+                y = (float) (prevImg.getY() + prevImg.getX() * 0.1);
+                rotation = prevImg.getRotation();
+            } else if (i == 41) {
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.1);
+                y = (float) (prevImg.getY() + prevImg.getY() * 0.06);
+                rotation = 45f;
+            } else if (i == 42) {
+                x = (float) (prevImg.getX() + prevImg.getX() * 0.25);
+                y = prevImg.getY();
+                rotation = -45f;
+            } else if (i == 43) {
+                x = (float) (prevImg.getX() + prevImg.getX() * 0.025);
+                y = (float) (prevImg.getY() + prevImg.getY() * 0.04);
+                rotation = 90f;
+            } else if (i == 44) {
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.15);
+                y = prevImg.getY();
+                rotation = 90f;
+            } else {
+                x = (float) (prevImg.getX() - prevImg.getX() * 0.12);
+                y = prevImg.getY();
+                rotation = 90f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImg = image;
+        }
+
+        for (int i = 0; i < TotalCards; i++) {
+            ImageView image = findViewById(i);
             float imageX = image.getX();
             float imageY = image.getY();
 
@@ -145,7 +220,7 @@ public class ClubAnimation extends AppCompatActivity {
             image.setY((float) screenHeight);
 
             animateHeart(image, imageX, imageY, duration, startDelay, i);
-        }*/
+        }
 
     }
 
