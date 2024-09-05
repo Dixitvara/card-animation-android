@@ -5,13 +5,13 @@ import com.project.animations.models.CardModel;
 import java.util.ArrayList;
 
 public class CardMethods {
-    private static final String[] array = {"clubs", "spades", "diamonds", "hearts"};
+    private static final String[] suites = {"clubs", "spades", "diamonds", "hearts"};
 
     public static ArrayList<CardModel> generateCards(int cardSize, int index) {
         ArrayList<CardModel> cardList = new ArrayList<>();
 
-        for (int i = 0; i < array.length; i++) {
-            String currentSuite = array[index];
+        for (int i = 0; i < suites.length; i++) {
+            String currentSuite = suites[index];
             String color = "black";
 
             if (index > 1)
@@ -21,6 +21,20 @@ public class CardMethods {
                 CardModel card = new CardModel(currentSuite, color, j);
                 cardList.add(card);
                 if (cardList.size() == cardSize) return cardList;
+            }
+        }
+        return cardList;
+    }
+
+    public static ArrayList<CardModel> allCards(){
+        ArrayList<CardModel> cardList = new ArrayList<>();
+
+        for (int i = 0; i < suites.length; i++){
+            String color = i > 1 ? "red" : "black";
+
+            for(int j = 1; j <= 13; j++){
+                CardModel card = new CardModel(suites[i], color, j);
+                cardList.add(card);
             }
         }
         return cardList;

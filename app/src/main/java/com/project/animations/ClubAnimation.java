@@ -1,5 +1,8 @@
 package com.project.animations;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.DecelerateInterpolator;
@@ -102,10 +105,10 @@ public class ClubAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        prevImg = null;
-        ImageView lastImg = findViewById(12);
+        prevImg = findViewById(12);
 
         rotation = -90f;
+
         for (int i = 13; i < 26; i++) {
             CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
@@ -122,9 +125,9 @@ public class ClubAnimation extends AppCompatActivity {
             angle2 -= 15;
             float radiance = (float) Math.toRadians(angle2);
 
-            if (prevImg == null) {
-                x = lastImg.getX();
-                y = lastImg.getY();
+            if (i == 13) {
+                x = prevImg.getX();
+                y = prevImg.getY();
             } else {
                 x = (float) (prevImg.getX() + radius * Math.sin(radiance));
                 y = (float) (prevImg.getY() - radius * Math.cos(radiance));
@@ -234,6 +237,32 @@ public class ClubAnimation extends AppCompatActivity {
                 .withEndAction(() -> {
                     image.setX(x);
                     image.setY(y);
+                    if (i == 45)
+                       scaleAnimation();
                 }).start();
     }
+
+    private void scaleAnimation() {
+        for (int i = 1; i <= cardList.size(); i++) {
+            ImageView image = findViewById(i - 1);
+
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
+                    .setDuration(400);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
+                    .setDuration(400);
+
+            scaleX.setRepeatMode(ValueAnimator.REVERSE);
+            scaleY.setRepeatMode(ValueAnimator.REVERSE);
+
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(30L * i);
+
+            animatorSet.start();
+        }
+    }
+
 }

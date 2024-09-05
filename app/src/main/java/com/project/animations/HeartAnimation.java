@@ -193,18 +193,19 @@ public class HeartAnimation extends AppCompatActivity {
             ImageView image = findViewById(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
-                    .setDuration(200);
+                    .setDuration(300);
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
-                    .setDuration(200);
+                    .setDuration(300);
 
             scaleX.setRepeatMode(ValueAnimator.REVERSE);
             scaleY.setRepeatMode(ValueAnimator.REVERSE);
 
-            scaleX.setRepeatCount(3);
-            scaleY.setRepeatCount(3);
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
 
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(30L * i);
 
             animatorSet.start();
         }

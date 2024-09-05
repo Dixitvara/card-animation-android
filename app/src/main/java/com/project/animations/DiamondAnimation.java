@@ -142,8 +142,8 @@ public class DiamondAnimation extends AppCompatActivity {
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f);
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f);
 
-            scaleX.setDuration(200L);
-            scaleY.setDuration(200L);
+            scaleX.setDuration(300L);
+            scaleY.setDuration(300L);
 
             scaleX.setRepeatCount(1);
             scaleY.setRepeatCount(1);

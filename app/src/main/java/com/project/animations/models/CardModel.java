@@ -24,7 +24,6 @@ public class CardModel {
 
     public int getResourceId(Context context) {
         String resourceName = getSuite().toLowerCase() + getNumber();
-        Resources resources = context.getResources();
-        return resources.getIdentifier(resourceName, "drawable", context.getPackageName());
+        return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
     }
 }
