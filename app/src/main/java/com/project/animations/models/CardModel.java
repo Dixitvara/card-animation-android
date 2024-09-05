@@ -23,7 +23,7 @@ public class CardModel {
     }
 
     public int getResourceId(Context context) {
-        String resourceName = getSuite().toLowerCase() + getNumber();
+        String resourceName = getSuite().toLowerCase() + "_" + getNumber();
         return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
     }
 }

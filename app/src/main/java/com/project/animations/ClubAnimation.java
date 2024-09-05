@@ -42,9 +42,6 @@ public class ClubAnimation extends AppCompatActivity {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
-        System.out.println("-} " + screenWidth);
-        System.out.println("-} " + screenHeight);
-
         int[] cardParams = CardDimension.getCardParams(displayMetrics);
         cardWidth = cardParams[0];
         cardHeight = cardParams[1];

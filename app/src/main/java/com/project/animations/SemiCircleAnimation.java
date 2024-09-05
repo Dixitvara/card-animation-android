@@ -39,7 +39,6 @@ public class SemiCircleAnimation extends AppCompatActivity {
         container = findViewById(R.id.container);
 
         cardList = CardMethods.allCards();
-        System.out.println("==} " + cardList.size());
 
         generateShape();
     }
@@ -82,7 +81,8 @@ public class SemiCircleAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 27; i < 52; i++) {
+        for (int i = 26; i < 52; i++) {
+            int index = 26 - i;
             CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
 
@@ -101,6 +101,12 @@ public class SemiCircleAnimation extends AppCompatActivity {
                 y = i == 39 ? (float) (screenHeight * 0.65) : (float) (prevImg.getY() - radius * Math.cos(radiance));
                 rotation = i == 39 ? 90f : prevImg.getRotation() + angle;
             }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+
+            container.addView(image);
+            prevImg = image;
         }
     }
 }

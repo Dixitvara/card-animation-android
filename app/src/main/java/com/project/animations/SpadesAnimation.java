@@ -57,7 +57,6 @@ public class SpadesAnimation extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         });
-        System.out.println("==} " + cardList.size());
 
         animation();
     }
@@ -198,7 +197,6 @@ public class SpadesAnimation extends AppCompatActivity {
 
         for (int i = 1; i <= 45; i++) {
             ImageView image = findViewById(i - 1);
-            System.out.println("-} " + i);
             float imageX = image.getX();
             float imageY = image.getY();
 

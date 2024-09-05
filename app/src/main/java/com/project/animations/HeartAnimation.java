@@ -63,13 +63,13 @@ public class HeartAnimation extends AppCompatActivity {
 
         int resourceId;
         if (i <= 13)
-            resourceId = this.getResources().getIdentifier("hearts" + i, "drawable", this.getPackageName());
+            resourceId = this.getResources().getIdentifier("hearts_" + i, "drawable", this.getPackageName());
         else if (i <= 26)
-            resourceId = this.getResources().getIdentifier("hearts" + (i - 13), "drawable", this.getPackageName());
+            resourceId = this.getResources().getIdentifier("hearts_" + (i - 13), "drawable", this.getPackageName());
         else if (i <= 39)
-            resourceId = this.getResources().getIdentifier("hearts" + (i - 26), "drawable", this.getPackageName());
+            resourceId = this.getResources().getIdentifier("hearts_" + (i - 26), "drawable", this.getPackageName());
         else
-            resourceId = this.getResources().getIdentifier("hearts" + (i - 39), "drawable", this.getPackageName());
+            resourceId = this.getResources().getIdentifier("hearts_" + (i - 39), "drawable", this.getPackageName());
         image.setId(i);
         image.setLayoutParams(params);
         image.setImageResource(resourceId);
