@@ -148,6 +148,7 @@ public class SpadesAnimation extends AppCompatActivity {
                     rotation = prevImg.getRotation() - 8;
                 }
             }
+
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
