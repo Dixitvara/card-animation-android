@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Animations"
         tools:targetApi="31">
         <activity
+            android:name=".WaveAnimation"
+            android:exported="false" />
+        <activity
             android:name=".SemiCircleAnimation"
             android:exported="false" />
         <activity
