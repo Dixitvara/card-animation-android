@@ -12,7 +12,11 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
+import com.project.animations.utils.CardMethods;
+
+import java.util.ArrayList;
 
 public class HeartAnimation extends AppCompatActivity {
 
@@ -20,6 +24,7 @@ public class HeartAnimation extends AppCompatActivity {
     int cardWidth, cardHeight;
     float Radius;
     int centerX, centerY;
+    ArrayList<CardModel> cardList;
 
     // views
     Button resetBtn;
@@ -33,6 +38,8 @@ public class HeartAnimation extends AppCompatActivity {
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
 
+        cardList = CardMethods.generateCards(39, 3);
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -42,8 +49,8 @@ public class HeartAnimation extends AppCompatActivity {
         int[] cardParams = CardDimension.getCardParams(displayMetrics);
         cardWidth = cardParams[0];
         cardHeight = cardParams[1];
-
         centerX = screenWidth / 2;
+
         centerY = screenHeight / 4;
 
         Radius = (float) (screenWidth * 0.060);
@@ -53,31 +60,12 @@ public class HeartAnimation extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         });
-        animation();
+        generate();
     }
 
     // method that generates the cards
-    public ImageView generate(int i) {
-        ImageView image = new ImageView(this);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+    public void generate() {
 
-        int resourceId;
-        if (i <= 13)
-            resourceId = this.getResources().getIdentifier("hearts_" + i, "drawable", this.getPackageName());
-        else if (i <= 26)
-            resourceId = this.getResources().getIdentifier("hearts_" + (i - 13), "drawable", this.getPackageName());
-        else if (i <= 39)
-            resourceId = this.getResources().getIdentifier("hearts_" + (i - 26), "drawable", this.getPackageName());
-        else
-            resourceId = this.getResources().getIdentifier("hearts_" + (i - 39), "drawable", this.getPackageName());
-        image.setId(i);
-        image.setLayoutParams(params);
-        image.setImageResource(resourceId);
-
-        return image;
-    }
-
-    private void animation() {
         float radius = (int) (screenWidth * 0.075);
         float rotation;
 
@@ -88,14 +76,21 @@ public class HeartAnimation extends AppCompatActivity {
         long startDelay = 30L;
 
         for (int i = 1; i <= 19; i++) {
+            CardModel card = cardList.get(i - 1);
+            ImageView image = new ImageView(this);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+
+            container.addView(image);
+
             float angle = (float) 180 / 10 * i - 1;
             double radians = Math.toRadians(angle);
 
             float angle2 = (float) 85 / 10 * i - 1;
             double radians2 = Math.toRadians(angle2);
 
-            ImageView image = generate(i);
-            container.addView(image);
 
             if (i == 1) {
                 x = centerX - (float) cardWidth / 2;
@@ -121,18 +116,26 @@ public class HeartAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
             prevImg = image;
+
         }
 
         for (int i = 1; i <= 18; i++) {
+            CardModel card = cardList.get(i - 1);
+            ImageView image = new ImageView(this);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+
+            container.addView(image);
+
             float angle = (float) 180 / 10 * i;
             double radians = Math.toRadians(angle);
 
             float angle2 = (float) 85 / 10 * i;
             double radians2 = Math.toRadians(angle2);
 
-            ImageView image = generate(i);
             image.setId(38 - i);
-            container.addView(image);
 
             if (i == 1) {
                 x = (float) screenWidth / 2 - (float) cardWidth / 2;

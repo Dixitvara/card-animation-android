@@ -144,6 +144,8 @@ public class SemiCircleAnimation extends AppCompatActivity {
                 .setStartDelay(10L * i)
                 .setInterpolator(new DecelerateInterpolator())
                 .withEndAction(() -> {
+                    image.setX(x);
+                    image.setY(y);
 //                        radiusIncreasedAnimation();
                 })
                 .start();
