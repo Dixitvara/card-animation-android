@@ -113,12 +113,9 @@ public class WaveAnimation extends AppCompatActivity {
                 .setDuration(300L)
                 .setStartDelay(50L * i)
                 .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (i == cardList.size() - 1) {
-                            waveAnimation();
-                        }
+                .withEndAction(() -> {
+                    if (i == cardList.size() - 1) {
+                        waveAnimation();
                     }
                 })
                 .start();

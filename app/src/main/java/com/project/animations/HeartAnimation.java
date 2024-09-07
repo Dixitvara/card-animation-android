@@ -83,6 +83,8 @@ public class HeartAnimation extends AppCompatActivity {
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
 
+            image.setId(i);
+
             container.addView(image);
 
             float angle = (float) 180 / 10 * i - 1;
@@ -90,7 +92,6 @@ public class HeartAnimation extends AppCompatActivity {
 
             float angle2 = (float) 85 / 10 * i - 1;
             double radians2 = Math.toRadians(angle2);
-
 
             if (i == 1) {
                 x = centerX - (float) cardWidth / 2;
@@ -165,6 +166,7 @@ public class HeartAnimation extends AppCompatActivity {
 
         for (int i = 1; i <= 37; i++) {
             ImageView image = findViewById(i);
+
             float imageX = image.getX();
             float imageY = image.getY();
 
