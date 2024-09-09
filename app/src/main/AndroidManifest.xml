@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Animations"
         tools:targetApi="31">
         <activity
+            android:name=".EightCircleAnimation"
+            android:exported="false" />
+        <activity
+            android:name=".TwoCircleAnimation"
+            android:exported="false" />
+        <activity
             android:name=".WaveAnimation"
             android:exported="false" />
         <activity

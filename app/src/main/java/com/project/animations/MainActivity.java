@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         btn5 = findViewById(R.id.btn5);
         btn6 = findViewById(R.id.btn6);
         btn7 = findViewById(R.id.btn7);
-//        btn8 = findViewById(R.id.btn8);
-//        btn9 = findViewById(R.id.btn9);
+        btn8 = findViewById(R.id.btn8);
+        btn9 = findViewById(R.id.btn9);
 //        btn10 = findViewById(R.id.btn10);
 
         btn1.setOnClickListener(v -> startActivity(new Intent(this, SpadesAnimation.class)));
@@ -40,5 +40,7 @@ public class MainActivity extends AppCompatActivity {
         btn5.setOnClickListener(v -> startActivity(new Intent(this, CircleAnimation.class)));
         btn6.setOnClickListener(v -> startActivity(new Intent(this, SemiCircleAnimation.class)));
         btn7.setOnClickListener(v -> startActivity(new Intent(this, WaveAnimation.class)));
+        btn8.setOnClickListener(v -> startActivity(new Intent(this, TwoCircleAnimation.class)));
+        btn9.setOnClickListener(v -> startActivity(new Intent(this, EightCircleAnimation.class)));
     }
 }

@@ -67,6 +67,21 @@
             android:text="Wave"
             android:textSize="@dimen/_15sdp" />
 
+        <Button
+            android:id="@+id/btn8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="2 Circle"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="8 Circle"
+            android:textSize="@dimen/_15sdp" />
+
     </LinearLayout>
 
 </ScrollView>

@@ -3,6 +3,7 @@ package com.project.animations;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -79,11 +80,11 @@ public class WaveAnimation extends AppCompatActivity {
                 x = i == 14 ? -3f : prevImage.getX() + (float) screenWidth / 13;
                 y = i == 14 ? (float) (screenHeight * 0.5) - (float) cardHeight / 2 : prevImage.getY();
             } else if (i <= 39) {
-                image.setId(i - 13);
+                image.setId(53 - i);
                 x = i == 27 ? -3f : prevImage.getX() + (float) screenWidth / 13;
                 y = i == 27 ? (float) (screenHeight * 0.4) - (float) cardHeight / 2 : prevImage.getY();
             } else {
-                image.setId(i);
+                image.setId(92 - i);
                 x = i == 40 ? -3f : prevImage.getX() + (float) screenWidth / 13;
                 y = i == 40 ? (float) (screenHeight * 0.6) - (float) cardHeight / 2 : prevImage.getY();
             }
@@ -114,6 +115,8 @@ public class WaveAnimation extends AppCompatActivity {
                 .setStartDelay(50L * i)
                 .setInterpolator(new DecelerateInterpolator())
                 .withEndAction(() -> {
+                    image.setX(x);
+                    image.setY(y);
                     if (i == cardList.size() - 1) {
                         waveAnimation();
                     }
@@ -138,13 +141,40 @@ public class WaveAnimation extends AppCompatActivity {
             if (i <= 13)
                 animator.setStartDelay(delay * i);
             else if (i <= 26)
-                animator.setStartDelay(delay * (i - 13));
+                animator.setStartDelay(delay * (27 - i));
             else if (i <= 39)
                 animator.setStartDelay(delay * (i - 26));
             else
-                animator.setStartDelay(delay * (i - 39));
+                animator.setStartDelay(delay * (53 - i));
 
             animator.start();
+
+            new Handler().postDelayed(this::outAnimation, 3600);
+        }
+    }
+
+    private void outAnimation() {
+        float x;
+        for (int i = 1; i <= 52; i++) {
+            ImageView image = findViewById(i);
+
+            x = i <= 13 || i >= 27 && i <= 39 ? -100f : screenWidth;
+
+            ObjectAnimator translateX = ObjectAnimator.ofFloat(image, "translationX", x)
+                    .setDuration(600L);
+            translateX.setInterpolator(new DecelerateInterpolator());
+
+            if (i <= 13)
+                translateX.setStartDelay(50L * i);
+            else if (i <= 26)
+                translateX.setStartDelay(50L * (i - 13));
+            else if (i <= 39)
+                translateX.setStartDelay(50L * (i - 26));
+            else
+                translateX.setStartDelay(50L * (i - 39));
+
+            translateX.start();
+
         }
     }
 }
