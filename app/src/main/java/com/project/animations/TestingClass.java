@@ -4,8 +4,6 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,7 +16,7 @@ import com.project.animations.utils.CardMethods;
 
 import java.util.ArrayList;
 
-public class TwoCircleAnimation extends AppCompatActivity {
+public class TestingClass extends AppCompatActivity {
 
     int cardWidth, cardHeight;
     int screenWidth, screenHeight;
@@ -45,7 +43,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(26, 0);
+        cardList = CardMethods.generateCards(13, 0);
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
@@ -60,11 +58,14 @@ public class TwoCircleAnimation extends AppCompatActivity {
     }
 
     private void createCircles() {
-        float radius = (float) (screenWidth * 0.12);
+
+        float radius = (float) (screenWidth * 0.10);
         float angle = (float) 360 / 13;
         float x, y;
 
         float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
+        float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
+        ImageView prevImg = null;
 
         for (int i = 0; i < cardList.size(); i++) {
             CardModel card = cardList.get(i);
@@ -77,20 +78,19 @@ public class TwoCircleAnimation extends AppCompatActivity {
             float angle2;
             float radiance;
 
-            if (i < 13) {
-                angle2 = angle * i;
-                radiance = (float) Math.toRadians(angle2);
-                y = (float) (screenHeight * 0.3 - radius * Math.cos(radiance));
+            angle2 = angle * i;
+            radiance = (float) Math.toRadians(angle2);
+            if (prevImg == null) {
+                x = centerX;
+                y = centerY;
             } else {
-                angle2 = angle * (i - 13);
-                radiance = (float) Math.toRadians(angle2);
-                y = (float) (screenHeight * 0.6 - radius * Math.cos(radiance));
+                x = (float) (prevImg.getX() + radius * Math.sin(radiance));
+                y = (float) (prevImg.getY() - radius * Math.cos(radiance));
             }
-            x = (float) (centerX + radius * Math.sin(radiance));
-
             image.setX(x);
             image.setY(y);
-            image.setRotation(angle2);
+//            image.setRotation(angle2);
+            prevImg = image;
             container.addView(image);
         }
 
@@ -99,10 +99,10 @@ public class TwoCircleAnimation extends AppCompatActivity {
             float x1 = image.getX();
             float y1 = image.getY();
 
-            image.setX(centerX);
-            image.setY(screenHeight);
+//            image.setX((float) screenWidth / 2);
+//            image.setY(screenHeight);
 
-            animateCircle(image, x1, y1, i);
+//            animateCircle(image, x1, y1, i);
         }
     }
 
@@ -126,25 +126,24 @@ public class TwoCircleAnimation extends AppCompatActivity {
         for (int i = 0; i < cardList.size(); i++) {
             ImageView image = findViewById(i);
 
-            ObjectAnimator rotate = ObjectAnimator.ofFloat(
+            ObjectAnimator animator = ObjectAnimator.ofFloat(
                     image,
                     "rotation",
+                    image.getRotation(),
                     360f
             );
-            rotate.setDuration(2000L);
-            rotate.setInterpolator(new LinearInterpolator());
-            rotate.setStartDelay(0);
+            animator.setDuration(4000L);
+            animator.setStartDelay(0L);
+//            animator.start();
 
-//            rotate.start();
-            float x = image.getX();
-            float y = image.getY();
+
 
 /*
             image.animate()
-                    .rotationBy(720f)
-                    .setInterpolator(new LinearInterpolator())
-                    .setDuration(5000L)
+                    .rotationBy(360)
+                    .setDuration(4000L)
                     .setStartDelay(0L)
+                    .setInterpolator(new DecelerateInterpolator())
                     .start();
 */
         }

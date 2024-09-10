@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn1, btn2, btn3, btn4;
     Button btn5, btn6, btn7, btn8;
-    Button btn9, btn10;
+    Button btn9, btn10, btn11, btn12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         btn7 = findViewById(R.id.btn7);
         btn8 = findViewById(R.id.btn8);
         btn9 = findViewById(R.id.btn9);
-//        btn10 = findViewById(R.id.btn10);
+        btn10 = findViewById(R.id.btn10);
+        btn11 = findViewById(R.id.btn11);
+        btn12 = findViewById(R.id.btn12);
 
         btn1.setOnClickListener(v -> startActivity(new Intent(this, SpadesAnimation.class)));
         btn2.setOnClickListener(v -> startActivity(new Intent(this, HeartAnimation.class)));
@@ -42,5 +44,8 @@ public class MainActivity extends AppCompatActivity {
         btn7.setOnClickListener(v -> startActivity(new Intent(this, WaveAnimation.class)));
         btn8.setOnClickListener(v -> startActivity(new Intent(this, TwoCircleAnimation.class)));
         btn9.setOnClickListener(v -> startActivity(new Intent(this, EightCircleAnimation.class)));
+        btn10.setOnClickListener(v -> startActivity(new Intent(this, TestingClass.class)));
+        btn11.setOnClickListener(v -> startActivity(new Intent(this, SmileAnimation.class)));
+        btn12.setOnClickListener(v -> startActivity(new Intent(this, SwordAnimation.class)));
     }
 }

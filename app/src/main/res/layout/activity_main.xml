@@ -81,6 +81,27 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="8 Circle"
             android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Smile"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Sword"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Testing class"
+            android:textSize="@dimen/_15sdp" />
 
     </LinearLayout>
 
