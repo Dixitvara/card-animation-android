@@ -66,8 +66,8 @@ public class TwoCircleAnimation extends AppCompatActivity {
 
         float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
 
-        for (int i = 0; i < cardList.size(); i++) {
-            CardModel card = cardList.get(i);
+        for (int i = 1; i <= cardList.size(); i++) {
+            CardModel card = cardList.get(i - 1);
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
@@ -77,7 +77,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
             float angle2;
             float radiance;
 
-            if (i < 13) {
+            if (i <= 13) {
                 angle2 = angle * i;
                 radiance = (float) Math.toRadians(angle2);
                 y = (float) (screenHeight * 0.3 - radius * Math.cos(radiance));
@@ -94,7 +94,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
             container.addView(image);
         }
 
-        for (int i = 0; i < cardList.size(); i++) {
+        for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
@@ -116,37 +116,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
                 .withEndAction(() -> {
                     image.setX(x1);
                     image.setY(y1);
-                    if (i == cardList.size() - 1)
-                        rotateAnimation();
                 })
                 .start();
-    }
-
-    private void rotateAnimation() {
-        for (int i = 0; i < cardList.size(); i++) {
-            ImageView image = findViewById(i);
-
-            ObjectAnimator rotate = ObjectAnimator.ofFloat(
-                    image,
-                    "rotation",
-                    360f
-            );
-            rotate.setDuration(2000L);
-            rotate.setInterpolator(new LinearInterpolator());
-            rotate.setStartDelay(0);
-
-//            rotate.start();
-            float x = image.getX();
-            float y = image.getY();
-
-/*
-            image.animate()
-                    .rotationBy(720f)
-                    .setInterpolator(new LinearInterpolator())
-                    .setDuration(5000L)
-                    .setStartDelay(0L)
-                    .start();
-*/
-        }
     }
 }

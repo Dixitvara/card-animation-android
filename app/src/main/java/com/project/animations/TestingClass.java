@@ -67,14 +67,14 @@ public class TestingClass extends AppCompatActivity {
         float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
         ImageView prevImg = null;
 
-        for (int i = 0; i < cardList.size(); i++) {
-            CardModel card = cardList.get(i);
+        for (int i = 1; i <= cardList.size(); i++) {
+            CardModel card = cardList.get(i - 1);
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
+
             image.setImageResource(card.getResourceId(this));
             image.setId(i);
-
             float angle2;
             float radiance;
 
@@ -89,20 +89,20 @@ public class TestingClass extends AppCompatActivity {
             }
             image.setX(x);
             image.setY(y);
-//            image.setRotation(angle2);
+            image.setRotation(angle2);
             prevImg = image;
             container.addView(image);
         }
 
-        for (int i = 0; i < cardList.size(); i++) {
+        for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
 
-//            image.setX((float) screenWidth / 2);
-//            image.setY(screenHeight);
+            image.setX((float) screenWidth / 2);
+            image.setY(screenHeight);
 
-//            animateCircle(image, x1, y1, i);
+            animateCircle(image, x1, y1, i);
         }
     }
 
@@ -116,36 +116,7 @@ public class TestingClass extends AppCompatActivity {
                 .withEndAction(() -> {
                     image.setX(x1);
                     image.setY(y1);
-                    if (i == cardList.size() - 1)
-                        rotateAnimation();
                 })
                 .start();
-    }
-
-    private void rotateAnimation() {
-        for (int i = 0; i < cardList.size(); i++) {
-            ImageView image = findViewById(i);
-
-            ObjectAnimator animator = ObjectAnimator.ofFloat(
-                    image,
-                    "rotation",
-                    image.getRotation(),
-                    360f
-            );
-            animator.setDuration(4000L);
-            animator.setStartDelay(0L);
-//            animator.start();
-
-
-
-/*
-            image.animate()
-                    .rotationBy(360)
-                    .setDuration(4000L)
-                    .setStartDelay(0L)
-                    .setInterpolator(new DecelerateInterpolator())
-                    .start();
-*/
-        }
     }
 }
