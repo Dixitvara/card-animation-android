@@ -22,6 +22,7 @@ public class EightCircleAnimation extends AppCompatActivity {
     RelativeLayout.LayoutParams params;
     RelativeLayout container;
     Button resetBtn;
+    float centerX, centerY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,10 @@ public class EightCircleAnimation extends AppCompatActivity {
 
         cardList = CardMethods.generateCards(26, 0);
 
-        params = new RelativeLayout.LayoutParams(50, 80);
+        centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
+        centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
+
+        params = new RelativeLayout.LayoutParams(80, 110);
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -56,15 +60,14 @@ public class EightCircleAnimation extends AppCompatActivity {
 
     private void createCircles() {
 
-        float radius = (float) (screenWidth * 0.1);
+        ImageView prevImg = null;
+        float radius = (float) (screenWidth * 0.08);
         float angle = (float) 360 / 13;
         float x, y;
+        float rotation;
 
-        float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
-        float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
-
-        for (int i = 0; i < cardList.size(); i++) {
-            CardModel card = cardList.get(i);
+        for (int i = 1; i <= cardList.size(); i++) {
+            CardModel card = cardList.get(i - 1);
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
@@ -76,15 +79,26 @@ public class EightCircleAnimation extends AppCompatActivity {
 
             angle2 = angle * i;
             radiance = (float) Math.toRadians(angle2);
-            x = (float) (centerX + radius * Math.sin(radiance));
-            y = (float) (centerY - radius * Math.cos(radiance));
+
+            if (i == 1) {
+                x = (float) (centerX + radius * Math.sin(radiance));
+                y = (float) (centerY - radius * Math.cos(radiance));
+                rotation = angle;
+            } else {
+                x = (float) (prevImg.getX() + radius * Math.sin(radiance));
+                y = (float) (prevImg.getY() - radius * Math.cos(radiance));
+                rotation = prevImg.getRotation() + angle;
+            }
 
             image.setX(x);
             image.setY(y);
-            image.setRotation(angle2);
+            image.setRotation(rotation);
+            prevImg = image;
+
             container.addView(image);
         }
-        for (int i = 0; i < cardList.size(); i++) {
+
+        for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();

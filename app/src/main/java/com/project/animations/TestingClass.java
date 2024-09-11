@@ -1,9 +1,9 @@
 package com.project.animations;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -62,6 +62,7 @@ public class TestingClass extends AppCompatActivity {
         float radius = (float) (screenWidth * 0.10);
         float angle = (float) 360 / 13;
         float x, y;
+        float rotation;
 
         float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
@@ -81,21 +82,28 @@ public class TestingClass extends AppCompatActivity {
             angle2 = angle * i;
             radiance = (float) Math.toRadians(angle2);
             if (prevImg == null) {
-                x = centerX;
-                y = centerY;
+                x = (float) (screenWidth * 0.35 - (double) cardWidth / 2);
+                y = (float) (screenHeight * 0.4);
+                rotation = -45f;
             } else {
                 x = (float) (prevImg.getX() + radius * Math.sin(radiance));
                 y = (float) (prevImg.getY() - radius * Math.cos(radiance));
+                rotation = prevImg.getRotation() + angle;
             }
             image.setX(x);
             image.setY(y);
-            image.setRotation(angle2);
+//            image.setRotation(rotation);
             prevImg = image;
+            if (i != 1) {
+//                image.setVisibility(ImageView.INVISIBLE);
+            }
+
             container.addView(image);
         }
 
         for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i);
+
             float x1 = image.getX();
             float y1 = image.getY();
 
@@ -116,7 +124,32 @@ public class TestingClass extends AppCompatActivity {
                 .withEndAction(() -> {
                     image.setX(x1);
                     image.setY(y1);
+                    if (i == cardList.size())
+                        rotateAnimation();
                 })
                 .start();
+    }
+
+    private void rotateAnimation() {
+        for (int i = 1; i <= cardList.size(); i++) {
+            ImageView image = findViewById(i);
+            ImageView nextImg = findViewById(i == 13 ? 1 : i + 1);
+
+            image.animate()
+                    .translationX(nextImg.getX())
+                    .translationY(nextImg.getY())
+                    .rotation(nextImg.getRotation())
+                    .setInterpolator(new LinearInterpolator())
+                    .setDuration(1000L)
+                    .setStartDelay(0L)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+//                                image.setX(nextImg.getX());
+//                                image.setY(nextImg.getY());
+                        }
+                    })
+                    .start();
+        }
     }
 }
