@@ -58,16 +58,16 @@ public class DiamondAnimation extends AppCompatActivity {
     private void animate() {
         ArrayList<CardModel> cardModels = CardMethods.generateCards(TOTAL_CARDS, 2);
 
-        float x, y;
+        float x = 0, y = 0;
         float rotation;
 
-        long duration = 300L;
+        long duration = 400L;
         long delay = 30L;
 
         ImageView prevImg = null;
 
-        for (int i = 0; i < TOTAL_CARDS; i++) {
-            CardModel card = cardModels.get(i);
+        for (int i = 1; i <= 40; i++) {
+            CardModel card = cardModels.get(i - 1);
 
             ImageView image = new ImageView(this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
@@ -83,23 +83,25 @@ public class DiamondAnimation extends AppCompatActivity {
                 y = (float) screenHeight / 4;
                 rotation = -45;
             } else {
-                if (i < 10) {
+                if (i <= 10) {
                     x = prevImg.getX() + cardGap;
                     y = prevImg.getY() + cardGap;
                     rotation = prevImg.getRotation();
-                } else if (i < 20) {
+                } else if (i <= 20) {
                     x = prevImg.getX() - cardGap;
-                    y = prevImg.getY() + cardGap;
+                    y = i == 11 ? prevImg.getY() : prevImg.getY() + cardGap;
                     rotation = 45;
-                } else if (i < 30) {
-                    x = prevImg.getX() - cardGap;
+                } else if (i <= 30) {
+                    x = i == 21 ? prevImg.getX() : prevImg.getX() - cardGap;
                     y = prevImg.getY() - cardGap;
                     rotation = -45;
                 } else {
                     x = prevImg.getX() + cardGap;
-                    y = prevImg.getY() - cardGap;
+                    y = i == 31 ? prevImg.getY() : prevImg.getY() - cardGap;
                     rotation = 45;
                 }
+                if (i == 10 || i == 20 || i == 30 || i == 40)
+                    image.setVisibility(ImageView.INVISIBLE);
             }
             image.setX(x);
             image.setY(y);
@@ -107,22 +109,25 @@ public class DiamondAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 0; i < TOTAL_CARDS; i++) {
+        for (int i = 1; i <= 40; i++) {
             ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
+            float rotate = image.getRotation();
 
             image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
             image.setY(screenHeight);
+            image.setRotation(0f);
 
-            animateDiamond(image, x1, y1, duration, delay, i);
+            animateDiamond(image, x1, y1, rotate, duration, delay, i);
         }
     }
 
-    private void animateDiamond(ImageView image, float x, float y, long duration, long delay, int i) {
+    private void animateDiamond(ImageView image, float x, float y, float rotation, long duration, long delay, int i) {
         image.animate()
                 .translationX(x)
                 .translationY(y)
+                .rotation(rotation)
                 .setDuration(duration)
                 .setStartDelay(delay * i)
                 .setInterpolator(new DecelerateInterpolator())
@@ -136,7 +141,7 @@ public class DiamondAnimation extends AppCompatActivity {
     }
 
     private void scaleUpAnimation() {
-        for (int i = 0; i < TOTAL_CARDS; i++) {
+        for (int i = 1; i <= TOTAL_CARDS; i++) {
             ImageView image = findViewById(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f);
