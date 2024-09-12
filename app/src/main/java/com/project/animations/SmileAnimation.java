@@ -185,8 +185,8 @@ public class SmileAnimation extends AppCompatActivity {
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.3f);
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.3f);
 
-            scaleX.setDuration(400L);
-            scaleY.setDuration(400L);
+            scaleX.setDuration(300L);
+            scaleY.setDuration(300L);
 
             scaleX.setRepeatMode(ValueAnimator.REVERSE);
             scaleY.setRepeatMode(ValueAnimator.REVERSE);
