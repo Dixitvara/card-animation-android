@@ -1,5 +1,6 @@
 package com.project.animations;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.DecelerateInterpolator;
@@ -92,7 +93,7 @@ public class TestingClass extends AppCompatActivity {
             }
             image.setX(x);
             image.setY(y);
-//            image.setRotation(rotation);
+            image.setRotation(rotation);
             prevImg = image;
             if (i != 1) {
 //                image.setVisibility(ImageView.INVISIBLE);
@@ -125,7 +126,8 @@ public class TestingClass extends AppCompatActivity {
                     image.setX(x1);
                     image.setY(y1);
                     if (i == cardList.size())
-                        rotateAnimation();
+//                        rotateAnimation();
+                        rotateAnimation2();
                 })
                 .start();
     }
@@ -147,4 +149,36 @@ public class TestingClass extends AppCompatActivity {
                     .start();
         }
     }
+
+    private void rotateAnimation2() {
+        float radius = (float) (screenWidth * 0.10);
+        float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
+        float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
+        float anglePerCard = (float) 360 / cardList.size();  // Angle between each card
+
+        for (int i = 1; i <= cardList.size(); i++) {
+            final ImageView image = findViewById(i);
+
+            ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
+            animator.setDuration(5000);
+            animator.setInterpolator(new LinearInterpolator());
+
+            final int index = i - 1;
+
+            animator.addUpdateListener(animation -> {
+                float animatedValue = (float) animation.getAnimatedValue();
+                float currentAngle = anglePerCard * index + animatedValue;
+
+                float x = (float) (centerX + radius * Math.cos(Math.toRadians(currentAngle)));
+                float y = (float) (centerY + radius * Math.sin(Math.toRadians(currentAngle)));
+
+                image.setX(x);
+                image.setY(y);
+                image.setRotation(currentAngle);
+            });
+
+            animator.start();
+        }
+    }
+
 }
