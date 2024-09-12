@@ -182,7 +182,7 @@ public class ClubAnimation extends AppCompatActivity {
                 rotation = 0;
             } else if (i == 40) {
                 x = prevImg.getX();
-                y = (float) (prevImg.getY() + prevImg.getX() * 0.1);
+                y = (float) (prevImg.getY() + prevImg.getX() * 0.17);
                 rotation = prevImg.getRotation();
             } else if (i == 41) {
                 x = (float) (prevImg.getX() - prevImg.getX() * 0.1);

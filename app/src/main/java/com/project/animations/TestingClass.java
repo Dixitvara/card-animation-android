@@ -142,12 +142,7 @@ public class TestingClass extends AppCompatActivity {
                     .setInterpolator(new LinearInterpolator())
                     .setDuration(1000L)
                     .setStartDelay(0L)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-//                                image.setX(nextImg.getX());
-//                                image.setY(nextImg.getY());
-                        }
+                    .withEndAction(() -> {
                     })
                     .start();
         }
