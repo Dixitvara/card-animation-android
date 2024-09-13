@@ -26,15 +26,31 @@ public class CardMethods {
         return cardList;
     }
 
-    public static ArrayList<CardModel> allCards(){
+    public static ArrayList<CardModel> allCards() {
         ArrayList<CardModel> cardList = new ArrayList<>();
 
-        for (int i = 0; i < suites.length; i++){
+        for (int i = 0; i < suites.length; i++) {
             String color = i > 1 ? "red" : "black";
 
-            for(int j = 1; j <= 13; j++){
+            for (int j = 1; j <= 13; j++) {
                 CardModel card = new CardModel(suites[i], color, j);
                 cardList.add(card);
+            }
+        }
+        return cardList;
+    }
+
+    public static ArrayList<CardModel> generateSelectedCards(int cardSize, int[] index) {
+        ArrayList<CardModel> cardList = new ArrayList<>();
+
+        for (int i = 0; i < suites.length; i++) {
+            String currentSuite = suites[index[i]];
+            String color = index[i] > 1 ? "red" : "black";
+
+            for (int j = 1; j <= 13; j++) {
+                CardModel card = new CardModel(currentSuite, color, j);
+                cardList.add(card);
+                if (cardList.size() == cardSize) return cardList;
             }
         }
         return cardList;

@@ -67,7 +67,7 @@ public class SmileAnimation extends AppCompatActivity {
     private void generateCards() {
         int circleSize = 39;
         float x, y;
-        float rotation = 0;
+        float rotation;
         float radius = (float) (screenWidth * 0.06);
         float angle = (float) 360 / circleSize;
 

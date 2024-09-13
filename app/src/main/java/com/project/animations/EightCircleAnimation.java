@@ -1,7 +1,9 @@
 package com.project.animations;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,6 +25,7 @@ public class EightCircleAnimation extends AppCompatActivity {
     RelativeLayout container;
     Button resetBtn;
     float centerX, centerY;
+    float radius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +45,13 @@ public class EightCircleAnimation extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(26, 0);
+        cardList = CardMethods.generateSelectedCards(26, new int[]{1, 2});
 
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
 
         params = new RelativeLayout.LayoutParams(80, 110);
+        radius = (float) (screenWidth * 0.08);
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -61,13 +65,12 @@ public class EightCircleAnimation extends AppCompatActivity {
     private void createCircles() {
 
         ImageView prevImg = null;
-        float radius = (float) (screenWidth * 0.08);
         float angle = (float) 360 / 13;
         float x, y;
         float rotation;
 
-        for (int i = 1; i <= cardList.size(); i++) {
-            CardModel card = cardList.get(i - 1);
+        for (int i = 0; i < cardList.size(); i++) {
+            CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
@@ -109,6 +112,30 @@ public class EightCircleAnimation extends AppCompatActivity {
         }
     }
 
-    private void rotateAnimation(ImageView image) {
+    private void rotateAnimation() {
+        float angle = (float) 360 / 13;
+
+        for (int i = 0; i < 13; i++) {
+            final ImageView image = findViewById(i);
+
+            ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
+            animator.setDuration(5000);
+            animator.setInterpolator(new DecelerateInterpolator());
+
+            final int index = i;
+
+            animator.addUpdateListener(animation -> {
+                float animatedValue = (float) animation.getAnimatedValue();
+                float currentAngle = angle * index + animatedValue;
+                float x = (float) (centerX + radius * Math.sin(Math.toRadians(currentAngle)));
+                float y = (float) (centerY - radius * Math.cos(Math.toRadians(currentAngle)));
+
+                image.setX(x);
+                image.setY(y);
+                image.setRotation(currentAngle);
+            });
+
+            animator.start();
+        }
     }
 }

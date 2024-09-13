@@ -1,7 +1,9 @@
 package com.project.animations;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +26,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
     RelativeLayout container;
     Button resetBtn;
     float centerX, centerY;
+    final int TOTAL_CARDS = 26;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(13, 0);
+        cardList = CardMethods.generateSelectedCards(26, new int[]{1, 2});
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
@@ -55,6 +58,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         });
+
 
         createCircles();
 
@@ -68,10 +72,10 @@ public class TwoCircleAnimation extends AppCompatActivity {
 
         ImageView prevImg = null;
 
-
-        for (int i = 1; i <= cardList.size(); i++) {
-            CardModel card = cardList.get(i - 1);
+        for (int i = 0; i < TOTAL_CARDS; i++) {
             ImageView image = new ImageView(this);
+
+            CardModel card = cardList.get(i);
 
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
@@ -80,31 +84,29 @@ public class TwoCircleAnimation extends AppCompatActivity {
             float angle2;
             float radiance;
 
-            if (i <= 13) {
+            if (i < 13) {
                 angle2 = angle * i;
                 radiance = (float) Math.toRadians(angle2);
-                y = (float) (centerY - radius * Math.cos(radiance));
-                rotation = i == 1 ? angle : prevImg.getRotation() + angle;
-//                if (i != 1)
-//                    image.setVisibility(ImageView.INVISIBLE);
+                y = (float) (screenHeight * 0.3 - radius * Math.cos(radiance));
+                rotation = i == 0 ? angle2 : prevImg.getRotation() + angle;
             } else {
                 angle2 = angle * (i - 13);
                 radiance = (float) Math.toRadians(angle2);
                 y = (float) (screenHeight * 0.6 - radius * Math.cos(radiance));
-                rotation = i == 14 ? angle : prevImg.getRotation() + angle;
+                rotation = i == 13 ? angle2 : prevImg.getRotation() + angle;
             }
 
             x = (float) (centerX + radius * Math.sin(radiance));
 
             image.setX(x);
             image.setY(y);
-//            image.setRotation(rotation);
+            image.setRotation(rotation);
 
             prevImg = image;
             container.addView(image);
         }
 
-        for (int i = 1; i <= 13; i++) {
+        for (int i = 0; i < TOTAL_CARDS; i++) {
             ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
@@ -112,7 +114,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
             image.setX(centerX);
             image.setY(screenHeight);
 
-            animateCircle(image, x1, y1, i);
+            animateCircle(image, x1, y1, i + 1);
         }
     }
 
@@ -126,38 +128,44 @@ public class TwoCircleAnimation extends AppCompatActivity {
                 .withEndAction(() -> {
                     image.setX(x1);
                     image.setY(y1);
-                    if (i == cardList.size())
+                    if (i == TOTAL_CARDS - 1)
                         rotateAnimation();
                 })
                 .start();
     }
 
     private void rotateAnimation() {
+        float radius = (float) (screenWidth * 0.12);
         float angle = (float) 360 / 13;
-        for (int i = 1; i <= cardList.size(); i++) {
-            float angle2 = angle * i;
-            ImageView image = findViewById(i);
-            ImageView image2 = findViewById(i == 13 ? 1 : i + 1);
 
-            image.animate()
-                    .translationX(image2.getX())
-                    .translationY(image2.getY())
-//                    .rotation(angle2)
-                    .setDuration(3000L)
-                    .setStartDelay(0L)
-                    .start();
+        for (int i = 0; i < TOTAL_CARDS; i++) {
+            final ImageView image = findViewById(i);
+
+            ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
+            animator.setDuration(5000);
+            animator.setInterpolator(new AccelerateDecelerateInterpolator());
+
+            final int index = i;
+
+            animator.addUpdateListener(animation -> {
+                float animatedValue = (float) animation.getAnimatedValue();
+                float currentAngle = angle * index + animatedValue;
+
+                double radiance = Math.toRadians(currentAngle);
+
+                float x = (float) (centerX + radius * Math.sin(radiance));
+                float y;
+                if (index < 13) {
+                    y = (float) (screenHeight * 0.3 - radius * Math.cos(radiance));
+                } else {
+                    y = (float) (screenHeight * 0.6 - radius * Math.cos(radiance));
+                }
+                image.setX(x);
+                image.setY(y);
+                image.setRotation(angle * index + (animatedValue * 2));
+            });
+
+            animator.start();
         }
-
-/*
-            ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(
-                    image,
-                    "rotation",
-                    image.getRotation(),
-                    image.getRotation() + 360
-            );
-            rotateAnimation.setDuration(3000L);
-            rotateAnimation.setStartDelay(0L);
-            rotateAnimation.start();
-*/
     }
 }
