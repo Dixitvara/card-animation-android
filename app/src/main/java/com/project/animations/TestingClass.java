@@ -95,9 +95,6 @@ public class TestingClass extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
             prevImg = image;
-            if (i != 1) {
-//                image.setVisibility(ImageView.INVISIBLE);
-            }
 
             container.addView(image);
         }

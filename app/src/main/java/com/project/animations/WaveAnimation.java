@@ -158,7 +158,7 @@ public class WaveAnimation extends AppCompatActivity {
         for (int i = 1; i <= 52; i++) {
             ImageView image = findViewById(i);
 
-            x = i <= 13 || i >= 27 && i <= 39 ? -100f : screenWidth;
+            x = i <= 13 || i >= 27 && i <= 39 ? -140f : screenWidth;
 
             ObjectAnimator translateX = ObjectAnimator.ofFloat(image, "translationX", x)
                     .setDuration(600L);

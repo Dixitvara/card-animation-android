@@ -52,7 +52,7 @@ public class SwordAnimation extends AppCompatActivity {
         centerX = (screenWidth / 2) - (cardWidth / 2);
         centerY = (screenHeight / 2) - (cardHeight / 2);
 
-        cardList = CardMethods.generateCards(16, 0);
+        cardList = CardMethods.generateCards(14, 0);
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         generateCards();
@@ -61,6 +61,7 @@ public class SwordAnimation extends AppCompatActivity {
     private void generateCards() {
         float x, y;
         float rotation;
+        float distance = 8f;
 
         ImageView prevImage = null;
         for (int i = 0; i < cardList.size(); i++) {
@@ -71,9 +72,39 @@ public class SwordAnimation extends AppCompatActivity {
             image.setImageResource(card.getResourceId(this));
             image.setId(i);
 
-            if(prevImage == null){
-//                x =
+            if (prevImage == null) {
+                x = (float) (screenWidth / 2 - cardWidth / 2);
+                y = (float) (screenHeight * 0.6);
+                rotation = 175f;
+            } else if (i < 6) {
+                x = prevImage.getX() - distance;
+                y = prevImage.getY() - distance * 10;
+                rotation = prevImage.getRotation();
+            } else if (i == 6) {
+                x = prevImage.getX() + distance * 4;
+                y = prevImage.getY() - distance * 10;
+                rotation = 45f;
+            } else if (i == 7) {
+                x = prevImage.getX() + distance * 4;
+                y = prevImage.getY();
+                rotation = prevImage.getRotation() * -1;
             }
+            else if (i == 8){
+                x = (float) (prevImage.getX() + distance * 3.5);
+                y = prevImage.getY() + distance * 10;
+                rotation = -175f;
+            }
+            else{
+                x = prevImage.getX() - distance;
+                y = prevImage.getY() + distance * 10;
+                rotation = prevImage.getRotation();
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+
+            container.addView(image);
         }
     }
 }

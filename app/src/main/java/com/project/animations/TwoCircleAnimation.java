@@ -27,6 +27,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
     Button resetBtn;
     float centerX, centerY;
     final int TOTAL_CARDS = 26;
+    float radius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +54,17 @@ public class TwoCircleAnimation extends AppCompatActivity {
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
 
+        radius = (float) (screenWidth * 0.12);
+
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
             finish();
             overridePendingTransition(0, 0);
         });
-
-
         createCircles();
-
     }
 
     private void createCircles() {
-        float radius = (float) (screenWidth * 0.12);
         float angle = (float) 360 / 13;
         float x, y;
         float rotation;
@@ -135,11 +134,11 @@ public class TwoCircleAnimation extends AppCompatActivity {
     }
 
     private void rotateAnimation() {
-        float radius = (float) (screenWidth * 0.12);
         float angle = (float) 360 / 13;
 
         for (int i = 0; i < TOTAL_CARDS; i++) {
             final ImageView image = findViewById(i);
+            System.out.println("-} " + i);
 
             ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
             animator.setDuration(5000);
