@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -125,7 +126,6 @@ public class EightCircleAnimation extends AppCompatActivity {
             prevImg = image;
 
             container.addView(image);
-            rotateAnimation();
         }
 
         for (int i = 0; i < 104; i++) {
@@ -133,23 +133,40 @@ public class EightCircleAnimation extends AppCompatActivity {
             float x1 = image.getX();
             float y1 = image.getY();
 
-//            image.setX((float) screenWidth /2);
-//            image.setY(screenHeight);
+            image.setX((float) screenWidth / 2);
+            image.setY(screenHeight);
 
+            addToViewAnimation(image, x1, y1, i);
         }
     }
+
+    private void addToViewAnimation(ImageView image, float x, float y, int i) {
+        image.animate()
+                .translationX(x)
+                .translationY(y)
+                .setDuration(400L)
+                .setStartDelay(30L * i)
+                .setInterpolator(new DecelerateInterpolator())
+                .withEndAction(() -> {
+                    image.setX(x);
+                    image.setY(y);
+                    if (i == 103) {
+                        rotateAnimation();
+                    }
+                })
+                .start();
+    }
+
 
     private void rotateAnimation() {
         float angle = (float) 360 / 13;
 
         for (int i = 0; i < 104; i++) {
-            final ImageView image = findViewById(i);
-            System.out.println(image);
-            System.out.println("-} " + i);
+            ImageView image = findViewById(i);
 
             ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
             animator.setDuration(5000);
-            animator.setInterpolator(new DecelerateInterpolator());
+            animator.setInterpolator(new LinearInterpolator());
 
             final int index = i;
 

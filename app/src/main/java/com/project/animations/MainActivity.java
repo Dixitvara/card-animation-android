@@ -3,19 +3,15 @@ package com.project.animations;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     Button btn1, btn2, btn3, btn4;
     Button btn5, btn6, btn7, btn8;
     Button btn9, btn10, btn11, btn12;
+    Button btn13, btn14, btn15, btn16;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         btn10 = findViewById(R.id.btn10);
         btn11 = findViewById(R.id.btn11);
         btn12 = findViewById(R.id.btn12);
+        btn13 = findViewById(R.id.btn13);
 
         btn1.setOnClickListener(v -> startActivity(new Intent(this, SpadesAnimation.class)));
         btn2.setOnClickListener(v -> startActivity(new Intent(this, HeartAnimation.class)));
@@ -47,5 +44,6 @@ public class MainActivity extends AppCompatActivity {
         btn10.setOnClickListener(v -> startActivity(new Intent(this, TestingClass.class)));
         btn11.setOnClickListener(v -> startActivity(new Intent(this, SmileAnimation.class)));
         btn12.setOnClickListener(v -> startActivity(new Intent(this, SwordAnimation.class)));
+        btn13.setOnClickListener(v -> startActivity(new Intent(this, CastleAnimation.class)));
     }
 }

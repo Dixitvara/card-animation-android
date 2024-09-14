@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Animations"
         tools:targetApi="31">
         <activity
+            android:name=".CastleAnimation"
+            android:exported="false" />
+        <activity
             android:name=".SwordAnimation"
             android:exported="false" />
         <activity

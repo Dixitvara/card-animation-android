@@ -1,8 +1,11 @@
 package com.project.animations;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -69,8 +72,8 @@ public class TestingClass extends AppCompatActivity {
         float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
         ImageView prevImg = null;
 
-        for (int i = 1; i <= cardList.size(); i++) {
-            CardModel card = cardList.get(i - 1);
+        for (int i = 0; i < cardList.size(); i++) {
+            CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
@@ -80,7 +83,7 @@ public class TestingClass extends AppCompatActivity {
             float angle2;
             float radiance;
 
-            angle2 = angle * i;
+            angle2 = angle * (i + 1);
             radiance = (float) Math.toRadians(angle2);
             if (prevImg == null) {
                 x = (float) (screenWidth * 0.35 - (double) cardWidth / 2);
@@ -99,7 +102,7 @@ public class TestingClass extends AppCompatActivity {
             container.addView(image);
         }
 
-        for (int i = 1; i <= cardList.size(); i++) {
+        for (int i = 0; i < cardList.size(); i++) {
             ImageView image = findViewById(i);
 
             float x1 = image.getX();
@@ -108,7 +111,7 @@ public class TestingClass extends AppCompatActivity {
             image.setX((float) screenWidth / 2);
             image.setY(screenHeight);
 
-            animateCircle(image, x1, y1, i);
+            animateCircle(image, x1, y1, i + 1);
         }
     }
 
@@ -123,59 +126,37 @@ public class TestingClass extends AppCompatActivity {
                     image.setX(x1);
                     image.setY(y1);
                     if (i == cardList.size())
-//                        rotateAnimation();
-                        rotateAnimation2();
+                        scaleUpAnimation();
                 })
                 .start();
     }
 
-    private void rotateAnimation() {
-        for (int i = 1; i <= cardList.size(); i++) {
-            ImageView image = findViewById(i);
-            ImageView nextImg = findViewById(i == 13 ? 1 : i + 1);
+    private void scaleUpAnimation() {
+        int x = screenWidth / 2;
+        int y = screenHeight;
 
-            image.animate()
-                    .translationX(nextImg.getX())
-                    .translationY(nextImg.getY())
-                    .rotation(nextImg.getRotation())
-                    .setInterpolator(new LinearInterpolator())
-                    .setDuration(1000L)
-                    .setStartDelay(0L)
-                    .withEndAction(() -> {
-                    })
-                    .start();
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View view = container.getChildAt(i);
+
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.3f);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.3f);
+
+            scaleX.setDuration(300L);
+            scaleY.setDuration(300L);
+
+            scaleX.setRepeatMode(ValueAnimator.REVERSE);
+            scaleY.setRepeatMode(ValueAnimator.REVERSE);
+
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
+
+            scaleX.setInterpolator(new DecelerateInterpolator());
+            scaleY.setInterpolator(new DecelerateInterpolator());
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(20L * (i));
+            animatorSet.start();
         }
     }
-
-    private void rotateAnimation2() {
-        float radius = (float) (screenWidth * 0.10);
-        float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
-        float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
-        float anglePerCard = (float) 360 / cardList.size();  // Angle between each card
-
-        for (int i = 1; i <= cardList.size(); i++) {
-            final ImageView image = findViewById(i);
-
-            ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
-            animator.setDuration(5000);
-            animator.setInterpolator(new LinearInterpolator());
-
-            final int index = i - 1;
-
-            animator.addUpdateListener(animation -> {
-                float animatedValue = (float) animation.getAnimatedValue();
-                float currentAngle = anglePerCard * index + animatedValue;
-
-                float x = (float) (centerX + radius * Math.cos(Math.toRadians(currentAngle)));
-                float y = (float) (centerY + radius * Math.sin(Math.toRadians(currentAngle)));
-
-                image.setX(x);
-                image.setY(y);
-                image.setRotation(currentAngle);
-            });
-
-            animator.start();
-        }
-    }
-
 }

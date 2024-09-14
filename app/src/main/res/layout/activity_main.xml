@@ -96,6 +96,13 @@
             android:text="Sword"
             android:textSize="@dimen/_15sdp" />
         <Button
+            android:id="@+id/btn13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Castle"
+            android:textSize="@dimen/_15sdp" />
+        <Button
             android:id="@+id/btn10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
