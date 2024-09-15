@@ -61,7 +61,7 @@ public class SwordAnimation extends AppCompatActivity {
     private void generateCards() {
         float x, y;
         float rotation;
-        float distance = 8f;
+        float distance = screenHeight * 0.01f;
 
         ImageView prevImage = null;
         for (int i = 0; i < cardList.size(); i++) {
@@ -78,11 +78,11 @@ public class SwordAnimation extends AppCompatActivity {
                 rotation = 175f;
             } else if (i < 6) {
                 x = prevImage.getX() - distance;
-                y = prevImage.getY() - distance * 10;
+                y = prevImage.getY() - distance * 5;
                 rotation = prevImage.getRotation();
             } else if (i == 6) {
                 x = prevImage.getX() + distance * 4;
-                y = prevImage.getY() - distance * 10;
+                y = prevImage.getY() - distance * 5;
                 rotation = 45f;
             } else if (i == 7) {
                 x = prevImage.getX() + distance * 4;
@@ -91,12 +91,12 @@ public class SwordAnimation extends AppCompatActivity {
             }
             else if (i == 8){
                 x = (float) (prevImage.getX() + distance * 3.5);
-                y = prevImage.getY() + distance * 10;
+                y = prevImage.getY() + distance * 5;
                 rotation = -175f;
             }
             else{
                 x = prevImage.getX() - distance;
-                y = prevImage.getY() + distance * 10;
+                y = prevImage.getY() + distance * 5;
                 rotation = prevImage.getRotation();
             }
             image.setX(x);

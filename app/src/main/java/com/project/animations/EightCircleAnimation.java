@@ -54,7 +54,7 @@ public class EightCircleAnimation extends AppCompatActivity {
 
         params = new RelativeLayout.LayoutParams(80, 110);
 
-        radius = (float) (screenWidth * 0.08);
+        radius = (float) (screenWidth * 0.1);
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -89,29 +89,29 @@ public class EightCircleAnimation extends AppCompatActivity {
             image.setId(i);
 
             if (i < 13) {
-                x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
-                y = (float) (screenHeight * 0.2 - radius * Math.cos(radiance));
+                x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
+                y = (float) (screenHeight * 0.15 - radius * Math.cos(radiance));
             } else if (i < 26) {
-                x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
-                y = (float) (screenHeight * 0.2 - radius * Math.cos(radiance));
+                x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
+                y = (float) (screenHeight * 0.15 - radius * Math.cos(radiance));
             } else if (i < 39) {
-                x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
+                x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
                 y = (float) (screenHeight * 0.35 - radius * Math.cos(radiance));
             } else if (i < 52) {
-                x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
+                x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
                 y = (float) (screenHeight * 0.35 - radius * Math.cos(radiance));
             } else if (i < 65) {
-                x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
-                y = (float) (screenHeight * 0.5 - radius * Math.cos(radiance));
+                x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
+                y = (float) (screenHeight * 0.55 - radius * Math.cos(radiance));
             } else if (i < 78) {
-                x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
-                y = (float) (screenHeight * 0.5 - radius * Math.cos(radiance));
+                x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
+                y = (float) (screenHeight * 0.55 - radius * Math.cos(radiance));
             } else if (i < 91) {
-                x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
-                y = (float) (screenHeight * 0.65 - radius * Math.cos(radiance));
+                x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
+                y = (float) (screenHeight * 0.75 - radius * Math.cos(radiance));
             } else {
-                x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
-                y = (float) (screenHeight * 0.65 - radius * Math.cos(radiance));
+                x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
+                y = (float) (screenHeight * 0.75 - radius * Math.cos(radiance));
             }
 
             if (prevImg == null) {
@@ -165,7 +165,7 @@ public class EightCircleAnimation extends AppCompatActivity {
             ImageView image = findViewById(i);
 
             ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
-            animator.setDuration(5000);
+            animator.setDuration(3000);
             animator.setInterpolator(new LinearInterpolator());
 
             final int index = i;
@@ -177,31 +177,30 @@ public class EightCircleAnimation extends AppCompatActivity {
                 double radiance = Math.toRadians(currentAngle);
 
                 if (index < 13) {
-                    x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
-                    y = (float) (screenHeight * 0.2 - radius * Math.cos(radiance));
+                    x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
+                    y = (float) (screenHeight * 0.15 - radius * Math.cos(radiance));
                 } else if (index < 26) {
-                    x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
-                    y = (float) (screenHeight * 0.2 - radius * Math.cos(radiance));
+                    x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
+                    y = (float) (screenHeight * 0.15 - radius * Math.cos(radiance));
                 } else if (index < 39) {
-                    x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
+                    x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
                     y = (float) (screenHeight * 0.35 - radius * Math.cos(radiance));
                 } else if (index < 52) {
-                    x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
+                    x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
                     y = (float) (screenHeight * 0.35 - radius * Math.cos(radiance));
                 } else if (index < 65) {
-                    x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
-                    y = (float) (screenHeight * 0.5 - radius * Math.cos(radiance));
+                    x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
+                    y = (float) (screenHeight * 0.55 - radius * Math.cos(radiance));
                 } else if (index < 78) {
-                    x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
-                    y = (float) (screenHeight * 0.5 - radius * Math.cos(radiance));
+                    x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
+                    y = (float) (screenHeight * 0.55 - radius * Math.cos(radiance));
                 } else if (index < 91) {
-                    x = (float) (screenWidth * 0.3 + radius * Math.sin(radiance));
-                    y = (float) (screenHeight * 0.65 - radius * Math.cos(radiance));
+                    x = (float) (screenWidth * 0.25 + radius * Math.sin(radiance));
+                    y = (float) (screenHeight * 0.75 - radius * Math.cos(radiance));
                 } else {
-                    x = (float) (screenWidth * 0.6 + radius * Math.sin(radiance));
-                    y = (float) (screenHeight * 0.65 - radius * Math.cos(radiance));
+                    x = (float) (screenWidth * 0.65 + radius * Math.sin(radiance));
+                    y = (float) (screenHeight * 0.75 - radius * Math.cos(radiance));
                 }
-
                 image.setX(x);
                 image.setY(y);
                 image.setRotation(currentAngle);

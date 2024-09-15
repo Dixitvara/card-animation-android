@@ -1,5 +1,7 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -46,9 +48,9 @@ public class SpadesAnimation extends AppCompatActivity {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
-        int[] cardParam = CardDimension.getCardParams(displayMetrics);
-        cardWidth = cardParam[0];
-        cardHeight = cardParam[1];
+        int[] cardDimension = CardDimension.getCardParams(displayMetrics);
+        cardWidth = cardDimension[0];
+        cardHeight = cardDimension[1];
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
@@ -209,29 +211,37 @@ public class SpadesAnimation extends AppCompatActivity {
 
     private void animateHeart(ImageView image, float imageX, float imageY, int duration,
                               long startDelay, int i) {
-        image.animate()
-                .translationX(imageX)
-                .translationY(imageY)
-                .setDuration(duration)
-                .setInterpolator(new DecelerateInterpolator())
-                .setStartDelay(startDelay * i)
-                .withEndAction(() -> {
-                    image.setX(imageX);
-                    image.setY(imageY);
-                    if(i == 44){
-                        scaleAnimation();
-                    }
-                })
-                .start();
+
+        ObjectAnimator animX = ObjectAnimator.ofFloat(image, "translationX", imageX);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(image, "translationY", imageY);
+        animX.setDuration(duration);
+        animY.setDuration(duration);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+        animatorSet.setStartDelay(startDelay * i);
+        animatorSet.playTogether(animX, animY);
+        animatorSet.start();
+
+        if (i == 44) {
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    scaleAnimation();
+                }
+            });
+        }
     }
 
     private void scaleAnimation() {
+        ObjectAnimator scaleX, scaleY;
+
         for (int i = 1; i <= cardList.size(); i++) {
             ImageView image = findViewById(i - 1);
 
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
+            scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
                     .setDuration(400);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
+            scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
                     .setDuration(400);
 
             scaleX.setRepeatMode(ValueAnimator.REVERSE);

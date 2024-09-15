@@ -18,7 +18,7 @@ public class CastleAnimation extends AppCompatActivity {
 
     int cardWidth, cardHeight;
     int screenWidth, screenHeight;
-    ArrayList<CardModel> cardList, cardList2;
+    ArrayList<CardModel> cardList;
     RelativeLayout.LayoutParams params;
     RelativeLayout container;
     Button resetBtn;
@@ -43,7 +43,7 @@ public class CastleAnimation extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(1, 1);
+        cardList = CardMethods.generateCards(8, 2);
 
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
@@ -64,6 +64,7 @@ public class CastleAnimation extends AppCompatActivity {
         ImageView prevImage = null;
         float x, y;
 
+        // left
         for (int i = 0; i < 8; i++) {
             ImageView image = new ImageView(this);
 
@@ -90,13 +91,14 @@ public class CastleAnimation extends AppCompatActivity {
             container.addView(image);
         }
 
+        // right
         prevImage = null;
         for (int i = 0; i < 8; i++) {
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
             image.setImageResource(R.drawable.spades1);
-            image.setId(i);
+            image.setId(i + 8);
 
             if (prevImage == null) {
                 x = (float) (screenWidth * 0.6);
@@ -115,6 +117,17 @@ public class CastleAnimation extends AppCompatActivity {
             image.setY(y);
             prevImage = image;
             container.addView(image);
+        }
+
+        // top horizontal cards
+        prevImage = null;
+        for(int i = 0; i < 8; i++){
+            ImageView image = new ImageView(this);
+            CardModel card = cardList.get(i);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i + 16);
         }
     }
 }
