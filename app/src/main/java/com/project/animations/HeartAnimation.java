@@ -53,7 +53,7 @@ public class HeartAnimation extends AppCompatActivity {
 
         centerY = screenHeight / 4;
 
-        Radius = (float) (screenWidth * 0.060);
+        Radius = (float) (screenWidth * 0.06);
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());

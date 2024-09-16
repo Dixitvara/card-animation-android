@@ -5,7 +5,7 @@ import com.project.animations.models.CardModel;
 import java.util.ArrayList;
 
 public class CardMethods {
-    private static final String[] suites = {"clubs", "spades", "diamonds", "hearts"};
+    private static final String[] suites = {"clubs", "spades", "diamonds", "hearts", "clubs_", "spades_", "diamonds_", "hearts_"};
 
     public static ArrayList<CardModel> generateCards(int cardSize, int index) {
         ArrayList<CardModel> cardList = new ArrayList<>();

@@ -47,7 +47,7 @@ public class TestingClass extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(13, 0);
+        cardList = CardMethods.generateCards(20, 0);
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
@@ -64,7 +64,7 @@ public class TestingClass extends AppCompatActivity {
     private void createCircles() {
 
         float radius = (float) (screenWidth * 0.10);
-        float angle = (float) 360 / 13;
+        float angle = (float) 360 / 20;
         float x, y;
         float rotation;
 
@@ -88,7 +88,7 @@ public class TestingClass extends AppCompatActivity {
             if (prevImg == null) {
                 x = (float) (screenWidth * 0.35 - (double) cardWidth / 2);
                 y = (float) (screenHeight * 0.4);
-                rotation = -45f;
+                rotation = -90;
             } else {
                 x = (float) (prevImg.getX() + radius * Math.sin(radiance));
                 y = (float) (prevImg.getY() - radius * Math.cos(radiance));

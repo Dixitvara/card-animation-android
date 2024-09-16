@@ -61,7 +61,6 @@ public class SmileAnimation extends AppCompatActivity {
         params = new RelativeLayout.LayoutParams(90, 110);
 
         generateCards();
-
     }
 
     private void generateCards() {
