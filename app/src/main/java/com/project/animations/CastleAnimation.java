@@ -1,8 +1,12 @@
 package com.project.animations;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,7 +17,9 @@ import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class CastleAnimation extends AppCompatActivity {
 
@@ -44,7 +50,7 @@ public class CastleAnimation extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(8, 3);
+        cardList = CardMethods.generateCards(8, 0);
 
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
@@ -204,16 +210,16 @@ public class CastleAnimation extends AppCompatActivity {
             image.setZ(2);
             prevImage = image;
 
-            if (i == 2){
+            if (i == 2) {
                 image.setVisibility(View.INVISIBLE);
             }
             container.addView(image);
         }
 
         // flag and stand
-        cardList = CardMethods.generateCards(7, 1);
+        cardList = CardMethods.generateCards(8, 2);
         prevImage = null;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             ImageView image = new ImageView(this);
 
             CardModel card = cardList.get(i);
@@ -224,17 +230,67 @@ public class CastleAnimation extends AppCompatActivity {
 
             if (prevImage == null) {
                 x = (float) screenWidth / 2 - (float) cardWidth / 2;
-                y = (float) (screenHeight * 0.25 - (double) cardHeight / 2);
-            } else {
+                y = (float) (screenHeight * 0.4 - (double) cardHeight / 2);
+            } else if (i < 7) {
                 x = prevImage.getX();
-                y = prevImage.getY() + 50f;
+                y = (float) (prevImage.getY() - screenWidth * 0.0371);
+            } else {
+                x = (float) (prevImage.getX() + screenWidth * 0.01852);
+                y = (float) (prevImage.getY() - screenWidth * 0.0371);
+                image.setRotation(-90f);
+                image.setImageResource(R.drawable.spades1);
             }
             image.setX(x);
             image.setY(y);
-            image.setZ(3);
+            image.setZ(5);
             prevImage = image;
 
             container.addView(image);
         }
+//        scaleUpAnimation();
+    }
+
+    private void scaleUpAnimation() {
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View image = container.getChildAt(i);
+
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
+                    .setDuration(300L);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
+                    .setDuration(300L);
+
+            scaleX.setRepeatMode(ValueAnimator.REVERSE);
+            scaleY.setRepeatMode(ValueAnimator.REVERSE);
+
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.setInterpolator(new DecelerateInterpolator());
+            animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(50L * i);
+            animatorSet.start();
+        }
+    }
+
+    private ArrayList<View> func(int index){
+        ArrayList<View> views = new ArrayList<>();
+
+        for(int i = 0; i < container.getChildCount(); i++){
+            views.add(container.getChildAt(i));
+        }
+        views.sort((Comparator<View>) (view1, view2) -> {
+            int[] location1 = new int[2];
+            int[] location2 = new int[2];
+
+            view1.getLocationOnScreen(location1);
+            view2.getLocationOnScreen(location2);
+
+            if (index == 1){
+
+            }
+
+        });
+        return new ArrayList<>(views);
     }
 }

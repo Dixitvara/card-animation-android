@@ -62,7 +62,7 @@ public class CircleAnimation extends AppCompatActivity {
     }
 
     public void animateCard() {
-        ArrayList<CardModel> cardModel = CardMethods.generateCards(TOTAL_NUMBER_OF_CARDS, 1);
+        ArrayList<CardModel> cardModel = CardMethods.generateCards(TOTAL_NUMBER_OF_CARDS, 0);
 
         for (int i = 0; i < TOTAL_NUMBER_OF_CARDS; i++) {
 

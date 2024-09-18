@@ -40,7 +40,7 @@ public class SpadesAnimation extends AppCompatActivity {
         container = findViewById(R.id.container);
 
         generateCards = new SpadesAnimation();
-        cardList = CardMethods.generateCards(45, 1);
+        cardList = CardMethods.generateCards(45, 2);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -157,6 +157,7 @@ public class SpadesAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
+        // bottom branch
         for (int i = 1; i <= 6; i++) {
             CardModel card = cardList.get(37 + i);
             ImageView image = new ImageView(this);
@@ -198,6 +199,7 @@ public class SpadesAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
+        // adding to screen animation call
         for (int i = 1; i <= 45; i++) {
             ImageView image = findViewById(i - 1);
             float imageX = image.getX();

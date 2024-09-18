@@ -103,13 +103,26 @@
             android:text="Castle"
             android:textSize="@dimen/_15sdp" />
         <Button
+            android:id="@+id/btn14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="In Out"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Smile 2.0"
+            android:textSize="@dimen/_15sdp" />
+        <Button
             android:id="@+id/btn10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Testing class"
             android:textSize="@dimen/_15sdp" />
-
     </LinearLayout>
 
 </ScrollView>

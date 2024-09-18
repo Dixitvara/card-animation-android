@@ -138,7 +138,6 @@ public class TwoCircleAnimation extends AppCompatActivity {
 
         for (int i = 0; i < TOTAL_CARDS; i++) {
             final ImageView image = findViewById(i);
-            System.out.println("-} " + i);
 
             ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
             animator.setDuration(5000);

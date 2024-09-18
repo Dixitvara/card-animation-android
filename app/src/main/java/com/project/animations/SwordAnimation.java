@@ -130,7 +130,7 @@ public class SwordAnimation extends AppCompatActivity {
         }
 
         prevImage = null;
-        cardList = CardMethods.generateCards(18, 2);
+        cardList = CardMethods.generateCards(18, 1);
         for (int i = 0; i < cardList.size(); i++) {
             CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);

@@ -46,8 +46,8 @@ public class EightCircleAnimation extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateSelectedCards(52, new int[]{1, 2, 3, 0});
-        cardList2 = CardMethods.generateSelectedCards(52, new int[]{1, 2, 3, 0});
+        cardList = CardMethods.generateSelectedCards(52, new int[]{0, 1, 3, 2});
+        cardList2 = CardMethods.generateSelectedCards(52, new int[]{0, 1, 3, 2});
 
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;

@@ -56,9 +56,9 @@ public class DiamondAnimation extends AppCompatActivity {
     }
 
     private void animate() {
-        ArrayList<CardModel> cardModels = CardMethods.generateCards(TOTAL_CARDS, 2);
+        ArrayList<CardModel> cardModels = CardMethods.generateCards(TOTAL_CARDS, 1);
 
-        float x = 0, y = 0;
+        float x, y;
         float rotation;
 
         long duration = 400L;
@@ -66,6 +66,7 @@ public class DiamondAnimation extends AppCompatActivity {
 
         ImageView prevImg = null;
 
+        // designing animation
         for (int i = 1; i <= 40; i++) {
             CardModel card = cardModels.get(i - 1);
 
@@ -109,6 +110,7 @@ public class DiamondAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
+        // calling animation
         for (int i = 1; i <= 40; i++) {
             ImageView image = findViewById(i);
             float x1 = image.getX();

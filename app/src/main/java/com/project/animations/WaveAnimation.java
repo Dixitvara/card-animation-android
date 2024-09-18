@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -62,31 +63,30 @@ public class WaveAnimation extends AppCompatActivity {
     private void generateAllCards() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
         ImageView prevImage = null;
-        for (int i = 1; i <= cardList.size(); i++) {
-            CardModel card = cardList.get(i - 1);
+        System.out.println("-} " + cardList.size());
+
+        for (int i = 0; i < cardList.size(); i++) {
+            CardModel card = cardList.get(i);
 
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
+            image.setId(i);
 
             float x, y;
-            if (i <= 13) {
-                image.setId(i);
-                x = i == 1 ? -3f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 1 ? (float) (screenHeight * 0.3) - (float) cardHeight / 2 : prevImage.getY();
-            } else if (i <= 26) {
-                image.setId(i + 13);
-                x = i == 14 ? -3f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 14 ? (float) (screenHeight * 0.5) - (float) cardHeight / 2 : prevImage.getY();
-            } else if (i <= 39) {
-                image.setId(53 - i);
-                x = i == 27 ? -3f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 27 ? (float) (screenHeight * 0.4) - (float) cardHeight / 2 : prevImage.getY();
+            if (i < 13) {
+                x = i == 0 ? -3f : prevImage.getX() + (float) screenWidth / 13;
+                y = i == 0 ? (float) (screenHeight * 0.3) - (float) cardHeight / 2 : prevImage.getY();
+            } else if (i < 26) {
+                x = i == 13 ? -3f : prevImage.getX() + (float) screenWidth / 13;
+                y = i == 13 ? (float) (screenHeight * 0.4) - (float) cardHeight / 2 : prevImage.getY();
+            } else if (i < 39) {
+                x = i == 26 ? -3f : prevImage.getX() + (float) screenWidth / 13;
+                y = i == 26 ? (float) (screenHeight * 0.5) - (float) cardHeight / 2 : prevImage.getY();
             } else {
-                image.setId(92 - i);
-                x = i == 40 ? -3f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 40 ? (float) (screenHeight * 0.6) - (float) cardHeight / 2 : prevImage.getY();
+                x = i == 39 ? -3f : prevImage.getX() + (float) screenWidth / 13;
+                y = i == 39 ? (float) (screenHeight * 0.6) - (float) cardHeight / 2 : prevImage.getY();
             }
             image.setX(x);
             image.setY(y);
@@ -96,7 +96,7 @@ public class WaveAnimation extends AppCompatActivity {
         }
 
         for (int i = 0; i < cardList.size(); i++) {
-            ImageView image = findViewById(i + 1);
+            ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
 
@@ -128,7 +128,7 @@ public class WaveAnimation extends AppCompatActivity {
         long delay = 40L;
         long duration = 500L;
 
-        for (int i = 1; i <= 52; i++) {
+        for (int i = 0; i < 52; i++) {
             ImageView image = findViewById(i);
 
             ObjectAnimator animator = ObjectAnimator.ofFloat(image, "translationY", image.getY() - 60f)
@@ -138,14 +138,14 @@ public class WaveAnimation extends AppCompatActivity {
             animator.setRepeatCount(5);
             animator.setRepeatMode(ValueAnimator.REVERSE);
 
-            if (i <= 13)
+            if (i < 13)
                 animator.setStartDelay(delay * i);
-            else if (i <= 26)
-                animator.setStartDelay(delay * (27 - i));
-            else if (i <= 39)
+            else if (i < 26)
+                animator.setStartDelay(delay * (i - 13));
+            else if (i < 39)
                 animator.setStartDelay(delay * (i - 26));
             else
-                animator.setStartDelay(delay * (53 - i));
+                animator.setStartDelay(delay * (i - 39));
 
             animator.start();
 
@@ -155,20 +155,20 @@ public class WaveAnimation extends AppCompatActivity {
 
     private void outAnimation() {
         float x;
-        for (int i = 1; i <= 52; i++) {
+        for (int i = 0; i < 52; i++) {
             ImageView image = findViewById(i);
 
-            x = i <= 13 || i >= 27 && i <= 39 ? -140f : screenWidth;
+            x = i < 13 || i >= 26 && i < 39 ? -200f : screenWidth + 200f;
 
             ObjectAnimator translateX = ObjectAnimator.ofFloat(image, "translationX", x)
-                    .setDuration(600L);
-            translateX.setInterpolator(new DecelerateInterpolator());
+                    .setDuration(500L);
+            translateX.setInterpolator(new AccelerateInterpolator());
 
-            if (i <= 13)
+            if (i < 13)
                 translateX.setStartDelay(50L * i);
-            else if (i <= 26)
+            else if (i < 26)
                 translateX.setStartDelay(50L * (i - 13));
-            else if (i <= 39)
+            else if (i < 39)
                 translateX.setStartDelay(50L * (i - 26));
             else
                 translateX.setStartDelay(50L * (i - 39));

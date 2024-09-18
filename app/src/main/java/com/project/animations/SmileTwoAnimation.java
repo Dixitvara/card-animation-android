@@ -1,12 +1,7 @@
 package com.project.animations;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,7 +14,7 @@ import com.project.animations.utils.CardMethods;
 
 import java.util.ArrayList;
 
-public class SmileAnimation extends AppCompatActivity {
+public class SmileTwoAnimation extends AppCompatActivity {
 
     Button resetBtn;
     RelativeLayout container;
@@ -29,7 +24,7 @@ public class SmileAnimation extends AppCompatActivity {
 
     ArrayList<CardModel> cardList;
     RelativeLayout.LayoutParams params;
-    final int TOTAL_CARDS = 35;
+    final int TOTAL_CARDS = 52;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +53,17 @@ public class SmileAnimation extends AppCompatActivity {
         centerX = (screenWidth / 2) - (cardWidth / 2);
         centerY = (screenHeight / 2) - (cardHeight / 2);
 
-        cardList = CardMethods.generateSelectedCards(TOTAL_CARDS, new int[] {0,1,2});
+        cardList = CardMethods.allCards();
         params = new RelativeLayout.LayoutParams(90, 110);
 
         generateCards();
     }
 
     private void generateCards() {
-        int circleSize = 26;
+        int circleSize = 52;
         float x, y;
         float rotation;
-        float radius = (float) (screenWidth * 0.09);
+        float radius = (float) (screenWidth * 0.4);
         float angle = (float) 360 / circleSize;
 
         ImageView prevImg = null;
@@ -85,16 +80,13 @@ public class SmileAnimation extends AppCompatActivity {
             float angle2 = (float) 360 / circleSize * i;
             double radians = Math.toRadians(angle2);
 
+            x = (float) (centerX + radius * Math.sin(radians));
+            y = (float) (centerY - radius * Math.cos(radians));
             if (prevImg == null) {
-                x = (float) (screenWidth * 0.83);
-                y = centerY;
-                rotation = 5f;
+                rotation = 90f;
             } else {
-                x = (float) (prevImg.getX() - radius * Math.sin(radians));
-                y = (float) (prevImg.getY() + radius * Math.cos(radians));
                 rotation = prevImg.getRotation() + angle;
             }
-
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
@@ -103,9 +95,11 @@ public class SmileAnimation extends AppCompatActivity {
         }
 
         // smile lips
-        for (int i = 2; i < 11; i++) {
-            float radius2 = (float) (screenWidth * 0.05);
-            float angle2 = angle * (i + 1);
+        float smileAngle = (float) 140 / 7;
+        for (int i = 0; i < 7; i++) {
+            float radius2 = (float) (screenWidth * 0.065);
+            float angle2 = smileAngle * i;
+            angle2 += smileAngle;
             float radiance = (float) Math.toRadians(angle2);
 
             CardModel card = cardList.get(i);
@@ -113,40 +107,30 @@ public class SmileAnimation extends AppCompatActivity {
             ImageView image = new ImageView(this);
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
-            image.setId(24 + i);
+            image.setId(52 + i);
 
-            if (i == 2) {
-                x = (float) (screenWidth * 0.6);
-                y = (float) (screenHeight * 0.55);
-                rotation = 45f;
+            if (i == 0) {
+                x = (float) (screenWidth * 0.286);
+                y = (float) (screenHeight * 0.56);
+                rotation = -30f;
             } else {
-                x = (float) (prevImg.getX() - radius2 * Math.sin(radiance));
+                x = (float) (prevImg.getX() + radius2 * Math.sin(radiance));
                 y = (float) (prevImg.getY() + radius2 * Math.cos(radiance));
-                rotation = prevImg.getRotation() + angle;
+                rotation = prevImg.getRotation() - smileAngle;
             }
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
             prevImg = image;
 
-            // eyes
-            if (i == 9) {
-                image.setX((float) (screenWidth * 0.3));
-                image.setY((float) (screenHeight * 0.35));
-                image.setImageResource(R.drawable.clubs1);
-                image.setRotation(-10f);
-            }
-            if (i == 10) {
-                image.setX((float) (screenWidth * 0.6));
-                image.setY((float) (screenHeight * 0.35));
-                image.setImageResource(R.drawable.clubs1);
-                image.setRotation(10f);
-            }
             container.addView(image);
         }
 
+        // glasses
+
+
         // calling the animation
-        for (int i = 0; i < TOTAL_CARDS; i++) {
+/*        for (int i = 0; i < TOTAL_CARDS; i++) {
             ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
@@ -159,50 +143,6 @@ public class SmileAnimation extends AppCompatActivity {
                 image.setY((float) (screenHeight * 0.35));
             }
             animateCard(image, x1, y1, i);
-        }
-    }
-
-    private void animateCard(ImageView image, float x, float y, int i) {
-        image.animate()
-                .translationX(x)
-                .translationY(y)
-                .setStartDelay(30L * i)
-                .setDuration(400L)
-                .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(() -> {
-                    image.setX(x);
-                    image.setY(y);
-                    if (i == TOTAL_CARDS - 1) {
-                        scaleUpAnimation();
-                    }
-                })
-                .start();
-    }
-
-    private void scaleUpAnimation() {
-        for (int i = 0; i < TOTAL_CARDS; i++) {
-
-            View view = container.getChildAt(i);
-
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.3f);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.3f);
-
-            scaleX.setDuration(300L);
-            scaleY.setDuration(300L);
-
-            scaleX.setRepeatMode(ValueAnimator.REVERSE);
-            scaleY.setRepeatMode(ValueAnimator.REVERSE);
-
-            scaleX.setRepeatCount(1);
-            scaleY.setRepeatCount(1);
-
-            scaleX.setInterpolator(new DecelerateInterpolator());
-            scaleY.setInterpolator(new DecelerateInterpolator());
-
-            AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.playTogether(scaleX, scaleY);
-            animatorSet.setStartDelay(20L * (i));
-            animatorSet.start();
-        }
+        }*/
     }
 }

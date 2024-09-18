@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         btn11 = findViewById(R.id.btn11);
         btn12 = findViewById(R.id.btn12);
         btn13 = findViewById(R.id.btn13);
+        btn14 = findViewById(R.id.btn14);
+        btn15 = findViewById(R.id.btn15);
 
         btn1.setOnClickListener(v -> startActivity(new Intent(this, SpadesAnimation.class)));
         btn2.setOnClickListener(v -> startActivity(new Intent(this, HeartAnimation.class)));
@@ -45,5 +47,7 @@ public class MainActivity extends AppCompatActivity {
         btn11.setOnClickListener(v -> startActivity(new Intent(this, SmileAnimation.class)));
         btn12.setOnClickListener(v -> startActivity(new Intent(this, SwordAnimation.class)));
         btn13.setOnClickListener(v -> startActivity(new Intent(this, CastleAnimation.class)));
+        btn14.setOnClickListener(v -> startActivity(new Intent(this, InOutAnimation.class)));
+        btn15.setOnClickListener(v -> startActivity(new Intent(this, SmileTwoAnimation.class)));
     }
 }

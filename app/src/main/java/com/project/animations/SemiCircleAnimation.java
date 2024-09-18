@@ -119,12 +119,12 @@ public class SemiCircleAnimation extends AppCompatActivity {
             prevImg = image;
         }
 
-        for (int i = 1; i <= 52; i++) {
-            ImageView image = findViewById(i - 1);
+        for (int i = 0; i < 52; i++) {
+            ImageView image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
 
-            if (i <= 13 || i > 26 && i <= 39) {
+            if (i < 13 || i > 25 && i < 39) {
                 image.setX(-100f);
                 image.setY((float) screenHeight / 2);
             } else {
@@ -152,8 +152,8 @@ public class SemiCircleAnimation extends AppCompatActivity {
     }
 
     private void radiusIncreasedAnimation() {
-        for (int i = 1; i <= 52; i++) {
-            ImageView image = findViewById(i - 1);
+        for (int i = 0; i < 52; i++) {
+            ImageView image = findViewById(i);
         }
     }
 }
