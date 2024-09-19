@@ -17,9 +17,7 @@ import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class CastleAnimation extends AppCompatActivity {
 
@@ -247,17 +245,45 @@ public class CastleAnimation extends AppCompatActivity {
 
             container.addView(image);
         }
-//        scaleUpAnimation();
+
+        for (int i = 0; i < container.getChildCount(); i++) {
+            ImageView image = findViewById(i);
+            float x1 = image.getX();
+            float y1 = image.getY();
+
+            image.setAlpha(0f);
+//            image.setX(0);
+//            image.setY(0);
+
+            addCards(image, x1, y1, i);
+        }
+    }
+
+    private void addCards(ImageView image, float x, float y, int i) {
+        image.animate()
+                .alpha(1f)
+                .setStartDelay(500L)
+                .setDuration(800L)
+                .setInterpolator(new DecelerateInterpolator())
+                .withEndAction(() -> {
+                    image.setX(x);
+                    image.setY(y);
+                    if (i == container.getChildCount() - 1) {
+                        scaleUpAnimation();
+                    }
+                })
+                .start();
     }
 
     private void scaleUpAnimation() {
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View image = container.getChildAt(i);
+        ArrayList<View> sortedCards = scaleUpByDirection(1);
+        for (int i = 0; i < sortedCards.size(); i++) {
+            View image = sortedCards.get(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
-                    .setDuration(300L);
+                    .setDuration(500L);
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
-                    .setDuration(300L);
+                    .setDuration(500L);
 
             scaleX.setRepeatMode(ValueAnimator.REVERSE);
             scaleY.setRepeatMode(ValueAnimator.REVERSE);
@@ -268,29 +294,41 @@ public class CastleAnimation extends AppCompatActivity {
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.setInterpolator(new DecelerateInterpolator());
             animatorSet.playTogether(scaleX, scaleY);
-            animatorSet.setStartDelay(50L * i);
+            animatorSet.setStartDelay(40L * i);
             animatorSet.start();
         }
     }
 
-    private ArrayList<View> func(int index){
+    public ArrayList<View> scaleUpByDirection(int index) {
         ArrayList<View> views = new ArrayList<>();
 
-        for(int i = 0; i < container.getChildCount(); i++){
+        for (int i = 0; i < container.getChildCount(); i++) {
             views.add(container.getChildAt(i));
         }
-        views.sort((Comparator<View>) (view1, view2) -> {
+
+        views.sort((view1, view2) -> {
             int[] location1 = new int[2];
             int[] location2 = new int[2];
 
             view1.getLocationOnScreen(location1);
             view2.getLocationOnScreen(location2);
 
-            if (index == 1){
-
+            switch (index) {
+                case 1:
+                    // top to bottom
+                    return Integer.compare(location1[1], location2[1]);
+                case 2:
+                    // right to left
+                    return Integer.compare(location2[0], location1[0]);
+                case 3:
+                    // bottom to top
+                    return Integer.compare(location2[1], location1[1]);
+                case 4:
+                    // left to right
+                    return Integer.compare(location1[0], location2[0]);
             }
-
+            return 0;
         });
-        return new ArrayList<>(views);
+        return views;
     }
 }

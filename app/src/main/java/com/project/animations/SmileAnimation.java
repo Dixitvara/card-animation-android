@@ -3,6 +3,7 @@ package com.project.animations;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.media.tv.TvView;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -180,15 +181,16 @@ public class SmileAnimation extends AppCompatActivity {
     }
 
     private void scaleUpAnimation() {
-        for (int i = 0; i < TOTAL_CARDS; i++) {
+        ArrayList<View> viewsList = scaleUpByDirection(4);
+        for (int i = 0; i < viewsList.size(); i++) {
 
-            View view = container.getChildAt(i);
+            View view = viewsList.get(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.3f);
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.3f);
 
-            scaleX.setDuration(300L);
-            scaleY.setDuration(300L);
+            scaleX.setDuration(500L);
+            scaleY.setDuration(500L);
 
             scaleX.setRepeatMode(ValueAnimator.REVERSE);
             scaleY.setRepeatMode(ValueAnimator.REVERSE);
@@ -201,8 +203,40 @@ public class SmileAnimation extends AppCompatActivity {
 
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.playTogether(scaleX, scaleY);
-            animatorSet.setStartDelay(20L * (i));
+            animatorSet.setStartDelay(45L * (i));
             animatorSet.start();
         }
+    }
+    public ArrayList<View> scaleUpByDirection(int index) {
+        ArrayList<View> views = new ArrayList<>();
+
+        for (int i = 0; i < container.getChildCount(); i++) {
+            views.add(container.getChildAt(i));
+        }
+
+        views.sort((view1, view2) -> {
+            int[] location1 = new int[2];
+            int[] location2 = new int[2];
+
+            view1.getLocationOnScreen(location1);
+            view2.getLocationOnScreen(location2);
+
+            switch (index) {
+                case 1:
+                    // top to bottom
+                    return Integer.compare(location1[1], location2[1]);
+                case 2:
+                    // right to left
+                    return Integer.compare(location2[0], location1[0]);
+                case 3:
+                    // bottom to top
+                    return Integer.compare(location2[1], location1[1]);
+                case 4:
+                    // left to right
+                    return Integer.compare(location1[0], location2[0]);
+            }
+            return 0;
+        });
+        return views;
     }
 }

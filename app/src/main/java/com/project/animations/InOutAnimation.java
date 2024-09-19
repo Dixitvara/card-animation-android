@@ -157,35 +157,14 @@ public class InOutAnimation extends AppCompatActivity {
         animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorSet.start();
 
-        if (i == TOTAL_CARDS - 1)
-            inOutAnimation();
+//        if (i == TOTAL_CARDS - 1)
+//            inOutAnimation();
     }
 
     private void inOutAnimation() {
         float angle = (float) 360 / 52;
         for (int i = 0; i < TOTAL_CARDS; i++) {
             ImageView image = findViewById(i);
-
-            ValueAnimator animator = ValueAnimator.ofFloat(0.12f, 0.35f);
-            animator.setDuration(3000L);
-
-            int finalI = i;
-            float angle2 = angle * i;
-            animator.addUpdateListener(animation -> {
-                float animatedValue = (float) animation.getAnimatedValue();
-                float modifiedRadius = (float) (0.12 + animatedValue);
-
-                double radiance = Math.toRadians(angle2);
-
-                float x = (float) (centerX + modifiedRadius * Math.sin(radiance));
-                float y = (float) (centerY - modifiedRadius * Math.cos(radiance));
-
-                image.setX(x);
-                image.setY(y);
-//                image.setRotation(angle * index + );
-            });
-
-            animator.start();
         }
     }
 }

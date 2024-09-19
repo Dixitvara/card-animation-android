@@ -1,8 +1,15 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -194,14 +201,109 @@ public class SwordAnimation extends AppCompatActivity {
 
             container.addView(image);
         }
+
+        for (int i = 0; i < 18; i++) {
+            View image = findViewById(i);
+
+            float x1 = image.getX();
+            float y1 = image.getY();
+
+//            image.setX((float) screenWidth / 2);
+//            image.setY(screenHeight);
+
+            animateSword(image, x1, y1, i);
+        }
+    }
+
+    private void animateSword(View image, float x, float y, int i) {
+        image.animate()
+                .alpha(1f)
+                .setStartDelay(500L)
+                .setDuration(800L)
+                .setInterpolator(new DecelerateInterpolator())
+                .withEndAction(() -> {
+                    image.setX(x);
+                    image.setY(y);
+                    if (i == container.getChildCount() - 1) {
+                        scaleUpAnimation();
+                    }
+                })
+                .start();
     }
 
     private void scaleUpAnimation() {
-        int x = screenWidth;
-        float y = (float) screenHeight / 2;
+        ArrayList<View> sortedCards = scaleUpByDirection(3);
+        for (int i = 0; i < sortedCards.size(); i++) {
+            View image = sortedCards.get(i);
 
-        for (int i = 0; i < container.getChildCount(); i++) {
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
+                    .setDuration(300L);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1f, 1.3f)
+                    .setDuration(300L);
+
+            scaleX.setRepeatMode(ValueAnimator.REVERSE);
+            scaleY.setRepeatMode(ValueAnimator.REVERSE);
+
+            scaleX.setRepeatCount(1);
+            scaleY.setRepeatCount(1);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.setInterpolator(new DecelerateInterpolator());
+            animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setStartDelay(40L * i);
+//            animatorSet.start();
+
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+//                    translateSword();
+                }
+            });
+        }
+    }
+
+    private void translateSword() {
+        for (int i = 0; i < 18; i++) {
+            ImageView image = findViewById(i);
+            ObjectAnimator rotate = ObjectAnimator.ofFloat(image, "rotation", 45f)
+                    .setDuration(500L);
+
+            rotate.setRepeatMode(ValueAnimator.REVERSE);
+            rotate.setRepeatCount(3);
 
         }
+    }
+
+    public ArrayList<View> scaleUpByDirection(int index) {
+        ArrayList<View> views = new ArrayList<>();
+
+        for (int i = 0; i < container.getChildCount(); i++) {
+            views.add(container.getChildAt(i));
+        }
+
+        views.sort((view1, view2) -> {
+            int[] location1 = new int[2];
+            int[] location2 = new int[2];
+
+            view1.getLocationOnScreen(location1);
+            view2.getLocationOnScreen(location2);
+
+            switch (index) {
+                case 1:
+                    // top to bottom
+                    return Integer.compare(location1[1], location2[1]);
+                case 2:
+                    // right to left
+                    return Integer.compare(location2[0], location1[0]);
+                case 3:
+                    // bottom to top
+                    return Integer.compare(location2[1], location1[1]);
+                case 4:
+                    // left to right
+                    return Integer.compare(location1[0], location2[0]);
+            }
+            return 0;
+        });
+        return views;
     }
 }

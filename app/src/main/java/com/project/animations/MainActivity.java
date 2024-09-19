@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn5, btn6, btn7, btn8;
     Button btn9, btn10, btn11, btn12;
     Button btn13, btn14, btn15, btn16;
+    Button btn17;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         btn13 = findViewById(R.id.btn13);
         btn14 = findViewById(R.id.btn14);
         btn15 = findViewById(R.id.btn15);
+        btn16 = findViewById(R.id.btn16);
+        btn17 = findViewById(R.id.btn17);
 
         btn1.setOnClickListener(v -> startActivity(new Intent(this, SpadesAnimation.class)));
         btn2.setOnClickListener(v -> startActivity(new Intent(this, HeartAnimation.class)));
@@ -49,5 +52,7 @@ public class MainActivity extends AppCompatActivity {
         btn13.setOnClickListener(v -> startActivity(new Intent(this, CastleAnimation.class)));
         btn14.setOnClickListener(v -> startActivity(new Intent(this, InOutAnimation.class)));
         btn15.setOnClickListener(v -> startActivity(new Intent(this, SmileTwoAnimation.class)));
+        btn16.setOnClickListener(v -> startActivity(new Intent(this, SpiderAnimation.class)));
+        btn17.setOnClickListener(v -> startActivity(new Intent(this, SpiderTwoAnimation.class)));
     }
 }

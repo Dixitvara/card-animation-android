@@ -127,7 +127,42 @@ public class SmileTwoAnimation extends AppCompatActivity {
         }
 
         // glasses
+        prevImg = null;
+        cardList = CardMethods.generateCards(8, 2);
 
+        radius = (float) (screenWidth * 0.06);
+        angle = (float) 15 / 7;
+        for (int i = 0; i < 8; i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+            ImageView image = new ImageView(this);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(59 + i);
+
+            if (prevImg == null) {
+                x = (float) (screenWidth * 0.09);
+                y = (float) (screenHeight * 0.35);
+                rotation = -10f;
+            } else if (i < 7) {
+                x = (float) (prevImg.getX() + radius * Math.cos(radiance));
+                y = (float) (prevImg.getY() + radius * Math.sin(radiance));
+                rotation = prevImg.getRotation() + 5f;
+            } else {
+                x = (float) (prevImg.getX() + screenWidth * 0.0139);
+                y = (float) (prevImg.getY() + screenWidth * (0.0139 * 2));
+                rotation = 100f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImg = image;
+
+            container.addView(image);
+        }
 
         // calling the animation
 /*        for (int i = 0; i < TOTAL_CARDS; i++) {
