@@ -147,7 +147,6 @@ public class SemiCircleAnimation extends AppCompatActivity {
                 .withEndAction(() -> {
                     image.setX(x);
                     image.setY(y);
-//                        radiusIncreasedAnimation();
                 })
                 .start();
     }
