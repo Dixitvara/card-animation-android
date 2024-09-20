@@ -128,13 +128,26 @@ public class SmileTwoAnimation extends AppCompatActivity {
 
         // glasses
         prevImg = null;
-        cardList = CardMethods.generateCards(8, 2);
+        cardList = CardMethods.generateCards(34, 2);
 
-        radius = (float) (screenWidth * 0.06);
-        angle = (float) 15 / 7;
-        for (int i = 0; i < 8; i++) {
+        radius = (float) (screenWidth * 0.055);
+        angle = (float) 28 / 7;
+        float rightGlassAngle = (float) 49 / 7;
+
+        float radius2 = (float) (screenWidth * 0.065);
+        float bottomCurveAngle = (float) 230 / 10;
+
+        float radius3 = (float) (screenWidth * 0.065);
+
+        for (int i = 0; i < 34; i++) {
             float angle2 = angle * i;
             float radiance = (float) Math.toRadians(angle2);
+
+            float rightGlassAngle2 = rightGlassAngle * i;
+            float radiance2 = (float) Math.toRadians(rightGlassAngle2);
+
+            float bottomCurveAngle2 = bottomCurveAngle * (i < 25 ? i : i - 10);
+            float radiance3 = (float) Math.toRadians(bottomCurveAngle2);
 
             CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
@@ -143,19 +156,65 @@ public class SmileTwoAnimation extends AppCompatActivity {
             image.setImageResource(card.getResourceId(this));
             image.setId(59 + i);
 
+            // left card
             if (prevImg == null) {
-                x = (float) (screenWidth * 0.09);
+                x = (float) (screenWidth * 0.095);
                 y = (float) (screenHeight * 0.35);
-                rotation = -10f;
+                rotation = -14f;
             } else if (i < 7) {
                 x = (float) (prevImg.getX() + radius * Math.cos(radiance));
                 y = (float) (prevImg.getY() + radius * Math.sin(radiance));
-                rotation = prevImg.getRotation() + 5f;
-            } else {
-                x = (float) (prevImg.getX() + screenWidth * 0.0139);
-                y = (float) (prevImg.getY() + screenWidth * (0.0139 * 2));
-                rotation = 100f;
+                rotation = prevImg.getRotation() + 7f;
             }
+            // middle top card
+            else if (i == 7) {
+                x = (float) (prevImg.getX() + screenWidth * 0.0556);
+                y = prevImg.getY();
+                rotation = -26f;
+            } else if (i < 14) {
+                x = (float) (prevImg.getX() + radius * Math.sin(radiance2));
+                y = (float) (prevImg.getY() - radius * Math.cos(radiance2));
+                rotation = prevImg.getRotation() + 5f;
+            }
+            // left curve top card
+            else if (i == 14) {
+                image.setImageResource(R.drawable.spades_1);
+                x = (float) (screenWidth * 0.095);
+                y = (float) (screenHeight * 0.35);
+                rotation = -90f;
+            } else if (i < 18) {
+                x = (float) (prevImg.getX() + radius2 * Math.sin(radiance3));
+                y = (float) (prevImg.getY() + radius2 * Math.cos(radiance3));
+                rotation = prevImg.getRotation() - 12f;
+            } else if (i == 18) {
+                x = (float) (prevImg.getX() + radius2 * Math.sin(radiance3));
+                y = (float) (prevImg.getY() + radius2 * Math.cos(radiance3));
+                rotation = prevImg.getRotation() - 26f;
+            } else if (i < 24) {
+                x = (float) (prevImg.getX() + radius2 * Math.sin(radiance3));
+                y = (float) (prevImg.getY() + radius2 * Math.cos(radiance3));
+                rotation = prevImg.getRotation() - 21f;
+                // left curve mid card
+                if (i == 23)
+                    image.setImageResource(R.drawable.spades_1);
+            }
+            // right curve end card
+            else if (i == 24) {
+                x = (float) (screenWidth * 0.79);
+                y = (float) (screenHeight * 0.35);
+                rotation = 90f;
+            } else if (i < 28) {
+                x = (float) (prevImg.getX() - radius2 * Math.sin(radiance3));
+                y = (float) (prevImg.getY() + radius2 * Math.cos(radiance3));
+                rotation = prevImg.getRotation() + 12f;
+            } else {
+                x = (float) (prevImg.getX() - radius2 * Math.sin(radiance3));
+                y = (float) (prevImg.getY() + radius2 * Math.cos(radiance3));
+                rotation = prevImg.getRotation() + 21f;
+                if (i == 33)
+                    image.setImageResource(R.drawable.spades_1);
+            }
+
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);

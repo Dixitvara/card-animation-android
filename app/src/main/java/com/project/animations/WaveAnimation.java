@@ -167,11 +167,11 @@ public class WaveAnimation extends AppCompatActivity {
             if (i < 13)
                 translateX.setStartDelay(50L * i);
             else if (i < 26)
-                translateX.setStartDelay(50L * (i - 13));
+                translateX.setStartDelay(50L * (26 - i));
             else if (i < 39)
                 translateX.setStartDelay(50L * (i - 26));
             else
-                translateX.setStartDelay(50L * (i - 39));
+                translateX.setStartDelay(50L * (52 - i));
 
             translateX.start();
 

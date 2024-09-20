@@ -8,7 +8,6 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -144,7 +143,7 @@ public class SwordAnimation extends AppCompatActivity {
 
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
-            image.setId(i);
+            image.setId(i + 18);
 
             if (prevImage == null) {
                 x = (float) (screenWidth * 0.7);
@@ -201,38 +200,30 @@ public class SwordAnimation extends AppCompatActivity {
 
             container.addView(image);
         }
-
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 36; i++) {
             View image = findViewById(i);
 
             float x1 = image.getX();
             float y1 = image.getY();
 
-//            image.setX((float) screenWidth / 2);
-//            image.setY(screenHeight);
+            image.setAlpha(0f);
 
-            animateSword(image, x1, y1, i);
+            animateSword(image);
         }
     }
 
-    private void animateSword(View image, float x, float y, int i) {
+    private void animateSword(View image) {
         image.animate()
                 .alpha(1f)
                 .setStartDelay(500L)
                 .setDuration(800L)
                 .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(() -> {
-                    image.setX(x);
-                    image.setY(y);
-                    if (i == container.getChildCount() - 1) {
-                        scaleUpAnimation();
-                    }
-                })
+                .withEndAction(this::scaleUpAnimation)
                 .start();
     }
 
     private void scaleUpAnimation() {
-        ArrayList<View> sortedCards = scaleUpByDirection(3);
+        ArrayList<View> sortedCards = sortAndDirectCards(3);
         for (int i = 0; i < sortedCards.size(); i++) {
             View image = sortedCards.get(i);
 
@@ -251,30 +242,12 @@ public class SwordAnimation extends AppCompatActivity {
             animatorSet.setInterpolator(new DecelerateInterpolator());
             animatorSet.playTogether(scaleX, scaleY);
             animatorSet.setStartDelay(40L * i);
-//            animatorSet.start();
-
-            animatorSet.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-//                    translateSword();
-                }
-            });
-        }
-    }
-
-    private void translateSword() {
-        for (int i = 0; i < 18; i++) {
-            ImageView image = findViewById(i);
-            ObjectAnimator rotate = ObjectAnimator.ofFloat(image, "rotation", 45f)
-                    .setDuration(500L);
-
-            rotate.setRepeatMode(ValueAnimator.REVERSE);
-            rotate.setRepeatCount(3);
+            animatorSet.start();
 
         }
     }
 
-    public ArrayList<View> scaleUpByDirection(int index) {
+    public ArrayList<View> sortAndDirectCards(int index) {
         ArrayList<View> views = new ArrayList<>();
 
         for (int i = 0; i < container.getChildCount(); i++) {

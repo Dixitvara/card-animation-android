@@ -1,5 +1,6 @@
 package com.project.animations;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateInterpolator;
@@ -78,11 +79,11 @@ public class SemiCircleAnimation extends AppCompatActivity {
             if (i <= 12) {
                 x = i == 0 ? (float) screenWidth / 4 - (float) cardWidth / 2 : (float) (prevImg.getX() + radius * Math.sin(radiance));
                 y = i == 0 ? (float) (screenHeight * 0.2) : (float) (prevImg.getY() - radius * Math.cos(radiance));
-                rotation = i == 0 ? 90f : prevImg.getRotation() + angle;
+                rotation = i == 0 ? -90f : prevImg.getRotation() + angle;
             } else {
                 x = i == 13 ? (float) (screenWidth * 0.5) : (float) (prevImg.getX() - radius * Math.sin(radiance));
                 y = i == 13 ? (float) (screenHeight * 0.35) : (float) (prevImg.getY() + radius * Math.cos(radiance));
-                rotation = i == 13 ? 90f : prevImg.getRotation() + angle;
+                rotation = i == 13 ? -90f : prevImg.getRotation() + angle;
             }
             image.setX(x);
             image.setY(y);
@@ -105,11 +106,11 @@ public class SemiCircleAnimation extends AppCompatActivity {
             if (i <= 38) {
                 x = i == 26 ? (float) screenWidth / 4 - (float) cardWidth / 2 : (float) (prevImg.getX() + radius * Math.sin(radiance));
                 y = i == 26 ? (float) (screenHeight * 0.5) : (float) (prevImg.getY() - radius * Math.cos(radiance));
-                rotation = i == 26 ? 90f : prevImg.getRotation() + angle;
+                rotation = i == 26 ? -90f : prevImg.getRotation() + angle;
             } else {
                 x = i == 39 ? (float) (screenWidth * 0.5) : (float) (prevImg.getX() - radius * Math.sin(radiance));
                 y = i == 39 ? (float) (screenHeight * 0.65) : (float) (prevImg.getY() + radius * Math.cos(radiance));
-                rotation = i == 39 ? 90f : prevImg.getRotation() + angle;
+                rotation = i == 39 ? -90f : prevImg.getRotation() + angle;
             }
             image.setX(x);
             image.setY(y);
@@ -153,7 +154,7 @@ public class SemiCircleAnimation extends AppCompatActivity {
 
     private void radiusIncreasedAnimation() {
         for (int i = 0; i < 52; i++) {
-            ImageView image = findViewById(i);
         }
     }
+
 }
