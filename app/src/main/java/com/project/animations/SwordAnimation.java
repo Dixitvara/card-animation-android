@@ -1,13 +1,12 @@
 package com.project.animations;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -206,8 +205,6 @@ public class SwordAnimation extends AppCompatActivity {
             float x1 = image.getX();
             float y1 = image.getY();
 
-            image.setAlpha(0f);
-
             animateSword(image);
         }
     }
@@ -244,7 +241,13 @@ public class SwordAnimation extends AppCompatActivity {
             animatorSet.setStartDelay(40L * i);
             animatorSet.start();
 
+            if (i == sortedCards.size() - 1)
+                swingSword();
         }
+    }
+
+    private void swingSword() {
+
     }
 
     public ArrayList<View> sortAndDirectCards(int index) {

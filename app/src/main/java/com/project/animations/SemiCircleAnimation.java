@@ -153,6 +153,7 @@ public class SemiCircleAnimation extends AppCompatActivity {
 
     private void radiusIncreasedAnimation() {
         for (int i = 0; i < 52; i++) {
+            ImageView image = findViewById(i);
         }
     }
 

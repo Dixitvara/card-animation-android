@@ -8,7 +8,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -48,7 +47,7 @@ public class TestingClass extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(1, 0);
+        cardList = CardMethods.generateCards(18, 0);
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
@@ -72,7 +71,78 @@ public class TestingClass extends AppCompatActivity {
         float centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         float centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
 
+        ImageView prevImage = null;
+
+        float distance = (float) (screenWidth * 0.00741);
+
         for (int i = 0; i < cardList.size(); i++) {
+
+            CardModel card = cardList.get(i);
+            ImageView image = new ImageView(this);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.5 - (double) cardWidth / 2);
+                y = (float) (screenHeight * 0.5 - (double) cardHeight / 2);
+                rotation = 175f;
+                image.setZ(2);
+            } else if (i < 6) {
+                x = prevImage.getX() - distance;
+                y = prevImage.getY() - distance * 10;
+                rotation = prevImage.getRotation();
+            } else if (i == 6) {
+                x = (float) (prevImage.getX() + distance * 3.5);
+                y = (float) (prevImage.getY() - distance * 9.5);
+                rotation = 45f;
+            } else if (i == 7) {
+                x = (float) (prevImage.getX() + distance * 3.6);
+                y = prevImage.getY();
+                rotation = prevImage.getRotation() * -1;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() + distance * 3.6);
+                y = (float) (prevImage.getY() + distance * 9.5);
+                rotation = -175f;
+            } else if (i < 14) {
+                x = prevImage.getX() - distance;
+                y = prevImage.getY() + distance * 10;
+                rotation = prevImage.getRotation();
+                image.setZ(2);
+            } else if (i == 14) {
+                x = prevImage.getX() + distance * 6;
+                y = prevImage.getY() + distance * 6;
+                image.setImageResource(R.drawable.spades1);
+                image.setZ(1);
+                rotation = 70f;
+            } else if (i == 15) {
+                x = prevImage.getX() - distance * 12;
+                y = prevImage.getY();
+                image.setImageResource(R.drawable.spades1);
+                image.setZ(1);
+                rotation = -70f;
+            } else if (i == 16) {
+                x = (float) (prevImage.getX() + distance * 5.5);
+                y = prevImage.getY() + distance * 6;
+                rotation = 0f;
+            } else {
+                x = prevImage.getX();
+                y = prevImage.getY() + distance * 10;
+                rotation = prevImage.getRotation();
+                image.setImageResource(R.drawable.spades13);
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+
+            image.setPivotX((float) cardWidth / 2);
+            image.setPivotY((centerY- y) - (float) cardHeight / 2);
+
+            prevImage = image;
+            container.addView(image);
+
+/*
             CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
 
@@ -81,15 +151,24 @@ public class TestingClass extends AppCompatActivity {
             image.setImageResource(card.getResourceId(this));
             image.setId(i);
 
-            x = (float) screenWidth / 2;
-            y = (float) screenHeight / 2;
+            if (i == 0){
+                x = centerX;
+                y = centerY;
+            }
+            else{
+                x = prevImage.getX();
+                y = prevImage.getY() - cardHeight;
+            }
 
             image.setPivotX((float) cardWidth / 2);
-            image.setPivotY(200f);
+            image.setPivotY(centerY - y);
             image.setX(x);
             image.setY(y);
+            image.setRotation(-45f);
+            prevImage = image;
 
             container.addView(image);
+*/
         }
 
         for (int i = 0; i < cardList.size(); i++) {
@@ -122,8 +201,8 @@ public class TestingClass extends AppCompatActivity {
                 })
                 .start();
 */
-        ObjectAnimator rotate = ObjectAnimator.ofFloat(image, "rotation", 45f)
-                .setDuration(1000L);
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(image, "rotation", 0f, 45f)
+                .setDuration(700L);
         rotate.setRepeatMode(ValueAnimator.REVERSE);
         rotate.setRepeatCount(3);
         rotate.setInterpolator(new AccelerateInterpolator());
