@@ -222,7 +222,6 @@ public class InOutAnimation extends AppCompatActivity {
             animator2.setInterpolator(new LinearInterpolator());
 
             int index2 = i;
-
             animator2.addUpdateListener(animation -> {
                 float animatedValue = (float) animation.getAnimatedValue();
                 float modifiedRadius = animatedValue * screenWidth;
