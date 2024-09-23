@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         btn10.setOnClickListener(v -> startActivity(new Intent(this, TestingClass.class)));
         btn11.setOnClickListener(v -> startActivity(new Intent(this, SmileAnimation.class)));
         btn12.setOnClickListener(v -> startActivity(new Intent(this, SwordAnimation.class)));
-        btn12.setBackgroundColor(Color.RED);
         btn13.setOnClickListener(v -> startActivity(new Intent(this, CastleAnimation.class)));
         btn14.setOnClickListener(v -> startActivity(new Intent(this, InOutAnimation.class)));
         btn14.setBackgroundColor(Color.RED);

@@ -4,8 +4,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -128,8 +131,8 @@ public class InOutAnimation extends AppCompatActivity {
         }
 
         // calling the animation
-        for (int i = 0; i < TOTAL_CARDS; i++) {
-            ImageView image = findViewById(i);
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View image = container.getChildAt(i);
             float x1 = image.getX();
             float y1 = image.getY();
 
@@ -142,7 +145,7 @@ public class InOutAnimation extends AppCompatActivity {
         }
     }
 
-    private void animateFromMiddle(ImageView image, float x, float y, int i) {
+    private void animateFromMiddle(View image, float x, float y, int i) {
         long duration = 400L;
         long delay = 80L;
 
@@ -157,14 +160,58 @@ public class InOutAnimation extends AppCompatActivity {
         animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorSet.start();
 
-//        if (i == TOTAL_CARDS - 1)
-//            inOutAnimation();
+        new Handler().postDelayed(this::inOutAnimation, 4700L);
     }
 
     private void inOutAnimation() {
-        float angle = (float) 360 / 52;
-        for (int i = 0; i < TOTAL_CARDS; i++) {
+        float angle = (float) 360 / 26;
+        for (int i = 0; i < 26; i++) {
             ImageView image = findViewById(i);
+
+            ValueAnimator animator = ValueAnimator.ofFloat(0.35f, 0.12f);
+            animator.setDuration(3000);
+            animator.setInterpolator(new LinearInterpolator());
+
+            int index = i;
+
+            animator.addUpdateListener(animation -> {
+                float animatedValue = (float) animation.getAnimatedValue();
+                float modifiedRadius = animatedValue * screenWidth;
+
+                double radiance = Math.toRadians(angle * index);
+
+                float x = (float) (centerX + modifiedRadius * Math.sin(radiance));
+                float y = (float) (centerY - modifiedRadius * Math.cos(radiance));
+
+                image.setX(x);
+                image.setY(y);
+            });
+            animator.start();
+
+        }
+
+        for (int i = 0; i < 26; i++){
+            ImageView image = findViewById(i + 26);
+
+            ValueAnimator animator2 = ValueAnimator.ofFloat(0.12f, 0.35f);
+            animator2.setDuration(3000);
+            animator2.setInterpolator(new LinearInterpolator());
+
+            int index2 = i;
+
+            animator2.addUpdateListener(animation -> {
+                float animatedValue = (float) animation.getAnimatedValue();
+                float modifiedRadius = animatedValue * screenWidth;
+
+                double radiance = Math.toRadians(angle * index2);
+
+                float x = (float) (centerX + modifiedRadius * Math.sin(radiance));
+                float y = (float) (centerY - modifiedRadius * Math.cos(radiance));
+
+                image.setX(x);
+                image.setY(y);
+            });
+            animator2.start();
         }
     }
 }

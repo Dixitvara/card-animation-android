@@ -1,15 +1,18 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,10 +26,12 @@ import java.util.ArrayList;
 public class SwordAnimation extends AppCompatActivity {
 
     Button resetBtn;
-    RelativeLayout container;
     int screenWidth, screenHeight;
     int centerX, centerY;
     int cardHeight, cardWidth;
+
+    LinearLayout linearLayout;
+    RelativeLayout leftLayout, rightLayout, container;
 
     ArrayList<CardModel> cardList;
     RelativeLayout.LayoutParams params;
@@ -34,10 +39,31 @@ public class SwordAnimation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_animation);
+        setContentView(R.layout.activity_animation_linear_layout);
 
         resetBtn = findViewById(R.id.resetBtn);
-        container = findViewById(R.id.container);
+        linearLayout = findViewById(R.id.containerLinear);
+        container = findViewById(R.id.mainContainer);
+
+        leftLayout = new RelativeLayout(this);
+        rightLayout = new RelativeLayout(this);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                0,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+        );
+        layoutParams.weight = 1;
+        linearLayout.addView(leftLayout, layoutParams);
+
+        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+                0,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+        );
+        layoutParams2.weight = 1;
+        linearLayout.addView(rightLayout, layoutParams2);
+
+//        leftLayout.setBackgroundColor(Color.RED);
+//        rightLayout.setBackgroundColor(Color.BLUE);
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -79,7 +105,7 @@ public class SwordAnimation extends AppCompatActivity {
             image.setId(i);
 
             if (prevImage == null) {
-                x = (float) (screenWidth * 0.2);
+                x = (float) (screenWidth * 0.25);
                 y = (float) (screenHeight * 0.5);
                 rotation = 175f;
                 image.setZ(2);
@@ -131,7 +157,7 @@ public class SwordAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImage = image;
 
-            container.addView(image);
+            leftLayout.addView(image);
         }
 
         prevImage = null;
@@ -145,7 +171,7 @@ public class SwordAnimation extends AppCompatActivity {
             image.setId(i + 18);
 
             if (prevImage == null) {
-                x = (float) (screenWidth * 0.7);
+                x = (float) (screenWidth * 0.15);
                 y = (float) (screenHeight * 0.5);
                 rotation = 175f;
                 image.setZ(2);
@@ -197,26 +223,36 @@ public class SwordAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImage = image;
 
-            container.addView(image);
+            rightLayout.addView(image);
         }
-        for (int i = 0; i < 36; i++) {
-            View image = findViewById(i);
 
-            float x1 = image.getX();
-            float y1 = image.getY();
-
-            animateSword(image);
-        }
+        inAnimation();
     }
 
-    private void animateSword(View image) {
-        image.animate()
-                .alpha(1f)
-                .setStartDelay(500L)
-                .setDuration(800L)
-                .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(this::scaleUpAnimation)
-                .start();
+    private void inAnimation() {
+        ObjectAnimator translateLeftLayout = ObjectAnimator.ofFloat(
+                        leftLayout,
+                        "translationX",
+                        leftLayout.getWidth() - screenWidth,
+                        leftLayout.getX())
+                .setDuration(800L);
+        ObjectAnimator translateRightLayout = ObjectAnimator.ofFloat(
+                        rightLayout,
+                        "translationX",
+                        screenWidth,
+                        rightLayout.getX())
+                .setDuration(800L);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(translateLeftLayout, translateRightLayout);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+        animatorSet.start();
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                scaleUpAnimation();
+            }
+        });
     }
 
     private void scaleUpAnimation() {
@@ -238,23 +274,58 @@ public class SwordAnimation extends AppCompatActivity {
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.setInterpolator(new DecelerateInterpolator());
             animatorSet.playTogether(scaleX, scaleY);
+            animatorSet.setDuration(300L);
             animatorSet.setStartDelay(40L * i);
             animatorSet.start();
-
-            if (i == sortedCards.size() - 1)
-                swingSword();
         }
+        new Handler().postDelayed(this::swingSword, 2000L);
     }
 
-    private void swingSword() {
+    public void swingSword() {
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(leftLayout, "rotation", 45f)
+                .setDuration(700L);
+        ObjectAnimator rotate2 = ObjectAnimator.ofFloat(rightLayout, "rotation", -45f)
+                .setDuration(700L);
 
+        rotate.setRepeatMode(ValueAnimator.REVERSE);
+        rotate.setRepeatCount(2);
+        rotate2.setRepeatMode(ValueAnimator.REVERSE);
+        rotate2.setRepeatCount(2);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(rotate, rotate2);
+        animatorSet.start();
+
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                outAnimation();
+            }
+        });
+    }
+
+    public void outAnimation() {
+        ObjectAnimator leftSword = ObjectAnimator.ofFloat(
+                        leftLayout,
+                        "translationX",
+                        screenWidth)
+                .setDuration(700L);
+        ObjectAnimator rightSword = ObjectAnimator.ofFloat(
+                        rightLayout,
+                        "translationX",
+                        screenWidth * -1)
+                .setDuration(700L);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(leftSword, rightSword);
+        animatorSet.start();
     }
 
     public ArrayList<View> sortAndDirectCards(int index) {
         ArrayList<View> views = new ArrayList<>();
 
-        for (int i = 0; i < container.getChildCount(); i++) {
-            views.add(container.getChildAt(i));
+        for (int i = 0; i < 36; i++) {
+            views.add(findViewById(i));
         }
 
         views.sort((view1, view2) -> {

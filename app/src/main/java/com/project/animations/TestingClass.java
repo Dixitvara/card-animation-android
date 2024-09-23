@@ -1,15 +1,18 @@
 package com.project.animations;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +29,8 @@ public class TestingClass extends AppCompatActivity {
     int screenWidth, screenHeight;
     ArrayList<CardModel> cardList;
     RelativeLayout.LayoutParams params;
-    RelativeLayout container;
+    LinearLayout container;
+    RelativeLayout childLayout, childLayout2, mainContainer;
     Button resetBtn;
 
     @Override
@@ -34,8 +38,36 @@ public class TestingClass extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
 
-        container = findViewById(R.id.container);
         resetBtn = findViewById(R.id.resetBtn);
+        mainContainer = findViewById(R.id.container);
+
+        container = new LinearLayout(this);
+        childLayout = new RelativeLayout(this);
+        childLayout2 = new RelativeLayout(this);
+
+        LinearLayout.LayoutParams linearLayoutParam = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        container.setOrientation(LinearLayout.HORIZONTAL);
+        mainContainer.addView(container, linearLayoutParam);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                0,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+        );
+        layoutParams.weight = 1;
+        container.addView(childLayout, layoutParams);
+
+        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+                0,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+        );
+        layoutParams2.weight = 1;
+        container.addView(childLayout2, layoutParams2);
+
+//        leftLayout.setBackgroundColor(Color.RED);
+//        rightLayout.setBackgroundColor(Color.BLUE);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -47,7 +79,7 @@ public class TestingClass extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(18, 0);
+        cardList = CardMethods.generateCards(18, 1);
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
@@ -85,7 +117,7 @@ public class TestingClass extends AppCompatActivity {
             image.setId(i);
 
             if (prevImage == null) {
-                x = (float) (screenWidth * 0.5 - (double) cardWidth / 2);
+                x = (float) (screenWidth * 0.25 - (double) cardWidth / 2);
                 y = (float) (screenHeight * 0.5 - (double) cardHeight / 2);
                 rotation = 175f;
                 image.setZ(2);
@@ -136,55 +168,90 @@ public class TestingClass extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            image.setPivotX((float) cardWidth / 2);
-            image.setPivotY((centerY- y) - (float) cardHeight / 2);
-
             prevImage = image;
-            container.addView(image);
+            childLayout.addView(image);
+        }
 
-/*
+        prevImage = null;
+        for (int i = 0; i < cardList.size(); i++) {
+
             CardModel card = cardList.get(i);
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
-
             image.setImageResource(card.getResourceId(this));
             image.setId(i);
 
-            if (i == 0){
-                x = centerX;
-                y = centerY;
-            }
-            else{
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.25 - (double) cardWidth / 2);
+                y = (float) (screenHeight * 0.5 - (double) cardHeight / 2);
+                rotation = 175f;
+                image.setZ(2);
+            } else if (i < 6) {
+                x = prevImage.getX() - distance;
+                y = prevImage.getY() - distance * 10;
+                rotation = prevImage.getRotation();
+            } else if (i == 6) {
+                x = (float) (prevImage.getX() + distance * 3.5);
+                y = (float) (prevImage.getY() - distance * 9.5);
+                rotation = 45f;
+            } else if (i == 7) {
+                x = (float) (prevImage.getX() + distance * 3.6);
+                y = prevImage.getY();
+                rotation = prevImage.getRotation() * -1;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() + distance * 3.6);
+                y = (float) (prevImage.getY() + distance * 9.5);
+                rotation = -175f;
+            } else if (i < 14) {
+                x = prevImage.getX() - distance;
+                y = prevImage.getY() + distance * 10;
+                rotation = prevImage.getRotation();
+                image.setZ(2);
+            } else if (i == 14) {
+                x = prevImage.getX() + distance * 6;
+                y = prevImage.getY() + distance * 6;
+                image.setImageResource(R.drawable.spades1);
+                image.setZ(1);
+                rotation = 70f;
+            } else if (i == 15) {
+                x = prevImage.getX() - distance * 12;
+                y = prevImage.getY();
+                image.setImageResource(R.drawable.spades1);
+                image.setZ(1);
+                rotation = -70f;
+            } else if (i == 16) {
+                x = (float) (prevImage.getX() + distance * 5.5);
+                y = prevImage.getY() + distance * 6;
+                rotation = 0f;
+            } else {
                 x = prevImage.getX();
-                y = prevImage.getY() - cardHeight;
+                y = prevImage.getY() + distance * 10;
+                rotation = prevImage.getRotation();
+                image.setImageResource(R.drawable.spades13);
             }
-
-            image.setPivotX((float) cardWidth / 2);
-            image.setPivotY(centerY - y);
             image.setX(x);
             image.setY(y);
-            image.setRotation(-45f);
-            prevImage = image;
+            image.setRotation(rotation);
 
-            container.addView(image);
-*/
+            prevImage = image;
+            childLayout2.addView(image);
         }
 
         for (int i = 0; i < cardList.size(); i++) {
-            ImageView image = findViewById(i);
+//            ImageView image = findViewById(i);
 
-            float x1 = image.getX();
-            float y1 = image.getY();
+//            float x1 = image.getX();
+//            float y1 = image.getY();
 
 //            image.setX((float) screenWidth / 2);
 //            image.setY(screenHeight);
 
-            animateCircle(image, x1, y1, i + 1);
         }
+        animateCircle();
     }
 
-    private void animateCircle(ImageView image, float x1, float y1, int i) {
+    private void animateCircle() {
 /*
         image.animate()
                 .translationX(x1)
@@ -201,20 +268,26 @@ public class TestingClass extends AppCompatActivity {
                 })
                 .start();
 */
-        ObjectAnimator rotate = ObjectAnimator.ofFloat(image, "rotation", 0f, 45f)
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(childLayout, "rotation", 0f, 45f)
+                .setDuration(700L);
+        ObjectAnimator rotate2 = ObjectAnimator.ofFloat(childLayout2, "rotation", 0f, -45f)
                 .setDuration(700L);
         rotate.setRepeatMode(ValueAnimator.REVERSE);
         rotate.setRepeatCount(3);
-        rotate.setInterpolator(new AccelerateInterpolator());
-        rotate.start();
+        rotate2.setRepeatMode(ValueAnimator.REVERSE);
+        rotate2.setRepeatCount(3);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(rotate, rotate2);
+        animatorSet.start();
     }
 
     private void scaleUpAnimation() {
         int x = screenWidth / 2;
         int y = screenHeight;
 
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View view = container.getChildAt(i);
+        for (int i = 0; i < childLayout.getChildCount(); i++) {
+            View view = childLayout.getChildAt(i);
 
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.3f);
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.3f);

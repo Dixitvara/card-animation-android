@@ -1,7 +1,11 @@
 package com.project.animations;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -137,8 +141,6 @@ public class SmileTwoAnimation extends AppCompatActivity {
         float radius2 = (float) (screenWidth * 0.065);
         float bottomCurveAngle = (float) 230 / 10;
 
-        float radius3 = (float) (screenWidth * 0.065);
-
         for (int i = 0; i < 34; i++) {
             float angle2 = angle * i;
             float radiance = (float) Math.toRadians(angle2);
@@ -202,41 +204,176 @@ public class SmileTwoAnimation extends AppCompatActivity {
             else if (i == 24) {
                 x = (float) (screenWidth * 0.79);
                 y = (float) (screenHeight * 0.35);
+                image.setImageResource(R.drawable.spades_1);
                 rotation = 90f;
             } else if (i < 28) {
                 x = (float) (prevImg.getX() - radius2 * Math.sin(radiance3));
                 y = (float) (prevImg.getY() + radius2 * Math.cos(radiance3));
                 rotation = prevImg.getRotation() + 12f;
+                if (i == 25)
+                    image.setImageResource(R.drawable.spades_3);
+                if (i == 26)
+                    image.setImageResource(R.drawable.spades_2);
             } else {
                 x = (float) (prevImg.getX() - radius2 * Math.sin(radiance3));
                 y = (float) (prevImg.getY() + radius2 * Math.cos(radiance3));
                 rotation = prevImg.getRotation() + 21f;
+                // right curve mid card
                 if (i == 33)
                     image.setImageResource(R.drawable.spades_1);
             }
-
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
+            image.setZ(3);
             prevImg = image;
 
             container.addView(image);
         }
 
+        // left glass of glass
+        // heart shaped glass
+        prevImg = null;
+        float cardGap = (float) (screenWidth * 0.0093);
+        for (int i = 0; i < 18; i++) {
+            ImageView image = new ImageView(this);
+
+            image.setLayoutParams(params);
+            image.setImageResource(R.drawable.hearts1);
+            image.setId(92 + i);
+
+            if (prevImg == null) {
+                x = (float) (float) ((screenWidth * 0.095) + screenWidth * 0.0649);
+                y = (float) ((float) (screenHeight * 0.35) + screenWidth * 0.06);
+            } else if (i < 6) {
+                x = prevImg.getX() + (float) cardWidth / 2;
+                y = prevImg.getY() + cardGap;
+            } else if (i == 6) {
+                x = prevImg.getX();
+                y = prevImg.getY() + (float) cardHeight / 2;
+                image.setVisibility(View.INVISIBLE);
+            } else if (i < 12) {
+                x = prevImg.getX() - (float) cardWidth / 2;
+                y = prevImg.getY() - cardGap;
+            } else if (i == 12) {
+                x = prevImg.getX();
+                y = prevImg.getY() + (float) cardHeight / 2;
+            } else {
+                x = prevImg.getX() + (float) cardWidth / 2;
+                y = prevImg.getY() + cardGap;
+                if (i == 17 || i == 16)
+                    image.setVisibility(View.INVISIBLE);
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(10f);
+            image.setZ(1);
+            prevImg = image;
+            container.addView(image);
+        }
+
+        // right glass of glass
+        prevImg = null;
+        for (int i = 0; i < 18; i++) {
+            ImageView image = new ImageView(this);
+
+            image.setLayoutParams(params);
+            image.setImageResource(R.drawable.hearts1);
+            image.setId(109 + i);
+
+            if (prevImg == null) {
+                x = (float) (screenWidth * 0.53);
+                y = (float) ((float) screenHeight * 0.39);
+            } else if (i < 6) {
+                x = prevImg.getX() + (float) cardWidth / 2;
+                y = prevImg.getY() - cardGap;
+            } else if (i == 6) {
+                x = prevImg.getX();
+                y = prevImg.getY() + (float) cardHeight / 2;
+            } else if (i < 12) {
+                x = prevImg.getX() - (float) cardWidth / 2;
+                y = prevImg.getY() + cardGap;
+            } else if (i == 12) {
+                x = prevImg.getX();
+                y = prevImg.getY() + (float) cardHeight / 2;
+                image.setVisibility(View.INVISIBLE);
+            } else {
+                x = prevImg.getX() + (float) cardWidth / 2;
+                y = prevImg.getY() - cardGap;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(-10f);
+            image.setZ(1);
+            prevImg = image;
+            container.addView(image);
+        }
+
+        // eyes
+        prevImg = null;
+        CardModel card;
+        for (int i = 0; i < 12; i++) {
+            ImageView image = new ImageView(this);
+            if (i < 6)
+                card = cardList.get(i);
+            else
+                card = cardList.get(i - 6);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(127 + i);
+
+            if (prevImg == null) {
+                x = (float) (screenWidth * 0.3);
+                y = (float) (screenHeight * 0.4);
+                rotation = 60f;
+            } else if (i < 6) {
+                x = prevImg.getX();
+                y = prevImg.getY();
+                rotation = prevImg.getRotation() + 60f;
+            } else if (i == 6) {
+                x = (float) (screenWidth * 0.6);
+                y = prevImg.getY();
+                rotation = 60f;
+            } else {
+                x = prevImg.getX();
+                y = prevImg.getY();
+                rotation = prevImg.getRotation() + 60f;
+            }
+
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            image.setZ(0);
+            prevImg = image;
+            container.addView(image);
+        }
+
         // calling the animation
-/*        for (int i = 0; i < TOTAL_CARDS; i++) {
-            ImageView image = findViewById(i);
+        for (int i = 133; i < 139; i++) {
+            View image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
 
-            if (i < 33) {
-                image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
-                image.setY(screenHeight);
-            } else {
-                image.setX(i == 33 ? -100f : screenWidth);
-                image.setY((float) (screenHeight * 0.35));
-            }
+//            image.setX((float) screenWidth / 2);
+//            image.setY(screenHeight);
+
             animateCard(image, x1, y1, i);
-        }*/
+        }
+    }
+
+    private void animateCard(View image, float x, float y, int i) {
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(image, "rotation", 45)
+                .setDuration(3000L);
+//        ObjectAnimator translationX = ObjectAnimator.ofFloat(image, "translationX", )
+//                .setDuration(3000L);
+        animator.setRepeatCount(ValueAnimator.REVERSE);
+//        animator.setRepeatCount(1);
+//        animator.start();
+    }
+
+    private void fadeInGlasses() {
+
     }
 }
