@@ -160,7 +160,7 @@ public class InOutAnimation extends AppCompatActivity {
         animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorSet.start();
 
-        new Handler().postDelayed(this::inOutAnimation, 4700L);
+        new Handler().postDelayed(this::inOutAnimation, 4600L);
     }
 
     private void inOutAnimation() {
@@ -168,8 +168,16 @@ public class InOutAnimation extends AppCompatActivity {
         for (int i = 0; i < 26; i++) {
             ImageView image = findViewById(i);
 
+            ObjectAnimator rotationAnimation = ObjectAnimator.ofFloat(
+                            image,
+                            "rotation",
+                            image.getRotation(),
+                            image.getRotation() + 360
+                    )
+                    .setDuration(2000);
+
             ValueAnimator animator = ValueAnimator.ofFloat(0.35f, 0.12f);
-            animator.setDuration(3000);
+            animator.setDuration(2000);
             animator.setInterpolator(new LinearInterpolator());
 
             int index = i;
@@ -186,15 +194,31 @@ public class InOutAnimation extends AppCompatActivity {
                 image.setX(x);
                 image.setY(y);
             });
-            animator.start();
 
+            animator.setRepeatMode(ValueAnimator.REVERSE);
+            rotationAnimation.setRepeatMode(ValueAnimator.REVERSE);
+
+            animator.setRepeatCount(1);
+            rotationAnimation.setRepeatCount(1);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(animator, rotationAnimation);
+            animatorSet.start();
         }
 
-        for (int i = 0; i < 26; i++){
+        for (int i = 0; i < 26; i++) {
             ImageView image = findViewById(i + 26);
 
+            ObjectAnimator rotationAnimation = ObjectAnimator.ofFloat(
+                            image,
+                            "rotation",
+                            image.getRotation(),
+                            image.getRotation() - 360
+                    )
+                    .setDuration(2000);
+
             ValueAnimator animator2 = ValueAnimator.ofFloat(0.12f, 0.35f);
-            animator2.setDuration(3000);
+            animator2.setDuration(2000);
             animator2.setInterpolator(new LinearInterpolator());
 
             int index2 = i;
@@ -211,7 +235,20 @@ public class InOutAnimation extends AppCompatActivity {
                 image.setX(x);
                 image.setY(y);
             });
-            animator2.start();
+            animator2.setRepeatMode(ValueAnimator.REVERSE);
+            rotationAnimation.setRepeatMode(ValueAnimator.REVERSE);
+
+            animator2.setRepeatCount(1);
+            rotationAnimation.setRepeatCount(1);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(animator2, rotationAnimation);
+            animatorSet.start();
+
+            image.animate()
+                    .rotationBy(360f)
+                    .setDuration(2000L)
+                    .start();
         }
     }
 }
