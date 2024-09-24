@@ -244,9 +244,24 @@ public class InOutAnimation extends AppCompatActivity {
             animatorSet.playTogether(animator2, rotationAnimation);
             animatorSet.start();
 
+        }
+        new Handler().postDelayed(this::outAnimation, 4500L);
+    }
+
+    public void outAnimation() {
+        for (int i = 0; i < container.getChildCount(); i++) {
+            ImageView image = findViewById(i);
+
+            float x = i < 26 ? -cardWidth : screenWidth;
+            float y = i < 26 ? -cardHeight : screenHeight;
+            long delay = i < 26 ? 30L * i : 30L * (i - 26);
+
             image.animate()
-                    .rotationBy(360f)
-                    .setDuration(2000L)
+                    .translationX(x)
+                    .translationY(y)
+                    .setDuration(600L)
+                    .setStartDelay(delay)
+                    .setInterpolator(new DecelerateInterpolator())
                     .start();
         }
     }

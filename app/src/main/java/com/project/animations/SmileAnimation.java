@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
+import com.project.animations.utils.MyAnim;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class SmileAnimation extends AppCompatActivity {
     int cardHeight, cardWidth;
 
     ArrayList<CardModel> cardList;
+    ArrayList<View> views;
     RelativeLayout.LayoutParams params;
     final int TOTAL_CARDS = 35;
 
@@ -60,6 +62,7 @@ public class SmileAnimation extends AppCompatActivity {
         centerY = (screenHeight / 2) - (cardHeight / 2);
 
         cardList = CardMethods.generateSelectedCards(TOTAL_CARDS, new int[] {0,1,2});
+        views = new ArrayList<>();
         params = new RelativeLayout.LayoutParams(90, 110);
 
         generateCards();
@@ -101,6 +104,7 @@ public class SmileAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImg = image;
             container.addView(image);
+            views.add(image);
         }
 
         // smile lips
@@ -144,6 +148,7 @@ public class SmileAnimation extends AppCompatActivity {
                 image.setRotation(10f);
             }
             container.addView(image);
+            views.add(image);
         }
 
         // calling the animation
@@ -181,7 +186,7 @@ public class SmileAnimation extends AppCompatActivity {
     }
 
     private void scaleUpAnimation() {
-        ArrayList<View> viewsList = scaleUpByDirection(4);
+        ArrayList<View> viewsList = MyAnim.sortAndDirectCards(views,4);
         for (int i = 0; i < viewsList.size(); i++) {
 
             View view = viewsList.get(i);
@@ -206,37 +211,5 @@ public class SmileAnimation extends AppCompatActivity {
             animatorSet.setStartDelay(45L * (i));
             animatorSet.start();
         }
-    }
-    public ArrayList<View> scaleUpByDirection(int index) {
-        ArrayList<View> views = new ArrayList<>();
-
-        for (int i = 0; i < container.getChildCount(); i++) {
-            views.add(container.getChildAt(i));
-        }
-
-        views.sort((view1, view2) -> {
-            int[] location1 = new int[2];
-            int[] location2 = new int[2];
-
-            view1.getLocationOnScreen(location1);
-            view2.getLocationOnScreen(location2);
-
-            switch (index) {
-                case 1:
-                    // top to bottom
-                    return Integer.compare(location1[1], location2[1]);
-                case 2:
-                    // right to left
-                    return Integer.compare(location2[0], location1[0]);
-                case 3:
-                    // bottom to top
-                    return Integer.compare(location2[1], location1[1]);
-                case 4:
-                    // left to right
-                    return Integer.compare(location1[0], location2[0]);
-            }
-            return 0;
-        });
-        return views;
     }
 }

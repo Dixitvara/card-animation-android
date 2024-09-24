@@ -1,10 +1,12 @@
 package com.project.animations;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -154,6 +156,10 @@ public class SemiCircleAnimation extends AppCompatActivity {
     private void radiusIncreasedAnimation() {
         for (int i = 0; i < 52; i++) {
             ImageView image = findViewById(i);
+
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat();
+            valueAnimator.setDuration(3000L);
+            valueAnimator.setInterpolator(new LinearInterpolator());
         }
     }
 

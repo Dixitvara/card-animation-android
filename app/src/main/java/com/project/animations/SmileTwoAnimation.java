@@ -1,11 +1,14 @@
 package com.project.animations;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,14 +24,13 @@ import java.util.ArrayList;
 public class SmileTwoAnimation extends AppCompatActivity {
 
     Button resetBtn;
-    RelativeLayout container;
+    RelativeLayout container, glassContainer, eyesContainer;
     int screenWidth, screenHeight;
     int centerX, centerY;
     int cardHeight, cardWidth;
 
     ArrayList<CardModel> cardList;
     RelativeLayout.LayoutParams params;
-    final int TOTAL_CARDS = 52;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,21 @@ public class SmileTwoAnimation extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
+        glassContainer = new RelativeLayout(this);
+        eyesContainer = new RelativeLayout(this);
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+        );
+        container.addView(glassContainer, layoutParams);
+        container.addView(eyesContainer, layoutParams);
+
+        glassContainer.setZ(2);
+        glassContainer.setAlpha(0f);
+        glassContainer.setPivotY(1000f);
+
+        eyesContainer.setAlpha(0f);
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -81,7 +98,7 @@ public class SmileTwoAnimation extends AppCompatActivity {
             image.setImageResource(card.getResourceId(this));
             image.setId(i);
 
-            float angle2 = (float) 360 / circleSize * i;
+            float angle2 = angle * i;
             double radians = Math.toRadians(angle2);
 
             x = (float) (centerX + radius * Math.sin(radians));
@@ -127,7 +144,7 @@ public class SmileTwoAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImg = image;
 
-            container.addView(image);
+            eyesContainer.addView(image);
         }
 
         // glasses
@@ -170,10 +187,16 @@ public class SmileTwoAnimation extends AppCompatActivity {
             }
             // middle top card
             else if (i == 7) {
+                card = cardList.get(6);
+                image.setImageResource(card.getResourceId(this));
+
                 x = (float) (prevImg.getX() + screenWidth * 0.0556);
                 y = prevImg.getY();
                 rotation = -26f;
             } else if (i < 14) {
+                card = cardList.get(13 - i);
+                image.setImageResource(card.getResourceId(this));
+
                 x = (float) (prevImg.getX() + radius * Math.sin(radiance2));
                 y = (float) (prevImg.getY() - radius * Math.cos(radiance2));
                 rotation = prevImg.getRotation() + 5f;
@@ -225,10 +248,10 @@ public class SmileTwoAnimation extends AppCompatActivity {
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
-            image.setZ(3);
+            image.setZ(5);
             prevImg = image;
 
-            container.addView(image);
+            glassContainer.addView(image);
         }
 
         // left glass of glass
@@ -267,9 +290,9 @@ public class SmileTwoAnimation extends AppCompatActivity {
             image.setX(x);
             image.setY(y);
             image.setRotation(10f);
-            image.setZ(1);
+            image.setZ(4);
             prevImg = image;
-            container.addView(image);
+            glassContainer.addView(image);
         }
 
         // right glass of glass
@@ -304,9 +327,9 @@ public class SmileTwoAnimation extends AppCompatActivity {
             image.setX(x);
             image.setY(y);
             image.setRotation(-10f);
-            image.setZ(1);
+            image.setZ(4);
             prevImg = image;
-            container.addView(image);
+            glassContainer.addView(image);
         }
 
         // eyes
@@ -344,36 +367,49 @@ public class SmileTwoAnimation extends AppCompatActivity {
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
-            image.setZ(0);
             prevImg = image;
-            container.addView(image);
+            eyesContainer.addView(image);
         }
 
         // calling the animation
-        for (int i = 133; i < 139; i++) {
+        for (int i = 0; i < 52; i++) {
             View image = findViewById(i);
             float x1 = image.getX();
             float y1 = image.getY();
 
-//            image.setX((float) screenWidth / 2);
-//            image.setY(screenHeight);
+            image.setX(-cardWidth);
+            image.setY(-cardHeight);
 
             animateCard(image, x1, y1, i);
         }
+        new Handler().postDelayed(this::fadeInGlasses, 2000);
     }
 
     private void animateCard(View image, float x, float y, int i) {
-
-        ObjectAnimator animator = ObjectAnimator.ofFloat(image, "rotation", 45)
-                .setDuration(3000L);
-//        ObjectAnimator translationX = ObjectAnimator.ofFloat(image, "translationX", )
-//                .setDuration(3000L);
-        animator.setRepeatCount(ValueAnimator.REVERSE);
-//        animator.setRepeatCount(1);
-//        animator.start();
+        image.animate()
+                .translationX(x)
+                .translationY(y)
+                .setDuration(400L)
+                .setStartDelay(20L * i)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
     }
 
     private void fadeInGlasses() {
+        ObjectAnimator animateGlass = ObjectAnimator.ofFloat(glassContainer, "alpha", 1f);
+        animateGlass.setDuration(800L);
+        ObjectAnimator animateEyes = ObjectAnimator.ofFloat(eyesContainer, "alpha", 1f);
+        animateEyes.setDuration(800L);
+        ObjectAnimator glassUp = ObjectAnimator.ofFloat(glassContainer, "rotation", -40f);
+        glassUp.setDuration(800L);
+
+        glassUp.setRepeatMode(ValueAnimator.REVERSE);
+        glassUp.setRepeatCount(1);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(animateGlass, animateEyes, glassUp);
+        animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.start();
 
     }
 }

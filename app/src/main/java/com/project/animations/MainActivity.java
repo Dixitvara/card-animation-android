@@ -53,11 +53,9 @@ public class MainActivity extends AppCompatActivity {
         btn12.setOnClickListener(v -> startActivity(new Intent(this, SwordAnimation.class)));
         btn13.setOnClickListener(v -> startActivity(new Intent(this, CastleAnimation.class)));
         btn14.setOnClickListener(v -> startActivity(new Intent(this, InOutAnimation.class)));
-        btn14.setBackgroundColor(Color.RED);
         btn15.setOnClickListener(v -> startActivity(new Intent(this, SmileTwoAnimation.class)));
-        btn15.setBackgroundColor(Color.RED);
         btn16.setOnClickListener(v -> startActivity(new Intent(this, SpiderAnimation.class)));
-        btn16.setBackgroundColor(Color.BLUE);
+        btn16.setBackgroundColor(Color.RED);
         btn17.setOnClickListener(v -> startActivity(new Intent(this, SpiderTwoAnimation.class)));
         btn17.setBackgroundColor(Color.BLUE);
     }

@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
+import com.project.animations.utils.MyAnim;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class SwordAnimation extends AppCompatActivity {
     RelativeLayout leftLayout, rightLayout, container;
 
     ArrayList<CardModel> cardList;
+    ArrayList<View> views;
     RelativeLayout.LayoutParams params;
 
     @Override
@@ -62,9 +64,6 @@ public class SwordAnimation extends AppCompatActivity {
         layoutParams2.weight = 1;
         linearLayout.addView(rightLayout, layoutParams2);
 
-//        leftLayout.setBackgroundColor(Color.RED);
-//        rightLayout.setBackgroundColor(Color.BLUE);
-
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
             finish();
@@ -86,6 +85,7 @@ public class SwordAnimation extends AppCompatActivity {
 
         cardList = CardMethods.generateCards(18, 0);
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+        views = new ArrayList<>();
 
         generateCards();
     }
@@ -157,6 +157,7 @@ public class SwordAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImage = image;
 
+            views.add(image);
             leftLayout.addView(image);
         }
 
@@ -223,6 +224,7 @@ public class SwordAnimation extends AppCompatActivity {
             image.setRotation(rotation);
             prevImage = image;
 
+            views.add(image);
             rightLayout.addView(image);
         }
 
@@ -256,7 +258,7 @@ public class SwordAnimation extends AppCompatActivity {
     }
 
     private void scaleUpAnimation() {
-        ArrayList<View> sortedCards = sortAndDirectCards(3);
+        ArrayList<View> sortedCards = MyAnim.sortAndDirectCards(views, 3);
         for (int i = 0; i < sortedCards.size(); i++) {
             View image = sortedCards.get(i);
 
@@ -305,52 +307,7 @@ public class SwordAnimation extends AppCompatActivity {
     }
 
     public void outAnimation() {
-        ObjectAnimator leftSword = ObjectAnimator.ofFloat(
-                        leftLayout,
-                        "translationX",
-                        screenWidth)
-                .setDuration(700L);
-        ObjectAnimator rightSword = ObjectAnimator.ofFloat(
-                        rightLayout,
-                        "translationX",
-                        screenWidth * -1)
-                .setDuration(700L);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(leftSword, rightSword);
-        animatorSet.start();
-    }
-
-    public ArrayList<View> sortAndDirectCards(int index) {
-        ArrayList<View> views = new ArrayList<>();
-
-        for (int i = 0; i < 36; i++) {
-            views.add(findViewById(i));
-        }
-
-        views.sort((view1, view2) -> {
-            int[] location1 = new int[2];
-            int[] location2 = new int[2];
-
-            view1.getLocationOnScreen(location1);
-            view2.getLocationOnScreen(location2);
-
-            switch (index) {
-                case 1:
-                    // top to bottom
-                    return Integer.compare(location1[1], location2[1]);
-                case 2:
-                    // right to left
-                    return Integer.compare(location2[0], location1[0]);
-                case 3:
-                    // bottom to top
-                    return Integer.compare(location2[1], location1[1]);
-                case 4:
-                    // left to right
-                    return Integer.compare(location1[0], location2[0]);
-            }
-            return 0;
-        });
-        return views;
+        MyAnim.translateXTo(leftLayout, screenWidth, 700L);
+        MyAnim.translateXTo(rightLayout, screenWidth * -1, 700L);
     }
 }

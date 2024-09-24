@@ -1,6 +1,5 @@
 package com.project.animations;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,8 +27,10 @@ public class TestingClass extends AppCompatActivity {
     int screenWidth, screenHeight;
     ArrayList<CardModel> cardList;
     RelativeLayout.LayoutParams params;
+    int TOTAL_NUMBER_OF_CARDS = 24;
     LinearLayout container;
     RelativeLayout childLayout, childLayout2, mainContainer;
+    float centerX, centerY;
     Button resetBtn;
 
     @Override
@@ -66,8 +66,8 @@ public class TestingClass extends AppCompatActivity {
         layoutParams2.weight = 1;
         container.addView(childLayout2, layoutParams2);
 
-//        leftLayout.setBackgroundColor(Color.RED);
-//        rightLayout.setBackgroundColor(Color.BLUE);
+        childLayout.setBackgroundColor(Color.RED);
+        childLayout2.setBackgroundColor(Color.BLUE);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -79,8 +79,10 @@ public class TestingClass extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(18, 1);
+        centerX = ((float) screenWidth / 2) - ((float) cardWidth / 2);
+        centerY = ((float) screenHeight / 2) - ((float) cardHeight / 2);
 
+        cardList = CardMethods.generateCards(18, 1);
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         resetBtn.setOnClickListener(v -> {
@@ -89,11 +91,41 @@ public class TestingClass extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        createCircles();
+//        createSwords();
+        createCircle();
 
     }
 
-    private void createCircles() {
+    private void createCircle() {
+        ArrayList<CardModel> cardModel = CardMethods.generateCards(TOTAL_NUMBER_OF_CARDS, 0);
+
+        float radius = (int) (screenWidth * 0.3);
+        for (int i = 0; i < TOTAL_NUMBER_OF_CARDS; i++) {
+
+            int angle = 360 / TOTAL_NUMBER_OF_CARDS * i;
+            double radians = Math.toRadians(angle);
+
+            int x = (int) (centerX + radius * Math.sin(radians));
+            int y = (int) (centerY - radius * Math.cos(radians));
+
+            CardModel card = cardModel.get(i);
+
+            ImageView image = new ImageView(this);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            container.addView(image);
+
+            image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
+            image.setY(screenHeight);
+            image.setRotation(angle);
+        }
+    }
+
+    private void createSwords() {
 
         float radius = (float) (screenWidth * 0.10);
         float angle = (float) 360 / 20;
