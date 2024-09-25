@@ -42,7 +42,7 @@ public class EightCircleAnimation extends AppCompatActivity {
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
 
-        int[] cardDimension = CardDimension.getCardParams(displaymetrics);
+        int[] cardDimension = CardDimension.smallCardsParams(displaymetrics);
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
@@ -52,7 +52,7 @@ public class EightCircleAnimation extends AppCompatActivity {
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
 
-        params = new RelativeLayout.LayoutParams(80, 110);
+        params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         radius = (float) (screenWidth * 0.1);
 

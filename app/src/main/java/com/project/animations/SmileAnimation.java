@@ -54,7 +54,7 @@ public class SmileAnimation extends AppCompatActivity {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
-        int[] cardParams = CardDimension.getCardParams(displayMetrics);
+        int[] cardParams = CardDimension.smallCardsParams(displayMetrics);
         cardWidth = cardParams[0];
         cardHeight = cardParams[1];
 
@@ -63,7 +63,7 @@ public class SmileAnimation extends AppCompatActivity {
 
         cardList = CardMethods.generateSelectedCards(TOTAL_CARDS, new int[] {0,1,2});
         views = new ArrayList<>();
-        params = new RelativeLayout.LayoutParams(90, 110);
+        params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         generateCards();
     }
@@ -137,13 +137,13 @@ public class SmileAnimation extends AppCompatActivity {
             // eyes
             if (i == 9) {
                 image.setX((float) (screenWidth * 0.3));
-                image.setY((float) (screenHeight * 0.35));
+                image.setY((float) (screenHeight * 0.4));
                 image.setImageResource(R.drawable.clubs1);
                 image.setRotation(-10f);
             }
             if (i == 10) {
                 image.setX((float) (screenWidth * 0.6));
-                image.setY((float) (screenHeight * 0.35));
+                image.setY((float) (screenHeight * 0.4));
                 image.setImageResource(R.drawable.clubs1);
                 image.setRotation(10f);
             }
@@ -161,8 +161,8 @@ public class SmileAnimation extends AppCompatActivity {
                 image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
                 image.setY(screenHeight);
             } else {
-                image.setX(i == 33 ? -100f : screenWidth);
-                image.setY((float) (screenHeight * 0.35));
+                image.setX(i == 33 ? -cardWidth : screenWidth);
+                image.setY((float) (screenHeight * 0.4));
             }
             animateCard(image, x1, y1, i);
         }

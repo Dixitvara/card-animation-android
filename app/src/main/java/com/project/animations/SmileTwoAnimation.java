@@ -67,7 +67,7 @@ public class SmileTwoAnimation extends AppCompatActivity {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
-        int[] cardParams = CardDimension.getCardParams(displayMetrics);
+        int[] cardParams = CardDimension.smallCardsParams(displayMetrics);
         cardWidth = cardParams[0];
         cardHeight = cardParams[1];
 
@@ -75,7 +75,7 @@ public class SmileTwoAnimation extends AppCompatActivity {
         centerY = (screenHeight / 2) - (cardHeight / 2);
 
         cardList = CardMethods.allCards();
-        params = new RelativeLayout.LayoutParams(90, 110);
+        params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         generateCards();
     }

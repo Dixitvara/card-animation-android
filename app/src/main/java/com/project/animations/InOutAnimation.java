@@ -1,10 +1,11 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -60,7 +61,7 @@ public class InOutAnimation extends AppCompatActivity {
         centerX = (screenWidth / 2) - (cardWidth / 2);
         centerY = (screenHeight / 2) - (cardHeight / 2);
 
-        cardList = CardMethods.allCards();
+        cardList = CardMethods.generateSelectedCards(TOTAL_CARDS,new int[] {0, 1, 3, 2});
         params = new RelativeLayout.LayoutParams(90, 110);
 
         designCircle();
@@ -160,7 +161,15 @@ public class InOutAnimation extends AppCompatActivity {
         animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorSet.start();
 
-        new Handler().postDelayed(this::inOutAnimation, 4600L);
+        if (i == 51) {
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    inOutAnimation();
+                }
+            });
+        }
     }
 
     private void inOutAnimation() {
@@ -232,6 +241,7 @@ public class InOutAnimation extends AppCompatActivity {
                 float y = (float) (centerY - modifiedRadius * Math.cos(radiance));
 
                 image.setX(x);
+
                 image.setY(y);
             });
             animator2.setRepeatMode(ValueAnimator.REVERSE);
@@ -244,8 +254,16 @@ public class InOutAnimation extends AppCompatActivity {
             animatorSet.playTogether(animator2, rotationAnimation);
             animatorSet.start();
 
+            if (index2 == 25) {
+                animatorSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        outAnimation();
+                    }
+                });
+            }
         }
-        new Handler().postDelayed(this::outAnimation, 4500L);
     }
 
     public void outAnimation() {
@@ -254,7 +272,7 @@ public class InOutAnimation extends AppCompatActivity {
 
             float x = i < 26 ? -cardWidth : screenWidth;
             float y = i < 26 ? -cardHeight : screenHeight;
-            long delay = i < 26 ? 30L * i : 30L * (i - 26);
+            long delay = i < 26 ? 30L * (i + 1) : 30L * (i - 25);
 
             image.animate()
                     .translationX(x)

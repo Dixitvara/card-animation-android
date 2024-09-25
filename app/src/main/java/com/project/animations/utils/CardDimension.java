@@ -12,4 +12,14 @@ public class CardDimension {
 
         return new int[]{cardWidth, cardHeight};
     }
+
+    public static int[] smallCardsParams(DisplayMetrics displayMetrics) {
+        int screenWidth = displayMetrics.widthPixels;
+
+        int cardWidth = screenWidth * 3 / 40;
+        int cardHeight = (int) (cardWidth * 1.4);
+
+        return new int[]{cardWidth, cardHeight};
+    }
+
 }

@@ -57,6 +57,6 @@ public class MainActivity extends AppCompatActivity {
         btn16.setOnClickListener(v -> startActivity(new Intent(this, SpiderAnimation.class)));
         btn16.setBackgroundColor(Color.RED);
         btn17.setOnClickListener(v -> startActivity(new Intent(this, SpiderTwoAnimation.class)));
-        btn17.setBackgroundColor(Color.BLUE);
+        btn17.setBackgroundColor(Color.RED);
     }
 }
