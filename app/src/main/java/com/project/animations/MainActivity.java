@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         btn4.setOnClickListener(v -> startActivity(new Intent(this, ClubAnimation.class)));
         btn5.setOnClickListener(v -> startActivity(new Intent(this, CircleAnimation.class)));
         btn6.setOnClickListener(v -> startActivity(new Intent(this, SemiCircleAnimation.class)));
-        btn6.setBackgroundColor(Color.RED);
         btn7.setOnClickListener(v -> startActivity(new Intent(this, WaveAnimation.class)));
         btn8.setOnClickListener(v -> startActivity(new Intent(this, TwoCircleAnimation.class)));
         btn9.setOnClickListener(v -> startActivity(new Intent(this, EightCircleAnimation.class)));

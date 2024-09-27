@@ -1,6 +1,7 @@
 package com.project.animations;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -15,6 +16,8 @@ import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TestingClass extends AppCompatActivity {
 
@@ -88,14 +91,13 @@ public class TestingClass extends AppCompatActivity {
             } else {
                 x = (float) (prevImage.getX() + radius * Math.sin(radians));
                 y = (float) (prevImage.getY() - radius * Math.cos(radians));
-                rotation = prevImage.getRotation() + angle;
+                rotation = prevImage.getRotation() + 13;
             }
 
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
 
-            mainContainer.addView(image);
             prevImage = image;
         }
 
@@ -109,6 +111,7 @@ public class TestingClass extends AppCompatActivity {
 
             animateCircle(image, x, y, i);
         }*/
+
     }
 
     private void animateCircle(View image, float x, float y, int i) {

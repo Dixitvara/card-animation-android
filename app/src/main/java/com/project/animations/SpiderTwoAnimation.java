@@ -1,7 +1,10 @@
 package com.project.animations;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,8 +27,9 @@ public class SpiderTwoAnimation extends AppCompatActivity {
     int cardHeight, cardWidth;
 
     ArrayList<CardModel> redCardList, blackCardList;
-    RelativeLayout.LayoutParams params, heartParams;
+    RelativeLayout.LayoutParams params, heartParams, smallCardsParams;
     RelativeLayout heartContainer;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,8 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
+
+        handler = new Handler();
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -60,6 +66,10 @@ public class SpiderTwoAnimation extends AppCompatActivity {
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
         heartParams = new RelativeLayout.LayoutParams(180, 180);
 
+        addHeartShape();
+    }
+
+    private void addHeartShape() {
         heartContainer = new RelativeLayout(this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -69,17 +79,8 @@ public class SpiderTwoAnimation extends AppCompatActivity {
         heartContainer.setZ(1);
         heartContainer.setAlpha(0f);
 
-        generateShape();
-    }
-
-    private void generateShape() {
-        float x, y, rotation;
-        float radius = (float) (screenWidth * 0.07);
-        float angle;
-
         ImageView redHeart = new ImageView(this);
         ImageView blackHeart = new ImageView(this);
-        ImageView prevImage = null;
 
         redHeart.setImageResource(R.drawable.fullheart);
         blackHeart.setImageResource(R.drawable.fullheartblack);
@@ -94,6 +95,61 @@ public class SpiderTwoAnimation extends AppCompatActivity {
         blackHeart.setX(redHeart.getX());
         blackHeart.setY(redHeart.getY() + 100f);
         blackHeart.setZ(5);
+
+        smallCardsParams = new RelativeLayout.LayoutParams(50, 80);
+        ImageView prevImage = null;
+        float x, y, rotation;
+
+        for (int i = 0; i < 5; i++) {
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(smallCardsParams);
+            image.setImageResource(R.drawable.spades_1);
+
+            if (prevImage == null) {
+                x = (float) (centerX - screenWidth * 0.01);
+                y = (float) (centerY - screenHeight * 0.065);
+                rotation = -40f;
+                image.setZ(1);
+            } else if (i == 1) {
+                x = prevImage.getX() + 30;
+                y = prevImage.getY() + 15;
+                rotation = 0f;
+            } else if (i == 2) {
+                x = prevImage.getX() + 30;
+                y = prevImage.getY() - 15;
+                rotation = 40f;
+            } else if (i == 3) {
+                x = prevImage.getX() + 10;
+                y = prevImage.getY() - 40;
+                rotation = -10f;
+            } else {
+                x = prevImage.getX() - 80;
+                y = prevImage.getY();
+                rotation = 10f;
+                image.setZ(1);
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+
+            heartContainer.addView(image);
+            prevImage = image;
+
+        }
+        heartContainer.animate()
+                .alpha(1f)
+                .setDuration(400L)
+                .setInterpolator(new DecelerateInterpolator())
+                .withEndAction(this::generateShape)
+                .start();
+    }
+
+    private void generateShape() {
+        float x, y, rotation;
+        float radius = (float) (screenWidth * 0.07);
+        float angle;
+
+        ImageView prevImage = null;
 
         // right legs
         // first leg
@@ -123,7 +179,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
         }
 
@@ -140,7 +196,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i + 7);
+            image.setId(i + 6);
 
             if (prevImage == null) {
                 x = (float) (centerX + radius * Math.sin(radiance));
@@ -155,7 +211,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
         }
 
@@ -172,7 +228,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i + 13);
+            image.setId(i + 12);
 
             if (prevImage == null) {
                 x = (float) (centerX + radius * Math.sin(radiance));
@@ -187,7 +243,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
         }
 
@@ -204,7 +260,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i + 19);
+            image.setId(i + 18);
 
             if (prevImage == null) {
                 x = (float) (centerX + radius * Math.sin(radiance));
@@ -219,7 +275,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
         }
 
@@ -236,7 +292,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i + 26);
+            image.setId(i + 24);
 
             if (prevImage == null) {
                 x = (float) (centerX - screenWidth * 0.13 + radius * Math.sin(radiance));
@@ -251,7 +307,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
         }
 
@@ -268,7 +324,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i + 33);
+            image.setId(i + 30);
 
             if (prevImage == null) {
                 x = (float) (centerX - radius * Math.sin(radiance));
@@ -283,7 +339,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
         }
 
@@ -300,7 +356,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i + 39);
+            image.setId(i + 36);
 
             if (prevImage == null) {
                 x = (float) (centerX - radius * Math.sin(radiance));
@@ -315,7 +371,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
         }
 
@@ -332,7 +388,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
-            image.setId(i + 45);
+            image.setId(i + 42);
 
             if (prevImage == null) {
                 x = (float) (centerX - radius * Math.sin(radiance));
@@ -347,8 +403,14 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            container.addView(image);
+            handler.postDelayed(() -> container.addView(image), 70L * i);
             prevImage = image;
+        }
+
+        for (int i = 0; i < 48; i++){
+            ImageView image = findViewById(i);
+            System.out.println("-}" + image);
+            image.setVisibility(View.INVISIBLE);
         }
 
         // tooth
@@ -389,14 +451,41 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             heartContainer.addView(image);
             prevImage = image;
         }
-        animate();
+        animateLegs();
     }
 
-    private void animate() {
-        heartContainer.animate()
-                .alpha(1f)
-                .setDuration(1500L)
-                .setInterpolator(new DecelerateInterpolator())
-                .start();
+    private void animateLegs() {
+        long delay, delayValue = 50L;
+        for (int i = 0; i < 48; i++) {
+            ImageView image = findViewById(i);
+
+            if (i < 6)
+                delay = delayValue * i;
+            else if (i < 12)
+                delay = delayValue * (i - 6);
+            else if (i < 18)
+                delay = delayValue * (i - 12);
+            else if (i < 24)
+                delay = delayValue * (i - 18);
+            else if (i < 30)
+                delay = delayValue * (i - 24);
+            else if (i < 36)
+                delay = delayValue * (i - 30);
+            else if (i < 42)
+                delay = delayValue * (i - 36);
+            else
+                delay = delayValue * (i - 42);
+
+            ObjectAnimator animator = ObjectAnimator.ofFloat(image, "alpha", 0f, 1f)
+                    .setDuration(1000L);
+            animator.setStartDelay(delay);
+//            animator.start();
+            image.animate()
+                    .translationX(image.getX())
+                    .setDuration(100L)
+                    .setStartDelay(delay)
+                    .withEndAction(() -> image.setVisibility(View.VISIBLE))
+                    .start();
+        }
     }
 }
