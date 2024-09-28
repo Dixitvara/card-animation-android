@@ -1,7 +1,8 @@
 package com.project.animations;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -16,8 +17,6 @@ import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class TestingClass extends AppCompatActivity {
 
@@ -98,26 +97,32 @@ public class TestingClass extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
+            mainContainer.addView(image);
             prevImage = image;
         }
 
-/*        for (int i = 0; i < mainContainer.getChildCount(); i++){
-            View image = findViewById(i);
-            float x = image.getX();
-            float y = image.getY();
+        for (int i = 0; i < mainContainer.getChildCount(); i++) {
+            View image = mainContainer.getChildAt(i);
+            animateLegs(image, angle);
+        }
+    }
 
-            image.setX((float) screenWidth / 2 - (float) cardWidth / 2);
-            image.setY(screenHeight);
-
-            animateCircle(image, x, y, i);
-        }*/
-
+    private void animateLegs(View image, float angle) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(
+                image,
+                "rotation",
+                image.getRotation() - angle
+        );
+        animator.setDuration(200L);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.start();
     }
 
     private void animateCircle(View image, float x, float y, int i) {
         image.animate()
-                .translationX(x)
-                .translationY(y)
+                .translationX(image.getX())
                 .setStartDelay(30L * i)
                 .setDuration(300)
                 .setInterpolator(new DecelerateInterpolator())

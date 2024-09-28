@@ -1,6 +1,5 @@
 package com.project.animations;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -147,13 +146,12 @@ public class SpiderTwoAnimation extends AppCompatActivity {
     private void generateShape() {
         float x, y, rotation;
         float radius = (float) (screenWidth * 0.07);
-        float angle;
+        float angle = (float) 165 / 6;
 
         ImageView prevImage = null;
 
         // right legs
         // first leg
-        angle = (float) 165 / 6;
         for (int i = 0; i < 6; i++) {
             float angle2 = angle * i;
             angle2 += 85f;
@@ -179,7 +177,8 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            handler.postDelayed(() -> container.addView(image), 70L * i);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
@@ -211,7 +210,8 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            handler.postDelayed(() -> container.addView(image), 70L * i);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
@@ -244,6 +244,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setRotation(rotation);
 
 //            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
@@ -276,6 +277,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setRotation(rotation);
 
 //            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
@@ -307,7 +309,8 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            handler.postDelayed(() -> container.addView(image), 70L * i);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
@@ -339,7 +342,8 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            handler.postDelayed(() -> container.addView(image), 70L * i);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
@@ -371,7 +375,8 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            handler.postDelayed(() -> container.addView(image), 70L * i);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
@@ -403,13 +408,13 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            handler.postDelayed(() -> container.addView(image), 70L * i);
+//            handler.postDelayed(() -> container.addView(image), 70L * i);
+            container.addView(image);
             prevImage = image;
         }
 
         for (int i = 0; i < 48; i++){
             ImageView image = findViewById(i);
-            System.out.println("-}" + image);
             image.setVisibility(View.INVISIBLE);
         }
 
@@ -451,10 +456,10 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             heartContainer.addView(image);
             prevImage = image;
         }
-        animateLegs();
+        addLegs();
     }
 
-    private void animateLegs() {
+    private void addLegs() {
         long delay, delayValue = 50L;
         for (int i = 0; i < 48; i++) {
             ImageView image = findViewById(i);
@@ -476,16 +481,17 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             else
                 delay = delayValue * (i - 42);
 
-            ObjectAnimator animator = ObjectAnimator.ofFloat(image, "alpha", 0f, 1f)
-                    .setDuration(1000L);
-            animator.setStartDelay(delay);
-//            animator.start();
             image.animate()
                     .translationX(image.getX())
-                    .setDuration(100L)
+                    .setDuration(200L)
+                    .setInterpolator(new DecelerateInterpolator())
                     .setStartDelay(delay)
                     .withEndAction(() -> image.setVisibility(View.VISIBLE))
                     .start();
         }
+    }
+
+    private void animateLegs(){
+
     }
 }

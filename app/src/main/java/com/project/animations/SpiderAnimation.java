@@ -62,6 +62,7 @@ public class SpiderAnimation extends AppCompatActivity {
         float x, y;
         ImageView prevImage = null;
 
+        // spider body
         for (int i = 0; i < 14; i++) {
             ImageView image = new ImageView(this);
 
@@ -101,9 +102,12 @@ public class SpiderAnimation extends AppCompatActivity {
             container.addView(image);
         }
 
+        // left legs
+        // first leg
         prevImage = null;
         float radius = (float) (screenWidth * 0.025);
         float angle = (float) 180 / 13;
+        float rotation;
         for (int i = 1; i < cardList.size(); i++) {
             float angle2 = angle * i;
             float radiance = (float) Math.toRadians(angle2);
@@ -118,12 +122,24 @@ public class SpiderAnimation extends AppCompatActivity {
             if (prevImage == null) {
                 x = (float) (screenWidth * 0.28);
                 y = (float) (screenHeight * 0.1);
+                rotation = 160f;
+
+            } else if (i < 7) {
+                x = (float) (prevImage.getX() - radius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 15;
+            } else if (i == 7) {
+                x = (float) (prevImage.getX() - radius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 50f;
             } else {
                 x = (float) (prevImage.getX() - radius * Math.sin(radiance));
                 y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation();
             }
             image.setX(x);
             image.setY(y);
+            image.setRotation(rotation);
             prevImage = image;
             container.addView(image);
         }

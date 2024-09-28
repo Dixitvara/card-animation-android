@@ -3,7 +3,6 @@ package com.project.animations;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -146,11 +145,9 @@ public class WaveAnimation extends AppCompatActivity {
                 animator.setStartDelay(delay * (i - 26));
             else
                 animator.setStartDelay(delay * (i - 39));
-
             animator.start();
-
-            new Handler().postDelayed(this::outAnimation, 3600);
         }
+        outAnimation();
     }
 
     private void outAnimation() {
