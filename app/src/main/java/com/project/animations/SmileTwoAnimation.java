@@ -410,6 +410,5 @@ public class SmileTwoAnimation extends AppCompatActivity {
         animatorSet.playSequentially(animateGlass, animateEyes, glassUp);
         animatorSet.setInterpolator(new LinearInterpolator());
         animatorSet.start();
-
     }
 }

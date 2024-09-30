@@ -2,6 +2,7 @@ package com.project.animations;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -72,7 +73,7 @@ public class SpiderAnimation extends AppCompatActivity {
 
             if (prevImage == null) {
                 x = (float) (screenWidth * 0.28);
-                y = (float) (screenHeight * 0.1);
+                y = (float) (screenHeight * 0.14);
             } else if (i < 5) {
                 x = prevImage.getX() + cardWidth;
                 y = prevImage.getY();
@@ -105,8 +106,9 @@ public class SpiderAnimation extends AppCompatActivity {
         // left legs
         // first leg
         prevImage = null;
-        float radius = (float) (screenWidth * 0.025);
+        float radius = (float) (screenWidth * 0.04);
         float angle = (float) 180 / 13;
+        float horizontalRadius = (float) (screenWidth * 0.03);
         float rotation;
         for (int i = 1; i < cardList.size(); i++) {
             float angle2 = angle * i;
@@ -121,21 +123,337 @@ public class SpiderAnimation extends AppCompatActivity {
 
             if (prevImage == null) {
                 x = (float) (screenWidth * 0.28);
-                y = (float) (screenHeight * 0.1);
+                y = (float) (screenHeight * 0.13);
                 rotation = 160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 2f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            container.addView(image);
+//            image.setVisibility(View.INVISIBLE);
+        }
 
-            } else if (i < 7) {
-                x = (float) (prevImage.getX() - radius * Math.sin(radiance));
+        // second leg
+        radius = (float) (screenWidth * 0.035);
+        horizontalRadius = (float) (screenWidth * 0.024);
+        prevImage = null;
+        for (int i = 1; i < cardList.size(); i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.32);
+                y = (float) (screenHeight * 0.19);
+                rotation = 160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
                 y = (float) (prevImage.getY() - radius * Math.cos(radiance));
-                rotation = prevImage.getRotation() - 15;
-            } else if (i == 7) {
-                x = (float) (prevImage.getX() - radius * Math.sin(radiance));
+                rotation = prevImage.getRotation() - 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
                 y = (float) (prevImage.getY() - radius * Math.cos(radiance));
-                rotation = prevImage.getRotation() - 50f;
-            } else {
-                x = (float) (prevImage.getX() - radius * Math.sin(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
                 y = (float) (prevImage.getY() - radius * Math.cos(radiance));
-                rotation = prevImage.getRotation();
+                rotation = prevImage.getRotation() - 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 2f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            container.addView(image);
+        }
+
+
+        // third leg
+        radius = (float) (screenWidth * 0.035);
+        horizontalRadius = (float) (screenWidth * 0.018);
+        prevImage = null;
+        for (int i = 1; i < cardList.size(); i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.35);
+                y = (float) (screenHeight * 0.25);
+                rotation = 160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 2f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            container.addView(image);
+        }
+
+        // fourth leg
+        radius = (float) (screenWidth * 0.032);
+        horizontalRadius = (float) (screenWidth * 0.014);
+        prevImage = null;
+        for (int i = 1; i < cardList.size(); i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.40);
+                y = (float) (screenHeight * 0.31);
+                rotation = 160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 4f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            container.addView(image);
+        }
+
+        // right legs
+        // first leg
+        prevImage = null;
+        radius = (float) (screenWidth * 0.04);
+        horizontalRadius = (float) (screenWidth * 0.03);
+        for (int i = 1; i < cardList.size(); i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.64);
+                y = (float) (screenHeight * 0.13);
+                rotation = -160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 2f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            container.addView(image);
+        }
+
+        // second leg
+        radius = (float) (screenWidth * 0.035);
+        horizontalRadius = (float) (screenWidth * 0.024);
+        prevImage = null;
+        for (int i = 1; i < cardList.size(); i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.60);
+                y = (float) (screenHeight * 0.19);
+                rotation = -160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 2f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            container.addView(image);
+        }
+
+
+        // third leg
+        radius = (float) (screenWidth * 0.035);
+        horizontalRadius = (float) (screenWidth * 0.018);
+        prevImage = null;
+        for (int i = 1; i < cardList.size(); i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.57);
+                y = (float) (screenHeight * 0.25);
+                rotation = -160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 2f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            container.addView(image);
+        }
+
+        // fourth leg
+        radius = (float) (screenWidth * 0.032);
+        horizontalRadius = (float) (screenWidth * 0.014);
+        prevImage = null;
+        for (int i = 1; i < cardList.size(); i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.52);
+                y = (float) (screenHeight * 0.31);
+                rotation = -160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() + horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 4f;
             }
             image.setX(x);
             image.setY(y);

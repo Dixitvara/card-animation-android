@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
+import com.project.animations.utils.MyAnim;
 
 import java.util.ArrayList;
 
@@ -238,8 +239,8 @@ public class SpadesAnimation extends AppCompatActivity {
     private void scaleAnimation() {
         ObjectAnimator scaleX, scaleY;
 
-        for (int i = 1; i <= cardList.size(); i++) {
-            ImageView image = findViewById(i - 1);
+        for (int i = 0; i < cardList.size(); i++) {
+            ImageView image = findViewById(i);
 
             scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1f, 1.3f)
                     .setDuration(400);
@@ -254,9 +255,21 @@ public class SpadesAnimation extends AppCompatActivity {
 
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.playTogether(scaleX, scaleY);
-            animatorSet.setStartDelay(30L * i);
+            animatorSet.setStartDelay(30L * (i + 1));
 
             animatorSet.start();
+            int finalI = i;
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == cardList.size() -1 )
+                        outAnimation();
+                }
+            });
         }
+    }
+
+    private void outAnimation() {
+        MyAnim.translateYTo(container, screenHeight * -1, 700L);
     }
 }

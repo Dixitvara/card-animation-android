@@ -1,5 +1,7 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
@@ -146,8 +148,16 @@ public class WaveAnimation extends AppCompatActivity {
             else
                 animator.setStartDelay(delay * (i - 39));
             animator.start();
+            int finalI = i;
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    if (finalI == 51)
+                        outAnimation();
+                }
+            });
         }
-        outAnimation();
     }
 
     private void outAnimation() {
@@ -171,7 +181,6 @@ public class WaveAnimation extends AppCompatActivity {
                 translateX.setStartDelay(50L * (52 - i));
 
             translateX.start();
-
         }
     }
 }

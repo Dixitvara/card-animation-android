@@ -1,5 +1,7 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
@@ -103,21 +105,44 @@ public class TestingClass extends AppCompatActivity {
 
         for (int i = 0; i < mainContainer.getChildCount(); i++) {
             View image = mainContainer.getChildAt(i);
-            animateLegs(image, angle);
+            if (i == mainContainer.getChildCount() - 1) {
+                break;
+            }
+            View nextImg = mainContainer.getChildAt(i + 1);
+
+            image.animate()
+                    .translationX(nextImg.getX())
+                    .translationY(nextImg.getY())
+                    .rotation(nextImg.getRotation())
+                    .setDuration(1000L)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
+
+            animateLegs(image, nextImg);
         }
     }
 
-    private void animateLegs(View image, float angle) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(
-                image,
-                "rotation",
-                image.getRotation() - angle
-        );
-        animator.setDuration(200L);
-        animator.setInterpolator(new DecelerateInterpolator());
-        animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.start();
+    private void animateLegs(View image, View nextImg) {
+        ObjectAnimator translationX = ObjectAnimator.ofFloat(image, "translationX", nextImg.getX());
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(image, "translationY", nextImg.getY());
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(image, "rotation", nextImg.getRotation());
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(200L);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+
+        translationX.setRepeatCount(ValueAnimator.INFINITE);
+        translationX.setRepeatMode(ValueAnimator.REVERSE);
+
+        translationY.setRepeatCount(ValueAnimator.INFINITE);
+        translationY.setRepeatMode(ValueAnimator.REVERSE);
+
+        rotation.setRepeatCount(ValueAnimator.INFINITE);
+        rotation.setRepeatMode(ValueAnimator.REVERSE);
+
+        animatorSet.playTogether(translationX, translationY, rotation);
+
+        animatorSet.start();
     }
 
     private void animateCircle(View image, float x, float y, int i) {

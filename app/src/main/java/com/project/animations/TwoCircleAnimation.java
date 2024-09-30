@@ -1,12 +1,16 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
+import com.project.animations.utils.MyAnim;
 
 import java.util.ArrayList;
 
@@ -23,7 +28,8 @@ public class TwoCircleAnimation extends AppCompatActivity {
     int screenWidth, screenHeight;
     ArrayList<CardModel> cardList;
     RelativeLayout.LayoutParams params;
-    RelativeLayout container;
+    RelativeLayout topCircle, bottomCircle;
+    LinearLayout linearContainer;
     Button resetBtn;
     float centerX, centerY;
     final int TOTAL_CARDS = 26;
@@ -32,10 +38,31 @@ public class TwoCircleAnimation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_animation);
+        setContentView(R.layout.activity_animation_linear_layout);
 
-        container = findViewById(R.id.container);
         resetBtn = findViewById(R.id.resetBtn);
+        linearContainer = findViewById(R.id.containerLinear);
+
+        topCircle = new RelativeLayout(this);
+        bottomCircle = new RelativeLayout(this);
+
+        linearContainer.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                0
+        );
+        layoutParams.weight = 1;
+        linearContainer.addView(topCircle, layoutParams);
+
+        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                0
+        );
+        layoutParams2.weight = 1;
+        linearContainer.addView(bottomCircle, layoutParams2);
+
+//        topCircle.setBackgroundColor(Color.RED);
+//        bottomCircle.setBackgroundColor(Color.BLUE);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -91,7 +118,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
             } else {
                 angle2 = angle * (i - 13);
                 radiance = (float) Math.toRadians(angle2);
-                y = (float) (screenHeight * 0.6 - radius * Math.cos(radiance));
+                y = (float) (screenHeight * 0.07 - radius * Math.cos(radiance));
                 rotation = i == 13 ? angle2 : prevImg.getRotation() + angle;
             }
 
@@ -101,8 +128,13 @@ public class TwoCircleAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
+            if (i < 13) {
+                topCircle.addView(image);
+            } else {
+                bottomCircle.addView(image);
+            }
+
             prevImg = image;
-            container.addView(image);
         }
 
         for (int i = 0; i < TOTAL_CARDS; i++) {
@@ -111,7 +143,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
             float y1 = image.getY();
 
             image.setX(centerX);
-            image.setY(screenHeight);
+            image.setY(i < 13 ? screenHeight * -1 : screenHeight);
 
             animateCircle(image, x1, y1, i + 1);
         }
@@ -156,7 +188,7 @@ public class TwoCircleAnimation extends AppCompatActivity {
                 if (index < 13) {
                     y = (float) (screenHeight * 0.3 - radius * Math.cos(radiance));
                 } else {
-                    y = (float) (screenHeight * 0.6 - radius * Math.cos(radiance));
+                    y = (float) (screenHeight * 0.07 - radius * Math.cos(radiance));
                 }
                 image.setX(x);
                 image.setY(y);
@@ -164,6 +196,20 @@ public class TwoCircleAnimation extends AppCompatActivity {
             });
 
             animator.start();
+
+            int finalI = i;
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == TOTAL_CARDS - 1)
+                        outAnimation();
+                }
+            });
         }
+    }
+
+    private void outAnimation() {
+        MyAnim.translateYTo(topCircle, screenHeight * -1, 1500L);
+        MyAnim.translateYTo(bottomCircle, screenHeight, 1500L);
     }
 }

@@ -1,5 +1,7 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -210,6 +212,19 @@ public class SmileAnimation extends AppCompatActivity {
             animatorSet.playTogether(scaleX, scaleY);
             animatorSet.setStartDelay(45L * (i));
             animatorSet.start();
+            int finalI = i;
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == cardList.size() -1 )
+                        outAnimation();
+                }
+            });
         }
     }
+
+    private void outAnimation() {
+        MyAnim.translateXTo(container, screenWidth, 800L);
+    }
+
 }

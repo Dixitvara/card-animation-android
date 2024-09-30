@@ -1,5 +1,7 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
+import com.project.animations.utils.MyAnim;
 
 import java.util.ArrayList;
 
@@ -23,7 +26,8 @@ public class CastleAnimation extends AppCompatActivity {
 
     int cardWidth, cardHeight;
     int screenWidth, screenHeight;
-    ArrayList<CardModel> cardList;
+    ArrayList<CardModel> cardListModel;
+    ArrayList<View> cardsList;
     RelativeLayout.LayoutParams params;
     RelativeLayout container;
     Button resetBtn;
@@ -48,7 +52,8 @@ public class CastleAnimation extends AppCompatActivity {
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
-        cardList = CardMethods.generateCards(8, 0);
+        cardListModel = CardMethods.generateCards(8, 0);
+        cardsList = new ArrayList<>();
 
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
@@ -96,6 +101,7 @@ public class CastleAnimation extends AppCompatActivity {
             image.setY(y);
             prevImage = image;
             container.addView(image);
+            cardsList.add(image);
         }
 
         // right
@@ -124,13 +130,14 @@ public class CastleAnimation extends AppCompatActivity {
             image.setY(y);
             prevImage = image;
             container.addView(image);
+            cardsList.add(image);
         }
 
         // top horizontal cards
         prevImage = null;
         for (int i = 0; i < 8; i++) {
             ImageView image = new ImageView(this);
-            CardModel card = cardList.get(i);
+            CardModel card = cardListModel.get(i);
 
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
@@ -149,6 +156,7 @@ public class CastleAnimation extends AppCompatActivity {
             prevImage = image;
 
             container.addView(image);
+            cardsList.add(image);
         }
 
         // middle half circle
@@ -182,15 +190,16 @@ public class CastleAnimation extends AppCompatActivity {
             prevImage = image;
 
             container.addView(image);
+            cardsList.add(image);
         }
 
         // top verticals cards on horizontal cards
-        cardList = CardMethods.generateCards(5, 1);
+        cardListModel = CardMethods.generateCards(5, 1);
         prevImage = null;
         for (int i = 0; i < 5; i++) {
             ImageView image = new ImageView(this);
 
-            CardModel card = cardList.get(i);
+            CardModel card = cardListModel.get(i);
 
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
@@ -212,15 +221,16 @@ public class CastleAnimation extends AppCompatActivity {
                 image.setVisibility(View.INVISIBLE);
             }
             container.addView(image);
+            cardsList.add(image);
         }
 
         // flag and stand
-        cardList = CardMethods.generateCards(8, 2);
+        cardListModel = CardMethods.generateCards(8, 2);
         prevImage = null;
         for (int i = 0; i < 8; i++) {
             ImageView image = new ImageView(this);
 
-            CardModel card = cardList.get(i);
+            CardModel card = cardListModel.get(i);
 
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
@@ -244,6 +254,7 @@ public class CastleAnimation extends AppCompatActivity {
             prevImage = image;
 
             container.addView(image);
+            cardsList.add(image);
         }
 
         for (int i = 0; i < container.getChildCount(); i++) {
@@ -276,7 +287,7 @@ public class CastleAnimation extends AppCompatActivity {
     }
 
     private void scaleUpAnimation() {
-        ArrayList<View> sortedCards = scaleUpByDirection(1);
+        ArrayList<View> sortedCards = MyAnim.sortAndDirectCards(cardsList, 1);
         for (int i = 0; i < sortedCards.size(); i++) {
             View image = sortedCards.get(i);
 
@@ -296,39 +307,18 @@ public class CastleAnimation extends AppCompatActivity {
             animatorSet.playTogether(scaleX, scaleY);
             animatorSet.setStartDelay(40L * i);
             animatorSet.start();
+            int finalI = i;
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == sortedCards.size() - 1)
+                        outAnimation();
+                }
+            });
         }
     }
 
-    public ArrayList<View> scaleUpByDirection(int index) {
-        ArrayList<View> views = new ArrayList<>();
-
-        for (int i = 0; i < container.getChildCount(); i++) {
-            views.add(container.getChildAt(i));
-        }
-
-        views.sort((view1, view2) -> {
-            int[] location1 = new int[2];
-            int[] location2 = new int[2];
-
-            view1.getLocationOnScreen(location1);
-            view2.getLocationOnScreen(location2);
-
-            switch (index) {
-                case 1:
-                    // top to bottom
-                    return Integer.compare(location1[1], location2[1]);
-                case 2:
-                    // right to left
-                    return Integer.compare(location2[0], location1[0]);
-                case 3:
-                    // bottom to top
-                    return Integer.compare(location2[1], location1[1]);
-                case 4:
-                    // left to right
-                    return Integer.compare(location1[0], location2[0]);
-            }
-            return 0;
-        });
-        return views;
+    private void outAnimation() {
+        MyAnim.translateYTo(container, screenHeight, 700L);
     }
 }

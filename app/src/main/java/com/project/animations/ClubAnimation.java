@@ -1,5 +1,7 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
+import com.project.animations.utils.MyAnim;
 
 import java.util.ArrayList;
 
@@ -235,7 +238,7 @@ public class ClubAnimation extends AppCompatActivity {
                     image.setX(x);
                     image.setY(y);
                     if (i == 45)
-                       scaleAnimation();
+                        scaleAnimation();
                 }).start();
     }
 
@@ -259,7 +262,18 @@ public class ClubAnimation extends AppCompatActivity {
             animatorSet.setStartDelay(30L * i);
 
             animatorSet.start();
+            int finalI = i;
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == cardList.size())
+                        outAnimation();
+                }
+            });
         }
     }
 
+    private void outAnimation() {
+        MyAnim.translateYTo(container, screenHeight * -1, 700L);
+    }
 }

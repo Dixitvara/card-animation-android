@@ -1,5 +1,8 @@
 package com.project.animations;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -158,7 +161,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             float radiance = (float) Math.toRadians(angle2);
 
             ImageView image = new ImageView(this);
-            CardModel cardModel = redCardList.get(i + 5);
+            CardModel cardModel = redCardList.get(i + 7);
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
@@ -177,7 +180,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
@@ -210,7 +212,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
@@ -243,7 +244,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
@@ -257,7 +257,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             float radiance = (float) Math.toRadians(angle2);
 
             ImageView image = new ImageView(this);
-            CardModel cardModel = blackCardList.get(i + 5);
+            CardModel cardModel = blackCardList.get(i + 7);
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
@@ -276,7 +276,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
@@ -290,7 +289,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             float radiance = (float) Math.toRadians(angle2);
 
             ImageView image = new ImageView(this);
-            CardModel cardModel = blackCardList.get(i + 5);
+            CardModel cardModel = blackCardList.get(i + 7);
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
@@ -309,7 +308,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
@@ -342,7 +340,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
@@ -375,7 +372,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
@@ -389,7 +385,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             float radiance = (float) Math.toRadians(angle2);
 
             ImageView image = new ImageView(this);
-            CardModel cardModel = redCardList.get(i + 5);
+            CardModel cardModel = redCardList.get(i + 7);
 
             image.setImageResource(cardModel.getResourceId(this));
             image.setLayoutParams(params);
@@ -408,12 +404,11 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-//            handler.postDelayed(() -> container.addView(image), 70L * i);
             container.addView(image);
             prevImage = image;
         }
 
-        for (int i = 0; i < 48; i++){
+        for (int i = 0; i < 48; i++) {
             ImageView image = findViewById(i);
             image.setVisibility(View.INVISIBLE);
         }
@@ -481,17 +476,46 @@ public class SpiderTwoAnimation extends AppCompatActivity {
             else
                 delay = delayValue * (i - 42);
 
+            int finalI = i;
             image.animate()
                     .translationX(image.getX())
                     .setDuration(200L)
                     .setInterpolator(new DecelerateInterpolator())
                     .setStartDelay(delay)
-                    .withEndAction(() -> image.setVisibility(View.VISIBLE))
+                    .withEndAction(() -> {
+                        image.setVisibility(View.VISIBLE);
+                        if (finalI == 47)
+                            animateLegs();
+                    })
                     .start();
         }
     }
 
-    private void animateLegs(){
+    private void animateLegs() {
+        for (int i = 17; i > 12; i--) {
+            View image = findViewById(i);
+            View nextImg = findViewById(i - 1);
 
+            ObjectAnimator translationX = ObjectAnimator.ofFloat(image, "translationX", nextImg.getX());
+            ObjectAnimator translationY = ObjectAnimator.ofFloat(image, "translationY", nextImg.getY());
+            ObjectAnimator rotation = ObjectAnimator.ofFloat(image, "rotation", nextImg.getRotation());
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.setDuration(200L);
+            animatorSet.setInterpolator(new DecelerateInterpolator());
+
+            translationX.setRepeatCount(ValueAnimator.INFINITE);
+            translationX.setRepeatMode(ValueAnimator.REVERSE);
+
+            translationY.setRepeatCount(ValueAnimator.INFINITE);
+            translationY.setRepeatMode(ValueAnimator.REVERSE);
+
+            rotation.setRepeatCount(ValueAnimator.INFINITE);
+            rotation.setRepeatMode(ValueAnimator.REVERSE);
+
+            animatorSet.playTogether(translationX, translationY, rotation);
+
+            animatorSet.start();
+        }
     }
 }

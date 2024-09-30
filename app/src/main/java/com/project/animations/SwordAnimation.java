@@ -32,7 +32,7 @@ public class SwordAnimation extends AppCompatActivity {
     int cardHeight, cardWidth;
 
     LinearLayout linearLayout;
-    RelativeLayout leftLayout, rightLayout, container;
+    RelativeLayout leftLayout, rightLayout;
 
     ArrayList<CardModel> cardList;
     ArrayList<View> views;
@@ -45,7 +45,6 @@ public class SwordAnimation extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         linearLayout = findViewById(R.id.containerLinear);
-        container = findViewById(R.id.mainContainer);
 
         leftLayout = new RelativeLayout(this);
         rightLayout = new RelativeLayout(this);
@@ -279,8 +278,16 @@ public class SwordAnimation extends AppCompatActivity {
             animatorSet.setDuration(300L);
             animatorSet.setStartDelay(40L * i);
             animatorSet.start();
+            int finalI = i;
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    if (finalI == sortedCards.size() - 1)
+                        swingSword();
+                }
+            });
         }
-        new Handler().postDelayed(this::swingSword, 2000L);
     }
 
     public void swingSword() {
