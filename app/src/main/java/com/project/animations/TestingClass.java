@@ -1,6 +1,5 @@
 package com.project.animations;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -61,7 +60,109 @@ public class TestingClass extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        createCircle();
+        smileEye();
+    }
+
+    private void spiderLeg(){
+        ImageView prevImage = null;
+        float radius = (float) (screenWidth * 0.04);
+        float angle = (float) 180 / 13;
+        float horizontalRadius = (float) (screenWidth * 0.03);
+        float x, y, rotation;
+
+        for (int i = 1; i < 13; i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImage == null) {
+                x = (float) (screenWidth * 0.28);
+                y = (float) (screenHeight * 0.11);
+                rotation = 160f;
+            } else if (i < 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 18f;
+            } else if (i == 8) {
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            } else if (i == 9){
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 16f;
+            }
+            else{
+                x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() - 2f;
+            }
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+            prevImage = image;
+            mainContainer.addView(image);
+        }
+        animateLegs();
+    }
+
+    private void animateLegs(){
+        for (int i = 12; i > 0; i--) {
+            View image = findViewById(i);
+            View prevImage = findViewById(i - 1);
+
+            animateLegs(image, prevImage);
+        }
+    }
+
+    private void smileEye() {
+        float radius = (float) (screenWidth * 0.01);
+        cardList = CardMethods.generateCards(18, 1);
+
+        ImageView prevImg = null;
+        CardModel card;
+        float x, y, rotation;
+        float angle = (float) 360 / 6;
+
+        for (int i = 0; i < 6; i++) {
+            float angle2 = angle * i;
+            float radiance = (float) Math.toRadians(angle2);
+
+            ImageView image = new ImageView(this);
+            card = cardList.get(i);
+
+            image.setLayoutParams(params);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (prevImg == null) {
+                x = (float) ((float) (screenWidth * 0.5) + radius * Math.sin(radiance));
+                y = (float) ((float) (screenHeight * 0.5) - radius * Math.cos(radiance));
+                rotation = 60f;
+            } else {
+                x = (float) (prevImg.getX() + radius * Math.sin(radiance));
+                y = (float) (prevImg.getY() - radius * Math.cos(radiance));
+                rotation = prevImg.getRotation() + angle;
+            }
+
+            image.setX(x);
+            image.setY(y);
+            image.setRotation(rotation);
+
+            prevImg = image;
+            mainContainer.addView(image);
+
+            ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(image, "rotation", 45)
+                    .setDuration(800L);
+//            rotateAnimation.start();
+
+        }
     }
 
     private void createCircle() {
@@ -110,6 +211,7 @@ public class TestingClass extends AppCompatActivity {
             }
             View nextImg = mainContainer.getChildAt(i + 1);
 
+/*
             image.animate()
                     .translationX(nextImg.getX())
                     .translationY(nextImg.getY())
@@ -117,6 +219,7 @@ public class TestingClass extends AppCompatActivity {
                     .setDuration(1000L)
                     .setInterpolator(new DecelerateInterpolator())
                     .start();
+*/
 
             animateLegs(image, nextImg);
         }
@@ -128,7 +231,7 @@ public class TestingClass extends AppCompatActivity {
         ObjectAnimator rotation = ObjectAnimator.ofFloat(image, "rotation", nextImg.getRotation());
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(200L);
+        animatorSet.setDuration(500L);
         animatorSet.setInterpolator(new DecelerateInterpolator());
 
         translationX.setRepeatCount(ValueAnimator.INFINITE);

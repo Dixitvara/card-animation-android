@@ -3,11 +3,13 @@ package com.project.animations;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -68,6 +70,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
         heartParams = new RelativeLayout.LayoutParams(180, 180);
 
+        container.setY((float) ((float) screenHeight * 0.3));
         addHeartShape();
     }
 
@@ -140,7 +143,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
         }
         heartContainer.animate()
                 .alpha(1f)
-                .setDuration(400L)
+                .setDuration(800L)
                 .setInterpolator(new DecelerateInterpolator())
                 .withEndAction(this::generateShape)
                 .start();
@@ -484,15 +487,25 @@ public class SpiderTwoAnimation extends AppCompatActivity {
                     .setStartDelay(delay)
                     .withEndAction(() -> {
                         image.setVisibility(View.VISIBLE);
-                        if (finalI == 47)
+                        if (finalI == 47){
                             animateLegs();
+                            animateContainer();
+                        }
                     })
                     .start();
         }
     }
 
     private void animateLegs() {
-        for (int i = 17; i > 12; i--) {
+        long delay;
+        for (int i = 47; i > 0; i--) {
+            if (i % 6 == 0)
+                continue;
+            if (i > 5 && i < 12 || i > 17 && i < 24 || i > 23 && i < 30 || i > 35 && i < 42) {
+                delay = 0;
+            } else {
+                delay = 200L;
+            }
             View image = findViewById(i);
             View nextImg = findViewById(i - 1);
 
@@ -502,7 +515,7 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.setDuration(200L);
-            animatorSet.setInterpolator(new DecelerateInterpolator());
+            animatorSet.setStartDelay(delay);
 
             translationX.setRepeatCount(ValueAnimator.INFINITE);
             translationX.setRepeatMode(ValueAnimator.REVERSE);
@@ -517,5 +530,12 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
             animatorSet.start();
         }
+    }
+
+    private void animateContainer(){
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(container, "translationY", -screenHeight);
+        translationY.setDuration(6000L);
+
+        translationY.start();
     }
 }

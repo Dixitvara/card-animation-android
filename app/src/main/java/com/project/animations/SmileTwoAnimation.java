@@ -382,7 +382,6 @@ public class SmileTwoAnimation extends AppCompatActivity {
 
             animateCard(image, x1, y1, i);
         }
-        new Handler().postDelayed(this::fadeInGlasses, 2000);
     }
 
     private void animateCard(View image, float x, float y, int i) {
@@ -392,6 +391,10 @@ public class SmileTwoAnimation extends AppCompatActivity {
                 .setDuration(400L)
                 .setStartDelay(20L * i)
                 .setInterpolator(new DecelerateInterpolator())
+                .withEndAction(() -> {
+                    if (i == 51)
+                        fadeInGlasses();
+                })
                 .start();
     }
 

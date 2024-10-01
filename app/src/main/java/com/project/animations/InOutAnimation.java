@@ -180,7 +180,7 @@ public class InOutAnimation extends AppCompatActivity {
             ObjectAnimator rotationAnimation = ObjectAnimator.ofFloat(
                             image,
                             "rotation",
-                            image.getRotation(),
+                            90f + angle * i,
                             image.getRotation() + 360
                     )
                     .setDuration(2000);
@@ -221,7 +221,7 @@ public class InOutAnimation extends AppCompatActivity {
             ObjectAnimator rotationAnimation = ObjectAnimator.ofFloat(
                             image,
                             "rotation",
-                            image.getRotation(),
+                            90f + angle * i,
                             image.getRotation() - 360
                     )
                     .setDuration(2000);
