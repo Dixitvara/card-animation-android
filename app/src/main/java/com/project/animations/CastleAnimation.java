@@ -266,11 +266,11 @@ public class CastleAnimation extends AppCompatActivity {
 //            image.setX(0);
 //            image.setY(0);
 
-            addCards(image, x1, y1, i);
+            alphaCards(image, x1, y1, i);
         }
     }
 
-    private void addCards(ImageView image, float x, float y, int i) {
+    private void alphaCards(ImageView image, float x, float y, int i) {
         image.animate()
                 .alpha(1f)
                 .setStartDelay(500L)

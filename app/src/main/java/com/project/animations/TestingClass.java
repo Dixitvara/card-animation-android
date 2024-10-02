@@ -26,7 +26,7 @@ public class TestingClass extends AppCompatActivity {
     int TOTAL_NUMBER_OF_CARDS = 7;
     float centerX, centerY;
     Button resetBtn;
-    RelativeLayout mainContainer;
+    RelativeLayout container;
     RelativeLayout.LayoutParams params;
     ArrayList<CardModel> cardList;
 
@@ -36,7 +36,7 @@ public class TestingClass extends AppCompatActivity {
         setContentView(R.layout.activity_animation);
 
         resetBtn = findViewById(R.id.resetBtn);
-        mainContainer = findViewById(R.id.container);
+        container = findViewById(R.id.container);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -60,10 +60,31 @@ public class TestingClass extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        smileEye();
+//        smileEye();
+        slidingDeck();
     }
 
-    private void spiderLeg(){
+    private void slidingDeck() {
+        for (int i = 0; i < 13; i++) {
+            CardModel card = cardList.get(i);
+
+            ImageView image = new ImageView(this);
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+            container.addView(image, params);
+
+            image.setX(centerX);
+            image.setY(centerY);
+
+            image.animate()
+                    .translationX(screenWidth)
+                    .setDuration(800L)
+                    .setStartDelay(50L * (12 - i))
+                    .start();
+        }
+    }
+
+    private void spiderLeg() {
         ImageView prevImage = null;
         float radius = (float) (screenWidth * 0.04);
         float angle = (float) 180 / 13;
@@ -93,12 +114,11 @@ public class TestingClass extends AppCompatActivity {
                 x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
                 y = (float) (prevImage.getY() - radius * Math.cos(radiance));
                 rotation = prevImage.getRotation() - 16f;
-            } else if (i == 9){
+            } else if (i == 9) {
                 x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
                 y = (float) (prevImage.getY() - radius * Math.cos(radiance));
                 rotation = prevImage.getRotation() - 16f;
-            }
-            else{
+            } else {
                 x = (float) (prevImage.getX() - horizontalRadius * Math.sin(radiance));
                 y = (float) (prevImage.getY() - radius * Math.cos(radiance));
                 rotation = prevImage.getRotation() - 2f;
@@ -107,12 +127,12 @@ public class TestingClass extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
             prevImage = image;
-            mainContainer.addView(image);
+            container.addView(image);
         }
         animateLegs();
     }
 
-    private void animateLegs(){
+    private void animateLegs() {
         for (int i = 12; i > 0; i--) {
             View image = findViewById(i);
             View prevImage = findViewById(i - 1);
@@ -142,12 +162,12 @@ public class TestingClass extends AppCompatActivity {
             image.setId(i);
 
             if (prevImg == null) {
-                x = (float) ((float) (screenWidth * 0.5) + radius * Math.sin(radiance));
-                y = (float) ((float) (screenHeight * 0.5) - radius * Math.cos(radiance));
+                x = (float) ((float) (screenWidth * 0.5));
+                y = (float) ((float) (screenHeight * 0.5));
                 rotation = 60f;
             } else {
-                x = (float) (prevImg.getX() + radius * Math.sin(radiance));
-                y = (float) (prevImg.getY() - radius * Math.cos(radiance));
+                x = prevImg.getX();
+                y = prevImg.getY();
                 rotation = prevImg.getRotation() + angle;
             }
 
@@ -156,12 +176,11 @@ public class TestingClass extends AppCompatActivity {
             image.setRotation(rotation);
 
             prevImg = image;
-            mainContainer.addView(image);
+            container.addView(image);
 
             ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(image, "rotation", 45)
                     .setDuration(800L);
 //            rotateAnimation.start();
-
         }
     }
 
@@ -200,16 +219,16 @@ public class TestingClass extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
 
-            mainContainer.addView(image);
+            container.addView(image);
             prevImage = image;
         }
 
-        for (int i = 0; i < mainContainer.getChildCount(); i++) {
-            View image = mainContainer.getChildAt(i);
-            if (i == mainContainer.getChildCount() - 1) {
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View image = container.getChildAt(i);
+            if (i == container.getChildCount() - 1) {
                 break;
             }
-            View nextImg = mainContainer.getChildAt(i + 1);
+            View nextImg = container.getChildAt(i + 1);
 
 /*
             image.animate()

@@ -72,14 +72,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
-            android:text="2 Circle"
+            android:text="2 Circles"
             android:textSize="@dimen/_15sdp" />
         <Button
             android:id="@+id/btn9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
-            android:text="8 Circle"
+            android:text="8 Circles"
             android:textSize="@dimen/_15sdp" />
         <Button
             android:id="@+id/btn11"
@@ -129,6 +129,20 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Spider 2"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="4 Circles"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Winning Cup"
             android:textSize="@dimen/_15sdp" />
         <Button
             android:id="@+id/btn10"
