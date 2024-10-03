@@ -1,5 +1,6 @@
 package com.project.animations;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -95,7 +96,6 @@ public class FourCirclesAnimation extends AppCompatActivity {
             } else {
                 rotation = prevImage.getRotation() + angle;
             }
-
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
@@ -105,23 +105,32 @@ public class FourCirclesAnimation extends AppCompatActivity {
 
         for (int i = 0; i < 13; i++) {
             View image = findViewById(i);
+
             float x2 = image.getX();
             float y2 = image.getY();
 
-            image.setX(centerX);
-            image.setY(centerY);
-//            image.setRotation(0f);
+//            image.setX(centerX);
+//            image.setY(centerY);
 
-            animateCircle(image, x2, y2, i);
+//            animateCircle2(image, i);
         }
     }
 
-    private void animateCircle(View image, float x, float y, int i) {
-        image.animate()
-                .translationX(x)
-                .translationY(y)
-                .setDuration(800L)
-                .setStartDelay(50L * (12 - i))
-                .start();
+    private void animateCircle2(View image, int i) {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, image.getRotation());
+        valueAnimator.setDuration(1000L);
+
+        valueAnimator.addUpdateListener(animation -> {
+            float angle = (float) valueAnimator.getAnimatedValue();
+            double radiance = Math.toRadians(angle);
+
+            float x = (float) (centerX + radius * Math.sin(radiance));
+            float y = (float) (centerY - radius * Math.cos(radiance));
+
+            image.setX(x);
+            image.setY(y);
+            image.setRotation((float) valueAnimator.getAnimatedValue());
+        });
+        valueAnimator.start();
     }
 }

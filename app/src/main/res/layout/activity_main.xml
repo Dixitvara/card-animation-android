@@ -142,7 +142,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
-            android:text="Winning Cup"
+            android:text="Trophy"
+            android:textSize="@dimen/_15sdp" />
+        <Button
+            android:id="@+id/btn20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Rectangle"
             android:textSize="@dimen/_15sdp" />
         <Button
             android:id="@+id/btn10"

@@ -1,7 +1,6 @@
 package com.project.animations;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -39,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         btn17 = findViewById(R.id.btn17);
         btn18 = findViewById(R.id.btn18);
         btn19 = findViewById(R.id.btn19);
+        btn20 = findViewById(R.id.btn20);
 
         btn1.setOnClickListener(v -> startActivity(new Intent(this, SpadesAnimation.class)));
         btn2.setOnClickListener(v -> startActivity(new Intent(this, HeartAnimation.class)));
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         btn16.setOnClickListener(v -> startActivity(new Intent(this, SpiderAnimation.class)));
         btn17.setOnClickListener(v -> startActivity(new Intent(this, SpiderTwoAnimation.class)));
         btn18.setOnClickListener(v -> startActivity(new Intent(this, FourCirclesAnimation.class)));
-        btn19.setOnClickListener(v -> startActivity(new Intent(this, WinningCupAnimation.class)));
+        btn19.setOnClickListener(v -> startActivity(new Intent(this, TrophyAnimation.class)));
+        btn20.setOnClickListener(v -> startActivity(new Intent(this, ScreenRectangleAnimation.class)));
     }
 }

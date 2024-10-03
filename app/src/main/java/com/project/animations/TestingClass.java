@@ -79,7 +79,7 @@ public class TestingClass extends AppCompatActivity {
             image.animate()
                     .translationX(screenWidth)
                     .setDuration(800L)
-                    .setStartDelay(50L * (12 - i))
+                    .setStartDelay(50L * i)
                     .start();
         }
     }

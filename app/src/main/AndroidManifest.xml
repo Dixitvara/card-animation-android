@@ -17,7 +17,10 @@
         android:theme="@style/Theme.Animations"
         tools:targetApi="31">
         <activity
-            android:name=".WinningCupAnimation"
+            android:name=".ScreenRectangleAnimation"
+            android:exported="false" />
+        <activity
+            android:name=".TrophyAnimation"
             android:exported="false" />
         <activity
             android:name=".FourCirclesAnimation"
