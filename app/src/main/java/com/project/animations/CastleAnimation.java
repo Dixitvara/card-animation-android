@@ -58,7 +58,7 @@ public class CastleAnimation extends AppCompatActivity {
         centerX = (float) screenWidth / 2 - (float) cardWidth / 2;
         centerY = (float) screenHeight / 2 - (float) cardHeight / 2;
 
-        params = new RelativeLayout.LayoutParams(80, 110);
+        params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         radius = (float) (screenWidth * 0.1);
 
@@ -81,7 +81,7 @@ public class CastleAnimation extends AppCompatActivity {
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
-            image.setImageResource(R.drawable.spades1);
+            image.setImageResource(R.drawable.spades_1);
             image.setId(i);
 
             if (prevImage == null) {
@@ -110,7 +110,7 @@ public class CastleAnimation extends AppCompatActivity {
             ImageView image = new ImageView(this);
 
             image.setLayoutParams(params);
-            image.setImageResource(R.drawable.spades1);
+            image.setImageResource(R.drawable.spades_1);
             image.setId(i + 8);
 
             if (prevImage == null) {
@@ -144,7 +144,7 @@ public class CastleAnimation extends AppCompatActivity {
             image.setId(i + 16);
 
             if (prevImage == null) {
-                x = (float) (screenWidth * 0.2 - (double) cardWidth / 2);
+                x = (float) (screenWidth * 0.21 - (double) cardWidth / 2);
                 y = (float) (screenHeight * 0.4 - (double) cardHeight / 2);
             } else {
                 x = (float) (prevImage.getX() + screenWidth * 0.089);
@@ -206,10 +206,10 @@ public class CastleAnimation extends AppCompatActivity {
             image.setId(i + 30);
 
             if (prevImage == null) {
-                x = (float) (screenWidth * 0.2 - ((double) cardWidth / 2) * 1.5);
+                x = (float) (screenWidth * 0.21 - ((double) cardWidth / 2) * 1.5);
                 y = (float) (screenHeight * 0.4 - ((double) cardHeight / 2) * 1.5);
             } else {
-                x = (float) (prevImage.getX() + cardWidth * 1.9);
+                x = (float) (prevImage.getX() + cardWidth * 1.68);
                 y = prevImage.getY();
             }
             image.setX(x);
@@ -246,7 +246,7 @@ public class CastleAnimation extends AppCompatActivity {
                 x = (float) (prevImage.getX() + screenWidth * 0.01852);
                 y = (float) (prevImage.getY() - screenWidth * 0.0371);
                 image.setRotation(-90f);
-                image.setImageResource(R.drawable.spades1);
+                image.setImageResource(R.drawable.spades_1);
             }
             image.setX(x);
             image.setY(y);
@@ -263,8 +263,6 @@ public class CastleAnimation extends AppCompatActivity {
             float y1 = image.getY();
 
             image.setAlpha(0f);
-//            image.setX(0);
-//            image.setY(0);
 
             alphaCards(image, x1, y1, i);
         }

@@ -22,4 +22,12 @@ public class CardDimension {
         return new int[]{cardWidth, cardHeight};
     }
 
+    public static int[] bigCardsParams(DisplayMetrics displayMetrics) {
+        int screenWidth = displayMetrics.widthPixels;
+
+        int cardWidth = (int) (screenWidth * 0.15);
+        int cardHeight = (int) (cardWidth * 1.4);
+
+        return new int[]{cardWidth, cardHeight};
+    }
 }

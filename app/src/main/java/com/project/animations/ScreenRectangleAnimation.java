@@ -1,5 +1,7 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
@@ -45,7 +47,7 @@ public class ScreenRectangleAnimation extends AppCompatActivity {
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
 
-        int[] cardDimension = CardDimension.getCardParams(displaymetrics);
+        int[] cardDimension = CardDimension.bigCardsParams(displaymetrics);
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
@@ -108,13 +110,10 @@ public class ScreenRectangleAnimation extends AppCompatActivity {
                 .setDuration(600L)
                 .setStartDelay(delay)
                 .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        image.setX(x);
-                        image.setY(y);
-                        moveCards(image, i);
-                    }
+                .withEndAction(() -> {
+                    image.setX(x);
+                    image.setY(y);
+                    moveCards(image, i);
                 })
                 .start();
     }
@@ -123,30 +122,27 @@ public class ScreenRectangleAnimation extends AppCompatActivity {
         ObjectAnimator tx = ObjectAnimator.ofFloat(
                 image,
                 "translationX",
-                image.getX(),
                 screenWidth - cardWidth
         );
         ObjectAnimator ty = ObjectAnimator.ofFloat(
                 image,
                 "translationY",
-                image.getY(),
                 (float) (screenHeight * 0.8)
         );
         ObjectAnimator reverseTx = ObjectAnimator.ofFloat(
                 image,
                 "translationX",
-                screenWidth - cardWidth,
                 0
         );
         ObjectAnimator reverseTy = ObjectAnimator.ofFloat(
                 image,
                 "translationY",
-                (float) (screenHeight * 0.8),
                 (float) (screenHeight * 0.2)
         );
+
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(1500L);
         animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.setDuration(1500L);
 
         if (i < 13) {
             animatorSet.playSequentially(tx, ty, reverseTx);
@@ -158,5 +154,17 @@ public class ScreenRectangleAnimation extends AppCompatActivity {
             animatorSet.playSequentially(reverseTy, tx, ty);
         }
         animatorSet.start();
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (i == 40) {
+                    container.animate()
+                            .scaleX(0f)
+                            .scaleY(0f)
+                            .setDuration(600L)
+                            .start();
+                }
+            }
+        });
     }
 }

@@ -64,7 +64,6 @@ public class WaveAnimation extends AppCompatActivity {
     private void generateAllCards() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
         ImageView prevImage = null;
-        System.out.println("-} " + cardList.size());
 
         for (int i = 0; i < cardList.size(); i++) {
             CardModel card = cardList.get(i);
@@ -78,16 +77,16 @@ public class WaveAnimation extends AppCompatActivity {
             float x, y;
             if (i < 13) {
                 x = i == 0 ? 0f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 0 ? (float) (screenHeight * 0.3) - (float) cardHeight / 2 : prevImage.getY();
+                y = i == 0 ? (float) (screenHeight * 0.4) - (float) cardHeight / 2 : prevImage.getY();
             } else if (i < 26) {
                 x = i == 13 ? 0f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 13 ? (float) (screenHeight * 0.4) - (float) cardHeight / 2 : prevImage.getY();
+                y = i == 13 ? prevImage.getY() + cardHeight : prevImage.getY();
             } else if (i < 39) {
                 x = i == 26 ? 0f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 26 ? (float) (screenHeight * 0.5) - (float) cardHeight / 2 : prevImage.getY();
+                y = i == 26 ? prevImage.getY() + cardHeight : prevImage.getY();
             } else {
                 x = i == 39 ? 0f : prevImage.getX() + (float) screenWidth / 13;
-                y = i == 39 ? (float) (screenHeight * 0.6) - (float) cardHeight / 2 : prevImage.getY();
+                y = i == 39 ? prevImage.getY() + cardHeight : prevImage.getY();
             }
             image.setX(x);
             image.setY(y);

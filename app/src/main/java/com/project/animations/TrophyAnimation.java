@@ -60,11 +60,12 @@ public class TrophyAnimation extends AppCompatActivity {
     private void createShape() {
         ImageView prevImage = null;
         float x, y, rotation;
-        float angle = (float) 100 / 5;
-        float radius = (float) (screenHeight * 0.06);
+        float angle = (float) 70 / 5;
+        float radius = (float) (screenHeight * 0.05);
 
         for (int i = 0; i < 5; i++) {
             float angle2 = angle * i;
+            angle2 -= 60f;
             float radiance = (float) Math.toRadians(angle2);
 
             ImageView image = new ImageView(this);
@@ -74,13 +75,13 @@ public class TrophyAnimation extends AppCompatActivity {
             image.setId(i);
 
             if (prevImage == null) {
-                x = (float) (screenWidth * 0.45);
-                y = (float) (screenHeight * 0.6);
-                rotation = -40f;
+                x = (float) (screenWidth * 0.48 + radius * Math.sin(radiance));
+                y = (float) (screenHeight * 0.6 - radius * Math.cos(radiance));
+                rotation = -20f;
             } else {
-                x = (float) (prevImage.getX() - radius * Math.cos(radiance));
-                y = (float) (prevImage.getY() - radius * Math.sin(radiance));
-                rotation = prevImage.getRotation() + 10;
+                x = (float) (prevImage.getX() + radius * Math.sin(radiance));
+                y = (float) (prevImage.getY() - radius * Math.cos(radiance));
+                rotation = prevImage.getRotation() + 5;
             }
             image.setX(x);
             image.setY(y);

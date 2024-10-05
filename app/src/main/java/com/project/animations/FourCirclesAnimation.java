@@ -1,9 +1,16 @@
 package com.project.animations;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -48,7 +55,7 @@ public class FourCirclesAnimation extends AppCompatActivity {
         centerX = ((float) screenWidth / 2) - ((float) cardWidth / 2);
         centerY = ((float) screenHeight / 2) - ((float) cardHeight / 2);
 
-        cardList = CardMethods.generateCards(13, 1);
+        cardList = CardMethods.allCards();
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
         layoutParams = new RelativeLayout.LayoutParams(
@@ -60,8 +67,14 @@ public class FourCirclesAnimation extends AppCompatActivity {
 
         // circle layouts
         circle1 = new RelativeLayout(this);
+        circle2 = new RelativeLayout(this);
+        circle3 = new RelativeLayout(this);
+        circle4 = new RelativeLayout(this);
 
         container.addView(circle1, layoutParams);
+        container.addView(circle2, layoutParams);
+        container.addView(circle3, layoutParams);
+        container.addView(circle4, layoutParams);
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
@@ -77,7 +90,7 @@ public class FourCirclesAnimation extends AppCompatActivity {
 
         ImageView prevImage = null;
 
-        for (int i = 0; i < cardList.size(); i++) {
+        for (int i = 0; i < 13; i++) {
             float angle2 = angle * i;
             float radiance = (float) Math.toRadians(angle2);
 
@@ -88,11 +101,11 @@ public class FourCirclesAnimation extends AppCompatActivity {
             image.setImageResource(card.getResourceId(this));
             image.setId(i);
 
-            x = (float) (centerX + radius * Math.sin(radiance));
-            y = (float) (centerY - radius * Math.cos(radiance));
+            x = (float) (centerX - radius * Math.sin(radiance));
+            y = (float) (centerY + radius * Math.cos(radiance));
 
             if (prevImage == null) {
-                rotation = -180f;
+                rotation = 0f;
             } else {
                 rotation = prevImage.getRotation() + angle;
             }
@@ -100,37 +113,60 @@ public class FourCirclesAnimation extends AppCompatActivity {
             image.setY(y);
             image.setRotation(rotation);
             prevImage = image;
-            circle1.addView(image);
+
+            if (i < 13)
+                circle1.addView(image);
+            else if (i < 26)
+                circle2.addView(image);
+            else if (i < 39)
+                circle3.addView(image);
+            else
+                circle4.addView(image);
         }
 
         for (int i = 0; i < 13; i++) {
             View image = findViewById(i);
-
-            float x2 = image.getX();
-            float y2 = image.getY();
-
-//            image.setX(centerX);
-//            image.setY(centerY);
-
-//            animateCircle2(image, i);
+            animateCircle2(image, i);
         }
     }
 
     private void animateCircle2(View image, int i) {
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, image.getRotation());
         valueAnimator.setDuration(1000L);
+        valueAnimator.setInterpolator(new LinearInterpolator());
 
         valueAnimator.addUpdateListener(animation -> {
             float angle = (float) valueAnimator.getAnimatedValue();
             double radiance = Math.toRadians(angle);
 
-            float x = (float) (centerX + radius * Math.sin(radiance));
-            float y = (float) (centerY - radius * Math.cos(radiance));
+            float x = (float) (centerX - radius * Math.sin(radiance));
+            float y = (float) (centerY + radius * Math.cos(radiance));
 
             image.setX(x);
             image.setY(y);
             image.setRotation((float) valueAnimator.getAnimatedValue());
         });
         valueAnimator.start();
+
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (i == 12) {
+                    bouncingAnimation();
+                }
+            }
+        });
+    }
+
+    private void bouncingAnimation() {
+        ObjectAnimator tX = ObjectAnimator.ofFloat(circle1, "translationX",circle1.getX() - 60f)
+                .setDuration(800L);
+        ObjectAnimator tY = ObjectAnimator.ofFloat(circle1, "translationY", circle1.getY() - 200f)
+                .setDuration(800L);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+        animatorSet.playTogether(tX, tY);
+        animatorSet.start();
     }
 }

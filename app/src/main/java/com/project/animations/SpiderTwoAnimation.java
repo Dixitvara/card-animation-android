@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -33,7 +32,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
     ArrayList<CardModel> redCardList, blackCardList;
     RelativeLayout.LayoutParams params, heartParams, smallCardsParams;
     RelativeLayout heartContainer;
-    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +40,6 @@ public class SpiderTwoAnimation extends AppCompatActivity {
 
         resetBtn = findViewById(R.id.resetBtn);
         container = findViewById(R.id.container);
-
-        handler = new Handler();
 
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
