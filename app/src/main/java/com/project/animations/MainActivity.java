@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         btn16.setOnClickListener(v -> startActivity(new Intent(this, SpiderAnimation.class)));
         btn17.setOnClickListener(v -> startActivity(new Intent(this, SpiderTwoAnimation.class)));
         btn18.setOnClickListener(v -> startActivity(new Intent(this, FourCirclesAnimation.class)));
-        btn19.setOnClickListener(v -> startActivity(new Intent(this, TrophyAnimation.class)));
-        btn20.setOnClickListener(v -> startActivity(new Intent(this, ScreenRectangleAnimation.class)));
+        btn19.setOnClickListener(v -> startActivity(new Intent(this, ScreenRectangleAnimation.class)));
+        btn20.setOnClickListener(v -> startActivity(new Intent(this, TriangleAnimation.class)));
     }
 }

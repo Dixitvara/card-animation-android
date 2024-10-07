@@ -80,19 +80,19 @@ public class ScreenRectangleAnimation extends AppCompatActivity {
             if (i < 13) {
                 x = 0;
                 y = (float) (screenHeight * 0.2);
-                delay = 200L * i;
+                delay = 160L * i;
             } else if (i < 26) {
                 x = screenWidth - cardWidth;
                 y = (float) (screenHeight * 0.2);
-                delay = 200L * (i - 13);
+                delay = 160L * (i - 13);
             } else if (i < 39) {
                 x = screenWidth - cardWidth;
                 y = (float) (screenHeight * 0.8);
-                delay = 200L * (i - 26);
+                delay = 160L * (i - 26);
             } else {
                 x = 0;
                 y = (float) (screenHeight * 0.8);
-                delay = 200L * (i - 39);
+                delay = 160L * (i - 39);
             }
 
             image.setX((float) screenWidth / 2);
@@ -107,7 +107,7 @@ public class ScreenRectangleAnimation extends AppCompatActivity {
         image.animate()
                 .translationX(x)
                 .translationY(y)
-                .setDuration(600L)
+                .setDuration(300L)
                 .setStartDelay(delay)
                 .setInterpolator(new DecelerateInterpolator())
                 .withEndAction(() -> {
@@ -154,6 +154,7 @@ public class ScreenRectangleAnimation extends AppCompatActivity {
             animatorSet.playSequentially(reverseTy, tx, ty);
         }
         animatorSet.start();
+
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

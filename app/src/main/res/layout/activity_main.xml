@@ -142,14 +142,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
-            android:text="Trophy"
+            android:text="Rectangle"
             android:textSize="@dimen/_15sdp" />
         <Button
             android:id="@+id/btn20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
-            android:text="Rectangle"
+            android:text="Triangle"
             android:textSize="@dimen/_15sdp" />
         <Button
             android:id="@+id/btn10"

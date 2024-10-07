@@ -8,7 +8,7 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -95,7 +95,7 @@ public class FourCirclesAnimation extends AppCompatActivity {
             float radiance = (float) Math.toRadians(angle2);
 
             ImageView image = new ImageView(this);
-            CardModel card = cardList.get(12 - i);
+            CardModel card = cardList.get(i);
 
             image.setLayoutParams(params);
             image.setImageResource(card.getResourceId(this));
@@ -104,11 +104,11 @@ public class FourCirclesAnimation extends AppCompatActivity {
             x = (float) (centerX - radius * Math.sin(radiance));
             y = (float) (centerY + radius * Math.cos(radiance));
 
-            if (prevImage == null) {
+            if (prevImage == null)
                 rotation = 0f;
-            } else {
+            else
                 rotation = prevImage.getRotation() + angle;
-            }
+
             image.setX(x);
             image.setY(y);
             image.setRotation(rotation);
@@ -123,50 +123,61 @@ public class FourCirclesAnimation extends AppCompatActivity {
             else
                 circle4.addView(image);
         }
+        animateCircle2();
+    }
 
+    private void animateCircle2() {
         for (int i = 0; i < 13; i++) {
             View image = findViewById(i);
-            animateCircle2(image, i);
+
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, image.getRotation());
+            valueAnimator.setDuration(1000L);
+            valueAnimator.setInterpolator(new LinearInterpolator());
+
+            valueAnimator.addUpdateListener(animation -> {
+                float angle = (float) valueAnimator.getAnimatedValue();
+                double radiance = Math.toRadians(angle);
+
+                float x = (float) (centerX - radius * Math.sin(radiance));
+                float y = (float) (centerY + radius * Math.cos(radiance));
+
+                image.setX(x);
+                image.setY(y);
+                image.setRotation((float) valueAnimator.getAnimatedValue());
+            });
+            valueAnimator.start();
+
+            int finalI = i;
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == 12) {
+                        bouncingAnimation();
+                    }
+                }
+            });
         }
     }
 
-    private void animateCircle2(View image, int i) {
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, image.getRotation());
-        valueAnimator.setDuration(1000L);
-        valueAnimator.setInterpolator(new LinearInterpolator());
-
-        valueAnimator.addUpdateListener(animation -> {
-            float angle = (float) valueAnimator.getAnimatedValue();
-            double radiance = Math.toRadians(angle);
-
-            float x = (float) (centerX - radius * Math.sin(radiance));
-            float y = (float) (centerY + radius * Math.cos(radiance));
-
-            image.setX(x);
-            image.setY(y);
-            image.setRotation((float) valueAnimator.getAnimatedValue());
-        });
-        valueAnimator.start();
-
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (i == 12) {
-                    bouncingAnimation();
-                }
-            }
-        });
-    }
-
     private void bouncingAnimation() {
-        ObjectAnimator tX = ObjectAnimator.ofFloat(circle1, "translationX",circle1.getX() - 60f)
+        ObjectAnimator tX = ObjectAnimator.ofFloat(circle1, "translationX", circle1.getX() - 80f)
+                .setDuration(3000L);
+        ObjectAnimator tY = ObjectAnimator.ofFloat(circle1, "translationY", circle1.getY() + 300f)
                 .setDuration(800L);
-        ObjectAnimator tY = ObjectAnimator.ofFloat(circle1, "translationY", circle1.getY() - 200f)
-                .setDuration(800L);
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(circle1, "rotation", circle1.getRotation() - 70f)
+                .setDuration(3000L);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setInterpolator(new DecelerateInterpolator());
-        animatorSet.playTogether(tX, tY);
-        animatorSet.start();
+        animatorSet.setInterpolator(new BounceInterpolator());
+        animatorSet.play(tY);
+
+        AnimatorSet animatorSet1 = new AnimatorSet();
+        animatorSet1.setInterpolator(new DecelerateInterpolator());
+        animatorSet1.playTogether(tX, rotate);
+
+        AnimatorSet animatorSet2 = new AnimatorSet();
+        animatorSet2.playTogether(animatorSet, animatorSet1);
+        animatorSet2.start();
+
     }
 }

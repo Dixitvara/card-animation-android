@@ -112,7 +112,7 @@ public class WaveAnimation extends AppCompatActivity {
                 .translationX(x)
                 .translationY(y)
                 .setDuration(300L)
-                .setStartDelay(50L * i)
+                .setStartDelay(30L * i)
                 .setInterpolator(new DecelerateInterpolator())
                 .withEndAction(() -> {
                     image.setX(x);

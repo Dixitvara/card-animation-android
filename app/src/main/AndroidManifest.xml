@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Animations"
         tools:targetApi="31">
         <activity
+            android:name=".PopCardAnimation"
+            android:exported="false" />
+        <activity
+            android:name=".TriangleAnimation"
+            android:exported="false" />
+        <activity
             android:name=".ScreenRectangleAnimation"
             android:exported="false" />
         <activity
