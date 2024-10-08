@@ -44,14 +44,14 @@ public class TestingClass extends AppCompatActivity {
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
 
-        int[] cardDimension = CardDimension.getCardParams(displaymetrics);
+        int[] cardDimension = CardDimension.bigCardsParams(displaymetrics);
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
         centerX = ((float) screenWidth / 2) - ((float) cardWidth / 2);
         centerY = ((float) screenHeight / 2) - ((float) cardHeight / 2);
 
-        cardList = CardMethods.generateCards(18, 1);
+        cardList = CardMethods.generateCards(13, 1);
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         resetBtn.setOnClickListener(v -> {
@@ -60,9 +60,7 @@ public class TestingClass extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-//        smileEye();
-//        slidingDeck();
-        createTrophyShape();
+        bounceCard();
     }
 
     private void slidingDeck() {
@@ -294,12 +292,11 @@ public class TestingClass extends AppCompatActivity {
                     x = prevImage.getX() - cardWidth;
                     y = prevImage.getY() + 20f;
                     rotation = prevImage.getRotation() - 20;
-                } else if (i == 2){
+                } else if (i == 2) {
                     x = (float) (prevImage.getX() + radius * Math.sin(radiance));
                     y = (float) (prevImage.getY() + radius * Math.cos(radiance));
                     rotation = 0f;
-                }
-                else{
+                } else {
                     x = (float) (prevImage.getX() + radius * Math.sin(radiance));
                     y = (float) (prevImage.getY() + radius * Math.cos(radiance));
                     rotation = prevImage.getRotation() - 10;
@@ -345,5 +342,53 @@ public class TestingClass extends AppCompatActivity {
                 .setDuration(300)
                 .setInterpolator(new DecelerateInterpolator())
                 .start();
+    }
+
+    private void addCards() {
+        float x, y;
+        float firstCardPosition = (float) (screenWidth * 0.5) - (float) cardWidth / 2;
+
+        for (int i = 0; i < 13; i++) {
+            ImageView image = new ImageView(this);
+            CardModel card = cardList.get(i);
+
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (i < 13) {
+                x = firstCardPosition;
+            } else if (i < 26) {
+                x = firstCardPosition + cardWidth;
+            } else if (i < 39) {
+                x = firstCardPosition + cardWidth * 2;
+            } else {
+                x = firstCardPosition + cardWidth * 3;
+            }
+            y = (float) (screenHeight * 0.3);
+
+            image.setX(x);
+            image.setY(y);
+
+            container.addView(image, params);
+        }
+    }
+
+    private void bounceCard() {
+        for (int i = 0; i < 1; i++) {
+            View image = new ImageView(this);
+            image.setBackgroundResource(R.drawable.clubs1);
+            image.setId(i);
+
+            image.setX(centerX);
+            image.setY(centerY);
+
+            container.addView(image, params);
+
+            ObjectAnimator animator = ObjectAnimator.ofFloat(image, "translationY", image.getY(), screenHeight - cardHeight, image.getY());
+            animator.setDuration(1000);
+            animator.setRepeatCount(1);
+            animator.setRepeatMode(ObjectAnimator.REVERSE);
+            animator.start();
+        }
     }
 }

@@ -74,6 +74,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="2 Circles"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn9"
             android:layout_width="match_parent"
@@ -81,6 +82,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="8 Circles"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn11"
             android:layout_width="match_parent"
@@ -88,6 +90,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Smile"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn12"
             android:layout_width="match_parent"
@@ -95,6 +98,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Sword"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn13"
             android:layout_width="match_parent"
@@ -102,6 +106,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Castle"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn14"
             android:layout_width="match_parent"
@@ -109,6 +114,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="In Out"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn15"
             android:layout_width="match_parent"
@@ -116,6 +122,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Smile 2"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn16"
             android:layout_width="match_parent"
@@ -123,6 +130,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Spider"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn17"
             android:layout_width="match_parent"
@@ -130,6 +138,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Spider 2"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn18"
             android:layout_width="match_parent"
@@ -137,6 +146,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="4 Circles"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn19"
             android:layout_width="match_parent"
@@ -144,6 +154,7 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Rectangle"
             android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn20"
             android:layout_width="match_parent"
@@ -151,6 +162,15 @@
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:text="Triangle"
             android:textSize="@dimen/_15sdp" />
+
+        <Button
+            android:id="@+id/btn21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:text="Pop cards"
+            android:textSize="@dimen/_15sdp" />
+
         <Button
             android:id="@+id/btn10"
             android:layout_width="match_parent"

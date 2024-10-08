@@ -3,13 +3,10 @@ package com.project.animations;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.project.animations.models.CardModel;
 import com.project.animations.utils.CardDimension;
@@ -41,14 +38,14 @@ public class PopCardAnimation extends AppCompatActivity {
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
 
-        int[] cardDimension = CardDimension.getCardParams(displaymetrics);
+        int[] cardDimension = CardDimension.bigCardsParams(displaymetrics);
         cardWidth = cardDimension[0];
         cardHeight = cardDimension[1];
 
         centerX = ((float) screenWidth / 2) - ((float) cardWidth / 2);
         centerY = ((float) screenHeight / 2) - ((float) cardHeight / 2);
 
-        cardList = CardMethods.generateSelectedCards(26, new int[]{0, 3});
+        cardList = CardMethods.allCards();
 
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
@@ -60,7 +57,37 @@ public class PopCardAnimation extends AppCompatActivity {
         addCards();
     }
 
-    private void addCards(){
+    private void addCards() {
+        float x, y;
+        float firstCardPosition = (float) (screenWidth * 0.2);
+
+        for (int i = 0; i < cardList.size(); i++) {
+            ImageView image = new ImageView(this);
+            CardModel card = cardList.get(i);
+
+            image.setImageResource(card.getResourceId(this));
+            image.setId(i);
+
+            if (i < 13) {
+                x = firstCardPosition;
+            } else if (i < 26) {
+                x = firstCardPosition + cardWidth;
+            } else if (i < 39) {
+                x = firstCardPosition + cardWidth * 2;
+            } else {
+                x = firstCardPosition + cardWidth * 3;
+            }
+            y = (float) (screenHeight * 0.3);
+
+            image.setX(x);
+            image.setY(y);
+
+            container.addView(image, params);
+        }
+        popCards();
+    }
+
+    private void popCards(){
 
     }
 }

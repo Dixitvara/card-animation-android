@@ -143,7 +143,7 @@ public class FourCirclesAnimation extends AppCompatActivity {
 
                 image.setX(x);
                 image.setY(y);
-                image.setRotation((float) valueAnimator.getAnimatedValue());
+                image.setRotation(angle);
             });
             valueAnimator.start();
 
