@@ -391,8 +391,10 @@ public class SmileTwoAnimation extends AppCompatActivity {
                 .setStartDelay(20L * i)
                 .setInterpolator(new DecelerateInterpolator())
                 .withEndAction(() -> {
-                    if (i == 51)
+                    if (i == 51) {
                         fadeInGlasses();
+                        animateSmile();
+                    }
                 })
                 .start();
     }
@@ -412,5 +414,18 @@ public class SmileTwoAnimation extends AppCompatActivity {
         animatorSet.playSequentially(animateGlass, animateEyes, glassUp);
         animatorSet.setInterpolator(new LinearInterpolator());
         animatorSet.start();
+    }
+
+    private void animateSmile() {
+        for (int i = 133; i < 139; i++) {
+            View image = findViewById(i);
+
+            ObjectAnimator animateEye = ObjectAnimator.ofFloat(image, "rotation", 45f);
+            animateEye.setDuration(1000L);
+            animateEye.setStartDelay(1500L);
+            animateEye.setRepeatCount(1);
+            animateEye.setRepeatMode(ValueAnimator.REVERSE);
+            animateEye.start();
+        }
     }
 }

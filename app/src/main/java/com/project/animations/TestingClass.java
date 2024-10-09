@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class TestingClass extends AppCompatActivity {
 
@@ -51,7 +53,7 @@ public class TestingClass extends AppCompatActivity {
         centerX = ((float) screenWidth / 2) - ((float) cardWidth / 2);
         centerY = ((float) screenHeight / 2) - ((float) cardHeight / 2);
 
-        cardList = CardMethods.generateCards(13, 1);
+        cardList = CardMethods.allCards();
         params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
 
         resetBtn.setOnClickListener(v -> {
@@ -374,21 +376,88 @@ public class TestingClass extends AppCompatActivity {
     }
 
     private void bounceCard() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 52; i++) {
             View image = new ImageView(this);
-            image.setBackgroundResource(R.drawable.clubs1);
+            image.setBackgroundResource(cardList.get(i).getResourceId(this));
             image.setId(i);
 
             image.setX(centerX);
             image.setY(centerY);
 
             container.addView(image, params);
+        }
+//        bounceAnimate();
+    }
 
-            ObjectAnimator animator = ObjectAnimator.ofFloat(image, "translationY", image.getY(), screenHeight - cardHeight, image.getY());
-            animator.setDuration(1000);
-            animator.setRepeatCount(1);
-            animator.setRepeatMode(ObjectAnimator.REVERSE);
-            animator.start();
+    private void bounceAnimate() {
+        Random random = new Random();
+        long delay, delayValue = 100L;
+        for (int i = 0; i < 52; i++) {
+            View image = findViewById(i);
+
+            if (i < 13)
+                delay = delayValue * i;
+            else if (i < 26)
+                delay = delayValue * (i - 13);
+            else if (i < 39)
+                delay = delayValue * (i - 26);
+            else
+                delay = delayValue * (i - 39);
+
+            ObjectAnimator ty = ObjectAnimator.ofFloat(
+                    image,
+                    "translationY",
+                    image.getY(),
+                    screenHeight - cardHeight
+            ).setDuration(2000);
+            ObjectAnimator ty2 = ObjectAnimator.ofFloat(
+                    image,
+                    "translationY",
+                    image.getY() + 250f
+            ).setDuration(2000);
+            ObjectAnimator ty3 = ObjectAnimator.ofFloat(
+                    image,
+                    "translationY",
+                    screenHeight - cardHeight
+            ).setDuration(2000);
+            ObjectAnimator ty4 = ObjectAnimator.ofFloat(
+                    image,
+                    "translationY",
+                    image.getY() + 500f
+            ).setDuration(2000);
+            ObjectAnimator ty5 = ObjectAnimator.ofFloat(
+                    image,
+                    "translationY",
+                    screenHeight - cardHeight
+            ).setDuration(2000);
+            ObjectAnimator ty8 = ObjectAnimator.ofFloat(
+                    image,
+                    "translationY",
+                    image.getY() + 650f
+            ).setDuration(2000);
+            ObjectAnimator ty9 = ObjectAnimator.ofFloat(
+                    image,
+                    "translationY",
+                    screenHeight - cardHeight
+            ).setDuration(2000);
+
+            ObjectAnimator tx = ObjectAnimator.ofFloat(
+                    image,
+                    "translationX",
+                    image.getX(),
+                    random.nextFloat() * screenWidth
+            ).setDuration(2000);
+            tx.setStartDelay(delay);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playSequentially(ty, ty2, ty3, ty4, ty5, ty8, ty9);
+            animatorSet.setInterpolator(new LinearInterpolator());
+            animatorSet.setStartDelay(delay);
+            animatorSet.setDuration(350L);
+
+            AnimatorSet animatorSet2 = new AnimatorSet();
+            animatorSet2.playTogether(tx, animatorSet);
+            animatorSet2.start();
         }
     }
 }
