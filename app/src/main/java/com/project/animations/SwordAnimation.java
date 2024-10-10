@@ -290,9 +290,9 @@ public class SwordAnimation extends AppCompatActivity {
     }
 
     public void swingSword() {
-        ObjectAnimator rotate = ObjectAnimator.ofFloat(leftLayout, "rotation", 45f)
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(leftLayout, "rotation", 35f)
                 .setDuration(700L);
-        ObjectAnimator rotate2 = ObjectAnimator.ofFloat(rightLayout, "rotation", -45f)
+        ObjectAnimator rotate2 = ObjectAnimator.ofFloat(rightLayout, "rotation", -35f)
                 .setDuration(700L);
 
         rotate.setRepeatMode(ValueAnimator.REVERSE);

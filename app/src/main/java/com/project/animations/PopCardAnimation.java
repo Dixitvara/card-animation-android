@@ -153,7 +153,7 @@ public class PopCardAnimation extends AppCompatActivity {
                     image,
                     "translationX",
                     image.getX(),
-                    random.nextFloat() * screenWidth
+                    random.nextFloat() * (screenWidth * 2)
             ).setDuration(2000);
             tx.setStartDelay(delay);
 

@@ -1,37 +1,38 @@
 package com.project.animations;
 
+import static com.project.animations.utils.CardMethods.cardHeight;
+import static com.project.animations.utils.CardMethods.cardWidth;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.project.animations.models.CardModel;
-import com.project.animations.utils.CardDimension;
 import com.project.animations.utils.CardMethods;
 
 import java.util.ArrayList;
 
 public class FourCirclesAnimation extends AppCompatActivity {
 
-    int cardWidth, cardHeight;
     int screenWidth, screenHeight;
     float centerX, centerY;
     Button resetBtn;
-    RelativeLayout container, circle1, circle2, circle3, circle4;
-    RelativeLayout.LayoutParams params, layoutParams;
-    ArrayList<CardModel> cardList;
+    RelativeLayout container;
+    //    RelativeLayout circle1, circle2, circle3, circle4;
+    RelativeLayout.LayoutParams layoutParams;
+    ArrayList<View> cardList;
     float radius;
 
     @Override
@@ -48,16 +49,11 @@ public class FourCirclesAnimation extends AppCompatActivity {
         screenWidth = displaymetrics.widthPixels;
         screenHeight = displaymetrics.heightPixels;
 
-        int[] cardDimension = CardDimension.getCardParams(displaymetrics);
-        cardWidth = cardDimension[0];
-        cardHeight = cardDimension[1];
-
         centerX = ((float) screenWidth / 2) - ((float) cardWidth / 2);
         centerY = ((float) screenHeight / 2) - ((float) cardHeight / 2);
 
-        cardList = CardMethods.allCards();
+        cardList = CardMethods.allCardsImages(this);
 
-        params = new RelativeLayout.LayoutParams(cardWidth, cardHeight);
         layoutParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT
@@ -65,73 +61,59 @@ public class FourCirclesAnimation extends AppCompatActivity {
 
         radius = (float) (screenWidth * 0.1);
 
-        // circle layouts
-        circle1 = new RelativeLayout(this);
-        circle2 = new RelativeLayout(this);
-        circle3 = new RelativeLayout(this);
-        circle4 = new RelativeLayout(this);
-
-        container.addView(circle1, layoutParams);
-        container.addView(circle2, layoutParams);
-        container.addView(circle3, layoutParams);
-        container.addView(circle4, layoutParams);
-
         resetBtn.setOnClickListener(v -> {
             startActivity(getIntent());
             finish();
             overridePendingTransition(0, 0);
         });
-        generateCircles();
+
+        generateCircles(6);
     }
 
-    private void generateCircles() {
+    private void generateCircles(int totalCircle) {
         float x, y, rotation;
         float angle = (float) 360 / 13;
 
-        ImageView prevImage = null;
+        View prevImage = null;
 
-        for (int i = 0; i < 13; i++) {
-            float angle2 = angle * i;
-            float radiance = (float) Math.toRadians(angle2);
+        for (int i = 0; i < totalCircle; i++) {
+            RelativeLayout circle = new RelativeLayout(this);
+            container.addView(circle, layoutParams);
 
-            ImageView image = new ImageView(this);
-            CardModel card = cardList.get(i);
+            for (int j = 0; j < 13; j++) {
+                float angle2 = angle * j;
+                float radiance = (float) Math.toRadians(angle2);
 
-            image.setLayoutParams(params);
-            image.setImageResource(card.getResourceId(this));
-            image.setId(i);
+                // getting cards
+                View image = cardList.get(i % 2 == 0 ? j : j + 13);
+                image.setId(j);
 
-            x = (float) (centerX - radius * Math.sin(radiance));
-            y = (float) (centerY + radius * Math.cos(radiance));
+                // calculating position
+                x = (float) (centerX - radius * Math.sin(radiance));
+                y = (float) (centerY + radius * Math.cos(radiance));
 
-            if (prevImage == null)
-                rotation = 0f;
-            else
-                rotation = prevImage.getRotation() + angle;
+                // setting image rotation and position
+                rotation = j % 13 == 0 ? 0f : prevImage.getRotation() + angle;
+                image.setX(x);
+                image.setY(y);
+                image.setRotation(rotation);
 
-            image.setX(x);
-            image.setY(y);
-            image.setRotation(rotation);
-            prevImage = image;
+                prevImage = image;
 
-            if (i < 13)
-                circle1.addView(image);
-            else if (i < 26)
-                circle2.addView(image);
-            else if (i < 39)
-                circle3.addView(image);
-            else
-                circle4.addView(image);
+                image.setVisibility(View.INVISIBLE);
+                circle.addView(image);
+            }
+            new Handler().postDelayed(() -> animateCircle2(circle), 800L * (i + 1));
         }
-        animateCircle2();
     }
 
-    private void animateCircle2() {
+    private void animateCircle2(RelativeLayout layout) {
         for (int i = 0; i < 13; i++) {
-            View image = findViewById(i);
+            View image = layout.getChildAt(i);
 
+            image.setVisibility(View.VISIBLE);
             ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, image.getRotation());
-            valueAnimator.setDuration(1000L);
+            valueAnimator.setDuration(800L);
             valueAnimator.setInterpolator(new LinearInterpolator());
 
             valueAnimator.addUpdateListener(animation -> {
@@ -152,20 +134,29 @@ public class FourCirclesAnimation extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (finalI == 12) {
-                        bouncingAnimation();
+                        bouncingAnimation(layout);
                     }
                 }
             });
         }
     }
 
-    private void bouncingAnimation() {
-        ObjectAnimator tX = ObjectAnimator.ofFloat(circle1, "translationX", circle1.getX() - 80f)
-                .setDuration(3000L);
-        ObjectAnimator tY = ObjectAnimator.ofFloat(circle1, "translationY", circle1.getY() + 300f)
-                .setDuration(800L);
-        ObjectAnimator rotate = ObjectAnimator.ofFloat(circle1, "rotation", circle1.getRotation() - 70f)
-                .setDuration(3000L);
+    private void bouncingAnimation(RelativeLayout layout) {
+        float translationX = (float) (Math.random() * screenWidth) - (float) screenWidth / 2;
+        float rotation = (float) Math.random() * 360;
+
+        if (translationX >= 0) {
+            rotation = Math.abs(rotation);
+        } else {
+            rotation = rotation * -1;
+        }
+
+        ObjectAnimator tX = ObjectAnimator.ofFloat(layout, "translationX", translationX)
+                .setDuration(1000L);
+        ObjectAnimator tY = ObjectAnimator.ofFloat(layout, "translationY", (float) (layout.getY() + screenHeight * 0.2344))
+                .setDuration(1000L);
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(layout, "rotation", rotation)
+                .setDuration(1000L);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setInterpolator(new BounceInterpolator());
@@ -178,6 +169,5 @@ public class FourCirclesAnimation extends AppCompatActivity {
         AnimatorSet animatorSet2 = new AnimatorSet();
         animatorSet2.playTogether(animatorSet, animatorSet1);
         animatorSet2.start();
-
     }
 }
